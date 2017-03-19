@@ -1,0 +1,9 @@
+app/**/*.js
+**/*.map
+node_modules
+jspm_packages
+bower_components
+dist/*
+yarn.lock
+.idea/*
+*.log
