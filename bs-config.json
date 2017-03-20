@@ -1,4 +1,5 @@
 {
+  "files": [ "./**/*.{html,htm,css,js,ts}" ],
   "port": 8000,
   "startPath": "/SpecRunner.html"
 }

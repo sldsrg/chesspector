@@ -5,7 +5,7 @@ export default class Piece {
     this.fen_code = code;
   }
 
-  isWhite(): boolean {
+  get isWhite(): boolean {
     return /[RNBQKP]/.test(this.fen_code);
   }
 }
