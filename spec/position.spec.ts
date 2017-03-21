@@ -16,37 +16,37 @@ describe("Chessboard position", function() {
   it("must be invalid if white king missed", function() {
     let pos = new Position("4k3/8/8/8/8/8/8/8 w - -");
     expect(pos.isValid()).toBeFalsy();
-    expect(pos.violations).toContain(Position.NOTES[Position.MISSING_WHITE_KING]);
+    expect(pos.violations).toContain(Position.NOTES.MISSING_WHITE_KING);
   });
 
   it("must be invalid if black king missed", function() {
     let pos = new Position("8/8/8/8/8/8/8/4K3 w - -");
     expect(pos.isValid()).toBeFalsy();
-    expect(pos.violations).toContain(Position.NOTES[Position.MISSING_BLACK_KING]);
+    expect(pos.violations).toContain(Position.NOTES.MISSING_BLACK_KING);
   });
 
   it("must be invalid with many white kings", function() {
     let pos = new Position("4k3/8/8/8/8/8/8/3KK3 w - -");
     expect(pos.isValid()).toBeFalsy();
-    expect(pos.violations).toContain(Position.NOTES[Position.TOO_MANY_WHITE_KINGS]);
+    expect(pos.violations).toContain(Position.NOTES.TOO_MANY_WHITE_KINGS);
   });
 
   it("must be invalid with many black kings", function() {
     let pos = new Position("3kk3/8/8/8/8/8/8/4K3 w - -");
     expect(pos.isValid()).toBeFalsy();
-    expect(pos.violations).toContain(Position.NOTES[Position.TOO_MANY_BLACK_KINGS]);
+    expect(pos.violations).toContain(Position.NOTES.TOO_MANY_BLACK_KINGS);
   });
 
   it("must be invalid if white pieces count greater then 16", function() {
     let pos = new Position("4k3/8/8/8/8/7P/PPPPPPPP/RNBQKBNR w - -");
     expect(pos.isValid()).toBeFalsy();
-    expect(pos.violations).toContain(Position.NOTES[Position.TOO_MANY_WHITE_PIECES]);
+    expect(pos.violations).toContain(Position.NOTES.TOO_MANY_WHITE_PIECES);
   });
 
   it("must be invalid if black pieces count greater then 16", function() {
     let pos = new Position("rnbqkbnr/pppppppp/n7/8/8/8/8/4K3 w - -");
     expect(pos.isValid()).toBeFalsy();
-    expect(pos.violations).toContain(Position.NOTES[Position.TOO_MANY_BLACK_PIECES]);
+    expect(pos.violations).toContain(Position.NOTES.TOO_MANY_BLACK_PIECES);
   });
 
   it("detect 'blacks to move' flag", function() {

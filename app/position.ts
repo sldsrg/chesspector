@@ -1,22 +1,16 @@
 import Piece from './pieces/piece';
 
 export default class Position {
-  static readonly MISSING_WHITE_KING: number = 1;
-  static readonly MISSING_BLACK_KING: number = 2;
-  static readonly TOO_MANY_WHITE_PIECES: number = 3;
-  static readonly TOO_MANY_BLACK_PIECES: number = 4;
-  static readonly TOO_MANY_WHITE_KINGS = 5;
-  static readonly TOO_MANY_BLACK_KINGS = 6;
 
-  static readonly NOTES: { [id: number] : string } = {
-    1: "Missing white King",
-    2: "Missing black King",
-    3: "Exceede black pieces count",
-    4: "Exceede black pieces count",
-    5: "Too many white king",
-    6: "Too many black king"
+  static readonly NOTES = {
+    MISSING_WHITE_KING: "Missing white King",
+    MISSING_BLACK_KING: "Missing black King",
+    TOO_MANY_WHITE_PIECES: "Too many white pieces",
+    TOO_MANY_BLACK_PIECES: "Too many black pieces",
+    TOO_MANY_WHITE_KINGS: "Too many white king",
+    TOO_MANY_BLACK_KINGS: "Too many black king"
   };
-
+ 
   static readonly INITIAL: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk -";
 
   private _position: Piece[][] = [[], [], [], [], [], [], [], []];
@@ -79,8 +73,8 @@ export default class Position {
     this._whitesToMove = false;
     let l = fen.length;
     if (l === 0) {
-      this._violations.push(Position.NOTES[Position.MISSING_WHITE_KING]);
-      this._violations.push(Position.NOTES[Position.MISSING_BLACK_KING]);
+      this._violations.push(Position.NOTES.MISSING_WHITE_KING);
+      this._violations.push(Position.NOTES.MISSING_BLACK_KING);
       return;
     }
     let curRow = 0;
@@ -103,7 +97,7 @@ export default class Position {
         if (piece.isWhite) {
           if (piece.fen_code === "K") {
             if (this._whitePieces.length > 0 && this._whitePieces[0].fen_code === "K") {
-              this._violations.push(Position.NOTES[Position.TOO_MANY_WHITE_KINGS]);
+              this._violations.push(Position.NOTES.TOO_MANY_WHITE_KINGS);
             }
             this._whitePieces.unshift(piece);
           }
@@ -114,7 +108,7 @@ export default class Position {
         else {
           if (piece.fen_code === "k") {
             if (this._blackPieces.length > 0 && this._blackPieces[0].fen_code === "k") {
-              this._violations.push(Position.NOTES[Position.TOO_MANY_BLACK_KINGS]);
+              this._violations.push(Position.NOTES.TOO_MANY_BLACK_KINGS);
             }
             this._blackPieces.unshift(piece);
           }
@@ -132,16 +126,16 @@ export default class Position {
     }
 
     if (this._whitePieces.length === 0 || this._whitePieces[0].fen_code !== "K") {
-      this.violations.push(Position.NOTES[Position.MISSING_WHITE_KING]);
+      this.violations.push(Position.NOTES.MISSING_WHITE_KING);
     }   
     if (this._blackPieces.length === 0 || this._blackPieces[0].fen_code !== "k") {
-      this.violations.push(Position.NOTES[Position.MISSING_BLACK_KING]);
+      this.violations.push(Position.NOTES.MISSING_BLACK_KING);
     }
     if (this._whitePieces.length > 16) {
-      this._violations.push(Position.NOTES[Position.TOO_MANY_WHITE_PIECES]);
+      this._violations.push(Position.NOTES.TOO_MANY_WHITE_PIECES);
     }
     if (this._blackPieces.length > 16) {
-      this._violations.push(Position.NOTES[Position.TOO_MANY_BLACK_PIECES]);
+      this._violations.push(Position.NOTES.TOO_MANY_BLACK_PIECES);
     }
     let parts = fen.slice(k).trim().split(' ');
     let castlingAbility = parts[1];

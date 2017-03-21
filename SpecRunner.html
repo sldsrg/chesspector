@@ -18,7 +18,9 @@
 <body>
 
   <script>
-    System.import('./spec/main.ts')
+    Promise.all([
+      System.import('./spec/position.spec.ts'),
+      System.import('./spec/piece-move.spec.ts')])
     .then(function() { window.runTest(); })
     .catch(console.error.bind(console));
   </script>
