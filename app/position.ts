@@ -8,12 +8,23 @@ export default class Position {
     TOO_MANY_WHITE_PIECES: "Too many white pieces",
     TOO_MANY_BLACK_PIECES: "Too many black pieces",
     TOO_MANY_WHITE_KINGS: "Too many white king",
-    TOO_MANY_BLACK_KINGS: "Too many black king"
+    TOO_MANY_BLACK_KINGS: "Too many black king",
+    PAWN_ON_FIRST_RANK: "Pawn on first rank illegal",
+    PAWN_ON_LAST_RANK: "Pawn on last rank illegal"
   };
  
   static readonly INITIAL: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk -";
 
-  private _position: Piece[][] = [[], [], [], [], [], [], [], []];
+  private _position: Piece[][] = [
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null]
+  ];
   private _whitePieces: Piece[]  = []; // White King first
   private _blackPieces: Piece[] = []; // Black King first
 
@@ -62,7 +73,12 @@ export default class Position {
     return this._captureEnpassantTarget;
   }
 
+  get position(): Piece[][] {
+    return this._position;
+  }
+
   clear() {
+    // TODO: position
     this._violations = [];
     this._whitePieces = [];
     this._blackPieces = [];
@@ -95,8 +111,8 @@ export default class Position {
       else {
         let piece = new Piece(ch);
         if (piece.isWhite) {
-          if (piece.fen_code === "K") {
-            if (this._whitePieces.length > 0 && this._whitePieces[0].fen_code === "K") {
+          if (piece.fenCode === "K") {
+            if (this._whitePieces.length > 0 && this._whitePieces[0].fenCode === "K") {
               this._violations.push(Position.NOTES.TOO_MANY_WHITE_KINGS);
             }
             this._whitePieces.unshift(piece);
@@ -106,8 +122,8 @@ export default class Position {
           }
         }
         else {
-          if (piece.fen_code === "k") {
-            if (this._blackPieces.length > 0 && this._blackPieces[0].fen_code === "k") {
+          if (piece.fenCode === "k") {
+            if (this._blackPieces.length > 0 && this._blackPieces[0].fenCode === "k") {
               this._violations.push(Position.NOTES.TOO_MANY_BLACK_KINGS);
             }
             this._blackPieces.unshift(piece);
@@ -116,6 +132,11 @@ export default class Position {
             this._blackPieces.push(piece);
           }
         }
+        if (/p/i.test(piece.fenCode)) {
+          if (curRow === 0) this._violations.push(Position.NOTES.PAWN_ON_LAST_RANK);
+          if (curRow === 7) this._violations.push(Position.NOTES.PAWN_ON_FIRST_RANK);
+        }
+
         this._position[curRow][curCol] = piece;
         curCol++;
       }
@@ -125,10 +146,10 @@ export default class Position {
       }
     }
 
-    if (this._whitePieces.length === 0 || this._whitePieces[0].fen_code !== "K") {
+    if (this._whitePieces.length === 0 || this._whitePieces[0].fenCode !== "K") {
       this.violations.push(Position.NOTES.MISSING_WHITE_KING);
     }   
-    if (this._blackPieces.length === 0 || this._blackPieces[0].fen_code !== "k") {
+    if (this._blackPieces.length === 0 || this._blackPieces[0].fenCode !== "k") {
       this.violations.push(Position.NOTES.MISSING_BLACK_KING);
     }
     if (this._whitePieces.length > 16) {

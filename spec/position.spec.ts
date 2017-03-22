@@ -49,6 +49,18 @@ describe("Chessboard position", function() {
     expect(pos.violations).toContain(Position.NOTES.TOO_MANY_BLACK_PIECES);
   });
 
+  it("must be invalid if any pawn on first rank", function() {
+    let pos = new Position("4k3/8/8/8/8/8/8/P3K3 w - -");
+    expect(pos.isValid()).toBeFalsy();
+    expect(pos.violations).toContain(Position.NOTES.PAWN_ON_FIRST_RANK);
+  });
+
+  it("must be invalid if any pawn on last rank", function() {
+    let pos = new Position("p3k3/8/8/8/8/8/8/4K3 w - -");
+    expect(pos.isValid()).toBeFalsy();
+    expect(pos.violations).toContain(Position.NOTES.PAWN_ON_LAST_RANK);
+  });
+
   it("detect 'blacks to move' flag", function() {
     let pos = new Position("r3k2r/8/8/8/8/8/8/R3K2R b QKqk -");
     expect(pos.whitesToMove).toBeFalsy();

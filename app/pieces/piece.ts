@@ -1,5 +1,5 @@
 export default class Piece {
-  fen_code: string;
+  private fen_code: string;
   
   constructor(code) {
     this.fen_code = code;
@@ -7,5 +7,9 @@ export default class Piece {
 
   get isWhite(): boolean {
     return /[RNBQKP]/.test(this.fen_code);
+  }
+
+  get fenCode(): string {
+    return this.fen_code;
   }
 }
