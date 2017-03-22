@@ -1,13 +1,13 @@
-import Piece from '../app/pieces/piece';
+import newPiece from '../app/pieces/factory';
 import Position from '../app/position';
 
 describe("Piece", function() {
   it("constructed with code in upper case must be white piece", function() {
-    let pce = new Piece('P');
+    let pce = newPiece('P');
     expect(pce.isWhite).toBe(true);
   }); 
   it("constructed with code in lower case must be black piece", function() {
-    let pce = new Piece('p');
+    let pce = newPiece('p');
     expect(pce.isWhite).toBe(false);
   });
 });

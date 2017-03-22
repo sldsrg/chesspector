@@ -1,4 +1,3 @@
-import Piece from '../app/pieces/piece';
 import Position from '../app/position';
 import Inspector from '../app/inspector';
 

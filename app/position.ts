@@ -1,4 +1,5 @@
-import Piece from './pieces/piece';
+import './pieces/piece';
+import newPiece from './pieces/factory';
 
 export default class Position {
 
@@ -15,7 +16,7 @@ export default class Position {
  
   static readonly INITIAL: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk -";
 
-  private _position: Piece[][] = [
+  private _position: IPiece[][] = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -25,8 +26,8 @@ export default class Position {
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null]
   ];
-  private _whitePieces: Piece[]  = []; // White King first
-  private _blackPieces: Piece[] = []; // Black King first
+  private _whitePieces: IPiece[]  = []; // White King first
+  private _blackPieces: IPiece[] = []; // Black King first
 
   private _whitesToMove: boolean;
   private _whiteCastlingLongEnabled: boolean;
@@ -73,7 +74,7 @@ export default class Position {
     return this._captureEnpassantTarget;
   }
 
-  get position(): Piece[][] {
+  get position(): IPiece[][] {
     return this._position;
   }
 
@@ -109,7 +110,7 @@ export default class Position {
         }
       }
       else {
-        let piece = new Piece(ch);
+        let piece = newPiece(ch);
         if (piece.isWhite) {
           if (piece.fenCode === "K") {
             if (this._whitePieces.length > 0 && this._whitePieces[0].fenCode === "K") {

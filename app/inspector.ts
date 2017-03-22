@@ -1,12 +1,12 @@
 import Position from 'position';
-import Piece from './pieces/piece';
+import './pieces/piece';
 
 export default class Inspector {
   constructor(private _pos: Position) {
 
   }
 
-  get position(): Piece[][] {
+  get position(): IPiece[][] {
     return this._pos.position;
   }
 
