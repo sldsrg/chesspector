@@ -37,10 +37,11 @@ export default class Pawn implements IPiece {
           }
           else return null;
         }
-        else {
+        else if (!targetPiece.isWhite) {
           moveData.flags = MoveFlags.Capture;
           moveData.capturedPiece = targetPiece;
         }
+        else return null;
       }
       else return null;      
     }
@@ -59,8 +60,13 @@ export default class Pawn implements IPiece {
           if (pos.captureEnpassantTarget === toColumn) {
             moveData.flags = MoveFlags.CaptureEnPassant;
           }
-          return null;
+          else return null;
         }
+        else if (targetPiece.isWhite) {
+          moveData.flags = MoveFlags.Capture;
+          moveData.capturedPiece = targetPiece;
+        }
+        else return null;
       }
       else return null;
     }
