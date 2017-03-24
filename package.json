@@ -1,5 +1,5 @@
 {
-  "name": "jasmine-labs",
+  "name": "chesspector",
   "version": "0.0.1",
   "scripts": {
     "start": "lite-server"

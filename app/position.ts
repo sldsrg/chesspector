@@ -1,4 +1,4 @@
-import './pieces/piece';
+import {IPiece} from './pieces/piece';
 import newPiece from './pieces/factory';
 
 export default class Position {

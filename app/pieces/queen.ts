@@ -1,4 +1,5 @@
-import IPiece from './piece';
+import {MoveData, IPiece} from './piece';
+import Position from '../position';
 
 export default class Queen implements IPiece {
 
@@ -7,5 +8,13 @@ export default class Queen implements IPiece {
 
   get fenCode(): string {
     return this.isWhite ? 'Q' : 'q';
+  }
+
+  public GetPseudoLegalMove(
+    pos: Position,
+    fromRow: number, fromColumn: number,
+    toRow: number, toColumn: number): MoveData 
+  {
+    return null;
   }
 }
