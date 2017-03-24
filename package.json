@@ -10,6 +10,6 @@
     "jasmine-core": "^2.5.2",
     "typescript": "^2.2.1",
     "plugin-typescript": "^7.0.6",
-    "systemjs": "^0.20.10"
+    "systemjs": "0.19.47"
   }
 }

@@ -1,5 +1,6 @@
 import Position from '../app/position';
 import Inspector from '../app/inspector';
+import { MoveFlags } from "../app/pieces/piece";
 
 describe("The pawn has five legal moves:", function() {
 
@@ -8,30 +9,55 @@ describe("The pawn has five legal moves:", function() {
 
   beforeAll(function () {
     whitesInspector = new Inspector(new Position("6k1/3pp3/8/4Pp2/5Pp1/5P1p/3P2PP/3K4 w - f"));
-    blacksInspector = new Inspector(new Position("8/3pp3/4Pp2/8/R4Ppk/8/8/3K4 b - f"));
+    blacksInspector = new Inspector(new Position("8/2ppp3/4Pp2/2P5/R4Ppk/8/8/3K4 b - f"));
   });
 
   describe(
     `a) The pawn moves forward to the unoccupied square 
     immediately in front of it on the same file.`, 
     function() {
-
-      it("White pawn from d2 can move to d3", function() {
-        expect(whitesInspector.getMove("d2", "d3")).not.toBeNull();
+      it("Inspector return valid data.", function() {
+        let moveData = whitesInspector.getMove("d2", "d3");
+        expect(moveData).not.toBeNull();
+        expect(moveData.flags).toBe(MoveFlags.Quiet);
+        moveData = blacksInspector.getMove("d7", "d6");
+        expect(moveData).not.toBeNull();
+        expect(moveData.flags).toBe(MoveFlags.Quiet);
       });
+           
+      it("Try to move pawn backward should to fail", function() {
+        expect(whitesInspector.getMove("d5", "d4")).toBeNull();
+        expect(blacksInspector.getMove("g4", "g5")).toBeNull();
+      });
+
+      it("Try to move on occuped square should to fail", function() {
+        expect(whitesInspector.getMove("f4", "f5")).toBeNull();
+        expect(blacksInspector.getMove("e7", "e6")).toBeNull();
+      });
+
   });
 
   describe(
     `b) On its first move each pawn may advance two squares along the same file 
     provided both squares are unoccupied.`,
     function() {
-
-      it("White pawn from d2 can move to d4", function() {
-        expect(whitesInspector.getMove("d2", "d4")).not.toBeNull();
+      it("Inspector must return valid data.", function() {
+        let moveData = whitesInspector.getMove("d2", "d4");
+        expect(moveData).not.toBeNull();
+        expect(moveData.flags).toBe(MoveFlags.Quiet);
+        moveData = blacksInspector.getMove("d7", "d5");
+        expect(moveData).not.toBeNull();
+        expect(moveData.flags).toBe(MoveFlags.Quiet);
       });
 
-      it("White pawn from h2 can't move over obstacle to h4", function() {
+      it("Try to move over obstacle should to fail", function() {
         expect(whitesInspector.getMove("h2", "h4")).toBeNull();
+        expect(blacksInspector.getMove("e7", "e5")).toBeNull();
+      });
+      
+      it("Try to move on occuped square should to fail", function() {
+        expect(whitesInspector.getMove("g2", "g4")).toBeNull();
+        expect(blacksInspector.getMove("c7", "c5")).toBeNull();
       });
   });
 
@@ -41,6 +67,10 @@ describe("The pawn has five legal moves:", function() {
     function() {
       it("White pawn from f3 can capture piece on g4", function() {
         expect(whitesInspector.getMove("f3", "g4")).not.toBeNull();
+      });
+
+      it("Black pawn from d7 can capture piece on e6", function() {
+        expect(blacksInspector.getMove("d7", "e6")).not.toBeNull();
       });
 
       it("White pawn from d2 can't move to c3 - empty square", function() {

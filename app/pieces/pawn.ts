@@ -1,4 +1,4 @@
-import {MoveData, IPiece} from './piece';
+import {MoveData, MoveFlags, IPiece} from './piece';
 import Position from '../position';
 
 export default class Pawn implements IPiece {
@@ -16,16 +16,55 @@ export default class Pawn implements IPiece {
     toRow: number, toColumn: number): MoveData 
   {
     let targetPiece = pos.position[toRow][toColumn];
-    if (Math.abs(toColumn - fromColumn) === 1) { // looks like captue      
-      if (targetPiece === null) {
-        if (pos.captureEnpassantTarget === toColumn)
-          return new MoveData();
-        return null;
+    let drow = toRow - fromRow;
+    let dcol = toColumn - fromColumn;
+    let moveData = new MoveData(fromRow, fromColumn, toRow, toColumn);
+
+    if (this.isWhite) {
+      if (drow > 0) return null; // pawn moves only forfard
+      if (dcol === 0) { // simple move
+        if (fromRow === 6 && toRow === 4 ) { // long move from initial position
+          if (pos.position[5][fromColumn] !== null) return null;
+          if (targetPiece !== null) return null;
+        }
+        else if (drow < -1 || targetPiece !== null) return null;
       }
+      else if (Math.abs(dcol) === 1) { // capture
+        if (targetPiece === null) {
+          if (pos.captureEnpassantTarget === toColumn) {
+            moveData.flags = MoveFlags.CaptureEnPassant;
+            moveData.capturedPiece = pos.position[4][toColumn];
+          }
+          else return null;
+        }
+        else {
+          moveData.flags = MoveFlags.Capture;
+          moveData.capturedPiece = targetPiece;
+        }
+      }
+      else return null;      
     }
-    if (fromRow === 6 && toRow === 4 && fromColumn === toColumn) {
-      if (pos.position[5][fromColumn] !== null) return null;
+    else {
+      if (drow < 0) return null; // pawn moves only forfard
+      if (dcol === 0) { // simple move
+        if (fromRow === 1 && toRow === 3 ) { // long move from initial position
+          if (pos.position[2][fromColumn] !== null) return null;
+          if (targetPiece !== null) return null;
+        }
+        else if (drow > 1 || targetPiece !== null) return null;
+
+      }
+      else if (Math.abs(dcol) === 1) { // capture
+        if (targetPiece === null) {
+          if (pos.captureEnpassantTarget === toColumn) {
+            moveData.flags = MoveFlags.CaptureEnPassant;
+          }
+          return null;
+        }
+      }
+      else return null;
     }
-    return new MoveData();
+
+    return moveData;
   }
 }
