@@ -94,8 +94,16 @@ describe("The pawn has five legal moves:", function() {
     moved only one square. This capture can be made only on the move
     following this advance.`,
     function() {
-      it("can capture en-passant pawn on f5", function() {
-        expect(whitesInspector.getMove("e5", "f6")).not.toBeNull();
+      it("Inspector return valid data.", function() {
+        let moveData = whitesInspector.getMove("e5", "f6");
+        expect(moveData).not.toBeNull();
+        expect(moveData.flags).toBe(MoveFlags.CaptureEnPassant);
+        expect(moveData.capturedPiece).not.toBeNull;
+
+        moveData = blacksInspector.getMove("g4", "f3");
+        expect(moveData).not.toBeNull();
+        expect(moveData.flags).toBe(MoveFlags.CaptureEnPassant);
+        expect(moveData.capturedPiece).not.toBeNull;
       });
   });
 
@@ -109,19 +117,46 @@ describe("The pawn has five legal moves:", function() {
 
 
 
-
-
-
-
-
-
-
-
-
-
   // Assert.Null(inspector.GetMove(f4, f5), "Illegal pawn capture");
   // Assert.Null(inspector.GetMove(f4, e5), "Illegal pawn capture");
   // Assert.Null(inspector.GetMove(f3, f2), "Illegal pawn move");
 
   // TODO: check en-passant flag toggle
 });
+
+describe(`The queen moves to any square along the file, the rank
+  or a diagonal on which it stands. When making these moves the queen cannot
+  move over any intervening pieces.`, function() {
+
+    let inspector: Inspector;
+
+    beforeAll(function(){
+      inspector = new Inspector(new Position("4k3/8/8/5b2/8/3Q4/2P5/4K3 w - -"));
+    });
+
+    it("Inspector return valid data for valid move.", function() {
+      let moveData = inspector.getMove("d3", "d5");
+      expect(moveData).not.toBeNull();
+      expect(moveData.flags).toBe(MoveFlags.Quiet);
+
+      moveData = inspector.getMove("d3", "c4");
+      expect(moveData).not.toBeNull();
+      expect(moveData.flags).toBe(MoveFlags.Quiet);
+
+      moveData = inspector.getMove("d3", "f5");
+      expect(moveData).not.toBeNull();
+      expect(moveData.flags).toBe(MoveFlags.Capture);
+    });
+
+    it("Move not diagonal, vertical or horizontal fail.", function() {
+      expect(inspector.getMove("d3", "c6")).toBeNull();
+    });
+
+    it("Move over any intervening pieces fail.", function() {
+      expect(inspector.getMove("d3", "b1")).toBeNull();
+    });
+
+    it("Capture own pieces fail.", function() {
+      expect(inspector.getMove("d3", "c2")).toBeNull();
+    });   
+  });
