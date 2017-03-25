@@ -152,7 +152,7 @@ describe(`The queen moves to any square along the file, the rank
     it("Capture own pieces fail.", function() {
       expect(inspector.getMove("d3", "c2")).toBeNull();
     });   
-  });
+});
 
 describe(`The rook moves to any square along the file or the rank
   on which it stands. When making these moves the rook cannot
@@ -185,4 +185,37 @@ describe(`The rook moves to any square along the file or the rank
     it("Capture own pieces fail.", function() {
       expect(inspector.getMove("a1", "e1")).toBeNull();
     });   
-  });
+});
+
+describe(`The bishop moves to any square along a diagonal on which it stands. 
+  When making these moves the bishop cannot move over any intervening pieces.`, 
+    function() {
+
+    let inspector: Inspector;
+
+    beforeAll(function(){
+      inspector = new Inspector(new Position("4k3/8/8/5b2/8/3B4/2P5/4K3 w - -"));
+    });
+
+    it("Inspector return valid data for valid move.", function() {
+      let moveData = inspector.getMove("d3", "a6");
+      expect(moveData).not.toBeNull();
+      expect(moveData.flags).toBe(MoveFlags.Quiet); 
+
+      moveData = inspector.getMove("d3", "f5");
+      expect(moveData).not.toBeNull();
+      expect(moveData.flags).toBe(MoveFlags.Capture);    
+    });
+
+    it("Move not diagonal fail.", function() {
+      expect(inspector.getMove("d3", "d6")).toBeNull();
+    });
+
+    it("Move over any intervening pieces fail.", function() {
+      expect(inspector.getMove("d3", "h7")).toBeNull();
+    });
+
+    it("Capture own pieces fail.", function() {
+      expect(inspector.getMove("d3", "c2")).toBeNull();
+    }); 
+});
