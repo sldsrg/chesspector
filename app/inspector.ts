@@ -21,6 +21,6 @@ export default class Inspector {
     let toCol = toFile;
     let piece = this.position[fromRow][fromCol];
     if (piece === null) return null;
-    return piece.GetPseudoLegalMove(this._pos, fromRow, fromCol, toRow, toCol);
+    return piece.getPseudoLegalMove(this._pos, fromRow, fromCol, toRow, toCol);
   }
 }

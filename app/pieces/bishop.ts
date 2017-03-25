@@ -10,7 +10,7 @@ export default class Bishop implements IPiece {
     return this.isWhite ? 'B' : 'b';
   }
 
-  public GetPseudoLegalMove(
+  public getPseudoLegalMove(
     pos: Position,
     fromRow: number, fromColumn: number,
     toRow: number, toColumn: number): MoveData 

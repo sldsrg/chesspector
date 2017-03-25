@@ -105,7 +105,8 @@ describe("The pawn has five legal moves:", function() {
         expect(moveData.flags).toBe(MoveFlags.CaptureEnPassant);
         expect(moveData.capturedPiece).not.toBeNull;
       });
-  });
+  });  
+  // TODO: check en-passant flag toggle
 
   describe(
     `e) Promotion: when a pawn reaches the rank furthest from its starting position
@@ -114,14 +115,6 @@ describe("The pawn has five legal moves:", function() {
     function() {
 
   });
-
-
-
-  // Assert.Null(inspector.GetMove(f4, f5), "Illegal pawn capture");
-  // Assert.Null(inspector.GetMove(f4, e5), "Illegal pawn capture");
-  // Assert.Null(inspector.GetMove(f3, f2), "Illegal pawn move");
-
-  // TODO: check en-passant flag toggle
 });
 
 describe(`The queen moves to any square along the file, the rank
@@ -158,5 +151,38 @@ describe(`The queen moves to any square along the file, the rank
 
     it("Capture own pieces fail.", function() {
       expect(inspector.getMove("d3", "c2")).toBeNull();
+    });   
+  });
+
+describe(`The rook moves to any square along the file or the rank
+  on which it stands. When making these moves the rook cannot
+  move over any intervening pieces.`, function() {
+
+    let inspector: Inspector;
+
+    beforeAll(function(){
+      inspector = new Inspector(new Position("4k2r/8/8/8/8/8/p7/R3K3 w - -"));
+    });
+
+    it("Inspector return valid data for valid move.", function() {
+      let moveData = inspector.getMove("a1", "c1");
+      expect(moveData).not.toBeNull();
+      expect(moveData.flags).toBe(MoveFlags.Quiet);
+
+      moveData = inspector.getMove("a1", "a2");
+      expect(moveData).not.toBeNull();
+      expect(moveData.flags).toBe(MoveFlags.Capture);
+    });
+
+    it("Move not vertical or horizontal fail.", function() {
+      expect(inspector.getMove("a1", "c3")).toBeNull();
+    });
+
+    it("Move over any intervening pieces fail.", function() {
+      expect(inspector.getMove("a1", "a8")).toBeNull();
+    });
+
+    it("Capture own pieces fail.", function() {
+      expect(inspector.getMove("a1", "e1")).toBeNull();
     });   
   });

@@ -10,7 +10,7 @@ export default class Pawn implements IPiece {
     return this.isWhite ? 'P' : 'p';
   }
 
-  public GetPseudoLegalMove(
+  public getPseudoLegalMove(
     pos: Position,
     fromRow: number, fromColumn: number,
     toRow: number, toColumn: number): MoveData 

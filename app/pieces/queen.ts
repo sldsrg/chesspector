@@ -10,7 +10,7 @@ export default class Queen implements IPiece {
     return this.isWhite ? 'Q' : 'q';
   }
 
-  public GetPseudoLegalMove(
+  public getPseudoLegalMove(
     pos: Position,
     fromRow: number, fromColumn: number,
     toRow: number, toColumn: number): MoveData 
