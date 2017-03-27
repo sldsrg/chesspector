@@ -142,38 +142,46 @@ describe(`The king can move in two different ways, by:`,
         });
     });
     describe(`b) castling.`, function() {
-        let inspectorWhites;
-        let inspectorBlacks;
-
-        beforeAll(function(){
-            inspectorWhites = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R w QKqk -"));
-            inspectorBlacks = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R b QKqk -"));
-        });
-
-        it("Inspector return valid data for short castrling.", function() {
-            let moveData = inspectorWhites.getMove("e1", "g1");
+        it("Inspector return valid data on white king castrling.", function() {
+            let inspector = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R w QK -"));
+            let moveData = inspector.getMove("e1", "g1");
             expect(moveData).not.toBeNull();
             expect(moveData.flags).toBe(MoveFlags.CastlingShort);
-
-            moveData = inspectorBlacks.getMove("e8", "g8");
-            expect(moveData).not.toBeNull();
-            expect(moveData.flags).toBe(MoveFlags.CastlingShort);
-        });
-
-        it("Inspector return valid data for long castrling.", function() {
-            let moveData = inspectorWhites.getMove("e1", "c1");
+            
+            moveData = inspector.getMove("e1", "c1");
             expect(moveData).not.toBeNull();
             expect(moveData.flags).toBe(MoveFlags.CastlingLong);
-            
-            moveData = inspectorBlacks.getMove("e8", "c8");
+        });
+
+        it("Inspector return valid data on black king castrling.", function() {
+            let inspector = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R b qk -"));
+            let moveData = inspector.getMove("e8", "g8");
+            expect(moveData).not.toBeNull();
+            expect(moveData.flags).toBe(MoveFlags.CastlingShort);
+
+            moveData = inspector.getMove("e8", "c8");
             expect(moveData).not.toBeNull();
             expect(moveData.flags).toBe(MoveFlags.CastlingLong);
         });
 
         it("Fails if castling not alowed", function() {
-            inspectorWhites = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R w - -"));
-            inspectorBlacks = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R b - -"));
-  
+            let inspector = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R w - -"));
+            expect(inspector.getMove("e1", "c1")).toBeNull();
+            expect(inspector.getMove("e1", "g1")).toBeNull(); 
+
+            inspector = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R b - -"));
+            expect(inspector.getMove("e8", "c8")).toBeNull();
+            expect(inspector.getMove("e8", "g8")).toBeNull();
+        });
+
+        it("Fails if obstacle present between rook and king", function() {
+            let inspector = new Inspector(new Position("4k3/8/8/8/8/8/8/RN2KB1R w KQ -"));
+            expect(inspector.getMove("e1", "c1")).toBeNull();
+            expect(inspector.getMove("e1", "g1")).toBeNull();             
+            
+            inspector = new Inspector(new Position("rn2kb1r/8/8/8/8/8/8/4K3 b qk -"));
+            expect(inspector.getMove("e8", "c8")).toBeNull();
+            expect(inspector.getMove("e8", "g8")).toBeNull();     
         });
     });
 });
