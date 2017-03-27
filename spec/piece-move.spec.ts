@@ -118,6 +118,12 @@ describe("The pawn has five legal moves:",
     });
 });
 
+describe(`The king can move in two different ways, by:`,
+  function() {
+    describe(`a) moving to any adjoining square`, function() {});
+    describe(`b) castling`, function() {});
+});
+
 describe(`The queen moves to any square along the file, the rank
   or a diagonal on which it stands. When making these moves the queen cannot
   move over any intervening pieces.`, 
