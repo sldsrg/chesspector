@@ -120,8 +120,62 @@ describe("The pawn has five legal moves:",
 
 describe(`The king can move in two different ways, by:`,
   function() {
-    describe(`a) moving to any adjoining square`, function() {});
-    describe(`b) castling`, function() {});
+    describe(`a) moving to any adjoining square.`, function() {
+        let inspector: Inspector;
+
+        beforeAll(function(){
+            inspector = new Inspector(new Position("4k3/8/8/8/8/8/4n3/4K3"));
+        });
+
+        it("Inspector return valid data for valid move.", function() {
+            let moveData = inspector.getMove("e1", "d2");
+            expect(moveData).not.toBeNull();
+            expect(moveData.flags).toBe(MoveFlags.Quiet);
+
+            moveData = inspector.getMove("e1", "e2");
+            expect(moveData).not.toBeNull();
+            expect(moveData.flags).toBe(MoveFlags.Capture);
+        });
+
+        it("Invalid move fail.", function() {
+            expect(inspector.getMove("e1", "a1")).toBeNull();
+        });
+    });
+    describe(`b) castling.`, function() {
+        let inspectorWhites;
+        let inspectorBlacks;
+
+        beforeAll(function(){
+            inspectorWhites = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R w QKqk -"));
+            inspectorBlacks = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R b QKqk -"));
+        });
+
+        it("Inspector return valid data for short castrling.", function() {
+            let moveData = inspectorWhites.getMove("e1", "g1");
+            expect(moveData).not.toBeNull();
+            expect(moveData.flags).toBe(MoveFlags.CastlingShort);
+
+            moveData = inspectorBlacks.getMove("e8", "g8");
+            expect(moveData).not.toBeNull();
+            expect(moveData.flags).toBe(MoveFlags.CastlingShort);
+        });
+
+        it("Inspector return valid data for long castrling.", function() {
+            let moveData = inspectorWhites.getMove("e1", "c1");
+            expect(moveData).not.toBeNull();
+            expect(moveData.flags).toBe(MoveFlags.CastlingLong);
+            
+            moveData = inspectorBlacks.getMove("e8", "c8");
+            expect(moveData).not.toBeNull();
+            expect(moveData.flags).toBe(MoveFlags.CastlingLong);
+        });
+
+        it("Fails if castling not alowed", function() {
+            inspectorWhites = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R w - -"));
+            inspectorBlacks = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R b - -"));
+  
+        });
+    });
 });
 
 describe(`The queen moves to any square along the file, the rank
