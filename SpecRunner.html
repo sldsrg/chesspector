@@ -16,9 +16,9 @@
 
 </head>
 <body>
-
   <script>
     Promise.all([
+      System.import('./spec/movekeeper.spec.ts'),
       System.import('./spec/position.spec.ts'),
       System.import('./spec/piece-move.spec.ts')])
     .then(function() { window.runTest(); })
