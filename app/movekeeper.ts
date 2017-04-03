@@ -1,11 +1,15 @@
 import Move from "./move";
 import { MoveData } from "./pieces/piece";
+import Moveparser from "./moveparser";
 
 export default class Movekeeper {
   private _moves: Move[];
-  constructor() {
-    this._moves = new Array<Move>();
 
+  constructor(lan: string = null) {
+    if (lan === null)
+      this._moves = new Array<Move>();
+    else
+      this._moves = Moveparser.parseLAN(lan);
   }
   
   get hasMoves(): boolean {
