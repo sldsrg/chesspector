@@ -18,9 +18,10 @@
 <body>
   <script>
     Promise.all([
+      System.import('./spec/moverecord.spec.ts'),
       System.import('./spec/movekeeper.spec.ts'),
       System.import('./spec/position.spec.ts'),
-      System.import('./spec/piece-move.spec.ts')])
+      System.import('./spec/movedata.spec.ts')])
     .then(function() { window.runTest(); })
     .catch(console.error.bind(console));
   </script>

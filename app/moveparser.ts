@@ -1,4 +1,4 @@
-import Move from "./move";
+import MoveRecord from "./moverecord";
 import { MoveData } from "./pieces/piece";
 
 enum ParserState {
@@ -15,14 +15,14 @@ enum ParserState {
 
 export default class Moveparser {
 
-  static parseLAN(lan: string): Move[] {
-    let moves = new Array<Move>();
+  static parseLAN(lan: string): MoveRecord[] {
+    let moves = new Array<MoveRecord>();
 
     let tempNum = 0;
     let tempNAG = 0;
     let tempLAN = '';
     let tempComment = '';
-    let tempMove: Move;
+    let tempMove: MoveRecord;
     let pieceCode = '';
     let whiteToMove = true;
     let state: ParserState;
@@ -93,7 +93,7 @@ export default class Moveparser {
         }
         else if ( c === ' ' || c === ')') {
 
-          tempMove = Move.fromLAN(tempLAN, tempNum);
+          tempMove = MoveRecord.fromLAN(tempLAN, tempNum);
           moves.push(tempMove);
 
           // redundant because number calculated from previous move

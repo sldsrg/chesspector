@@ -1,13 +1,13 @@
-import Move from "./move";
+import MoveRecord from "./moverecord";
 import { MoveData } from "./pieces/piece";
 import Moveparser from "./moveparser";
 
 export default class Movekeeper {
-  private _moves: Move[];
+  private _moves: MoveRecord[];
 
   constructor(lan: string = null) {
     if (lan === null)
-      this._moves = new Array<Move>();
+      this._moves = new Array<MoveRecord>();
     else
       this._moves = Moveparser.parseLAN(lan);
   }
@@ -21,7 +21,7 @@ export default class Movekeeper {
     this._moves.push(null);
   }
 
-  remove(move: Move) {
+  remove(move: MoveRecord) {
     this._moves.pop();
   }
 }
