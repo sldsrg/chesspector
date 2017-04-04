@@ -1,41 +1,46 @@
-import { MoveData } from "./pieces/piece";
+import { MoveData } from "./pieces/movedata";
 
+export enum Notation {
+  ShortAlgebraic,
+  LongAlgebraic
+}
+
+// represent structure to organize hierarchical recordings of game or solution.
 export default class MoveRecord {
-  private _moveData: MoveData;
-  private _pieceCode: string;
+  private _numOfHalfmove: number; 
+  private _notationType: Notation;
+  private _notationString: string;
+  private _glyph: number;
+  private _comment: string;
+  private _next: MoveRecord;
+  private _previous: MoveRecord;
 
   constructor(
-    pieceCode: string,
-    data: MoveData, 
     num: number,
-    text: string) 
+    move: string,
+    glyph: number = 0,
+    comment: string = null) 
   {
-    this._moveData = data;  
-    this._pieceCode = pieceCode;
+    this._numOfHalfmove = num;  
+    this._notationType = Notation.LongAlgebraic;
+    this._notationString = move;
+    this._glyph = glyph;
+    this._comment = comment;
   }
 
-  get LAN(): string {
-    let from = 
-      String.fromCharCode(97 + this._moveData.fromColumn) + 
-      String.fromCharCode(56 - this._moveData.fromRow);   
-    let to = 
-      String.fromCharCode(97 + this._moveData.toColumn) + 
-      String.fromCharCode(56 - this._moveData.toRow);
-    return `${this._pieceCode}${from}-${to}`;
+  get next(): MoveRecord {
+    return this._next;
   }
 
-  static fromLAN(lan: string, num: number): MoveRecord {
-    let pieceCode = '';
-    let shft = 0;
-    if (/^[rnbqk]/i.test(lan)) {
-       shft = 1;
-       pieceCode = lan[0];
-    }
-    let fromColumn = lan.charCodeAt(shft) - 97;
-    let fromRow = 56 - lan.charCodeAt(shft + 1);  
-    let toColumn = lan.charCodeAt(shft + 3) - 97;
-    let toRow = 56 - lan.charCodeAt(shft + 4);
-    let md = new MoveData(fromRow, fromColumn, toRow, toColumn);
-    return new MoveRecord(pieceCode, md, num, '');
+  set next(value: MoveRecord) {
+    this._next = value;
+  }
+
+  get previous(): MoveRecord {
+    return this._previous;
+  }
+
+  set previous(value: MoveRecord) {
+    this._previous = value;
   }
 }

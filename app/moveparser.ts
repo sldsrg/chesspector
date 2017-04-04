@@ -1,5 +1,4 @@
 import MoveRecord from "./moverecord";
-import { MoveData } from "./pieces/piece";
 
 enum ParserState {
     none,       // пробел, табулятор, перенос строки или конец варианта
@@ -8,21 +7,20 @@ enum ParserState {
     periods,    // многоточие
     lan,        // длинная алгебраическая нотация хода
     san,        // короткая алгебраическая нотация хода
-    nag,        // numegic annotation gliph
+    nag,        // numegic annotation glyphs
     comment,    // комментарий
     terminator  // результат партии ["1-0"|"0-1"|"1/2-1/2"] ("*" определяется сразу)
 }
 
 export default class Moveparser {
 
-  static parseLAN(lan: string): MoveRecord[] {
-    let moves = new Array<MoveRecord>();
-
+  static parseLAN(lan: string): MoveRecord {
     let tempNum = 0;
     let tempNAG = 0;
     let tempLAN = '';
     let tempComment = '';
-    let tempMove: MoveRecord;
+    let firstMove: MoveRecord = null;
+    let tempMove: MoveRecord = null;
     let pieceCode = '';
     let whiteToMove = true;
     let state: ParserState;
@@ -40,6 +38,14 @@ export default class Moveparser {
         }
         else if (c === '.')
           state = ParserState.period;
+        else if (c === '{') {
+          tempComment = '';
+          state = ParserState.comment;
+        }
+        else if (c == '$') {
+          tempNAG = 0;
+          state = ParserState.nag;
+        }
         else if (/[PRNBQKabcdefghO0]/.test(c)) {
           tempLAN += c;
           pieceCode = 'P';
@@ -92,9 +98,17 @@ export default class Moveparser {
           tempLAN += c;
         }
         else if ( c === ' ' || c === ')') {
+          if (tempMove) {
+            tempMove.next = new MoveRecord(tempNum, tempLAN);
+            tempMove = tempMove.next;
+          }
+          else {
+            tempMove = new MoveRecord(tempNum, tempLAN);
+          }
 
-          tempMove = MoveRecord.fromLAN(tempLAN, tempNum);
-          moves.push(tempMove);
+          if (firstMove === null) {
+            firstMove = tempMove;
+          }
 
           // redundant because number calculated from previous move
           //current.Number = tempNumber;
@@ -128,6 +142,21 @@ export default class Moveparser {
       }
     }
 
-    return moves;
+    if (state === ParserState.lan || state === ParserState.san) {
+
+      if (tempMove) {
+        tempMove.next = new MoveRecord(tempNum, tempLAN);
+        tempMove = tempMove.next;
+      }
+      else {
+        tempMove = new MoveRecord(tempNum, tempLAN);
+      }
+
+      if (firstMove === null) {
+        firstMove = tempMove;
+      }
+    }
+
+    return firstMove;
   }
 }

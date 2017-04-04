@@ -1,6 +1,6 @@
 import Position from '../app/position';
 import Inspector from '../app/inspector';
-import { MoveFlags, MoveData } from "../app/pieces/piece";
+import { MoveFlags, MoveData } from "../app/pieces/movedata";
 
 describe("The pawn has five legal moves:", 
   function() {

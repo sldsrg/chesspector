@@ -1,5 +1,6 @@
-import { MoveData, IPiece, MoveFlags } from './piece';
+import IPiece from './piece';
 import Position from '../position';
+import {MoveData, MoveFlags} from './movedata';
 
 export default class Knight implements IPiece {
  
@@ -20,7 +21,7 @@ export default class Knight implements IPiece {
     if (istep == 0 || jstep == 0 || istep + jstep != 3) return null;
 
     let moveData = new MoveData(fromRow, fromColumn, toRow, toColumn);
-    let captured = pos.position[toRow][toColumn];
+    let captured = pos.at[toRow][toColumn];
     if (captured != null) {
       // can't capture own piece
       if (this.isWhite === captured.isWhite) return null;

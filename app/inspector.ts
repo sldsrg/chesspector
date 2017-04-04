@@ -1,13 +1,10 @@
 import Position from 'position';
-import { IPiece, MoveData } from './pieces/piece';
+import { MoveData } from './pieces/movedata';
+import IPiece from './pieces/piece';
 
 export default class Inspector {
   constructor(private _pos: Position) {
 
-  }
-
-  get position(): IPiece[][] {
-    return this._pos.position;
   }
 
   getMove(sqFrom: string, sqTo: string): MoveData {
@@ -19,7 +16,7 @@ export default class Inspector {
     let fromCol = fromFile;
     let toRow = 8 - toRank;
     let toCol = toFile;
-    let piece = this.position[fromRow][fromCol];
+    let piece = this._pos.at[fromRow][fromCol];
     if (piece === null) return null;
     return piece.getPseudoLegalMove(this._pos, fromRow, fromCol, toRow, toCol);
   }

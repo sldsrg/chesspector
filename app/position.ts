@@ -1,4 +1,4 @@
-import {IPiece} from './pieces/piece';
+import IPiece from './pieces/piece';
 import newPiece from './pieces/factory';
 
 export default class Position {
@@ -74,7 +74,7 @@ export default class Position {
     return this._captureEnpassantTarget;
   }
 
-  get position(): IPiece[][] {
+  get at(): IPiece[][] {
     return this._position;
   }
 

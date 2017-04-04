@@ -1,5 +1,6 @@
-import { MoveData, IPiece, MoveFlags } from './piece';
+import IPiece from './piece';
 import Position from '../position';
+import {MoveData, MoveFlags} from './movedata';
 
 export default class Bishop implements IPiece {
 
@@ -28,13 +29,13 @@ export default class Bishop implements IPiece {
     let i = fromRow + i_step;
     let j = fromColumn + j_step;
     while (i != toRow || j != toColumn) {
-      if (pos.position[i][j] !== null) return null;
+      if (pos.at[i][j] !== null) return null;
       i += i_step;
       j += j_step;
     }
 
     let moveData = new MoveData(fromRow, fromColumn, toRow, toColumn);
-    let capturedPiece = pos.position[toRow][toColumn];
+    let capturedPiece = pos.at[toRow][toColumn];
     if (capturedPiece != null) {
         // can't capture own piece
         if (this.isWhite === capturedPiece.isWhite) return null;

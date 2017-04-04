@@ -1,5 +1,6 @@
-import {MoveData, MoveFlags, IPiece} from './piece';
+import IPiece from './piece';
 import Position from '../position';
+import {MoveData, MoveFlags} from './movedata';
 
 export default class Pawn implements IPiece {
 
@@ -15,7 +16,7 @@ export default class Pawn implements IPiece {
     fromRow: number, fromColumn: number,
     toRow: number, toColumn: number): MoveData 
   {
-    let targetPiece = pos.position[toRow][toColumn];
+    let targetPiece = pos.at[toRow][toColumn];
     let drow = toRow - fromRow;
     let dcol = toColumn - fromColumn;
     let moveData = new MoveData(fromRow, fromColumn, toRow, toColumn);
@@ -24,7 +25,7 @@ export default class Pawn implements IPiece {
       if (drow > 0) return null; // pawn moves only forfard
       if (dcol === 0) { // simple move
         if (fromRow === 6 && toRow === 4 ) { // long move from initial position
-          if (pos.position[5][fromColumn] !== null) return null;
+          if (pos.at[5][fromColumn] !== null) return null;
           if (targetPiece !== null) return null;
         }
         else if (drow < -1 || targetPiece !== null) return null;
@@ -33,7 +34,7 @@ export default class Pawn implements IPiece {
         if (targetPiece === null) {
           if (pos.captureEnpassantTarget === toColumn) {
             moveData.flags = MoveFlags.CaptureEnPassant;
-            moveData.capturedPiece = pos.position[4][toColumn];
+            moveData.capturedPiece = pos.at[4][toColumn];
           }
           else return null;
         }
@@ -49,7 +50,7 @@ export default class Pawn implements IPiece {
       if (drow < 0) return null; // pawn moves only forfard
       if (dcol === 0) { // simple move
         if (fromRow === 1 && toRow === 3 ) { // long move from initial position
-          if (pos.position[2][fromColumn] !== null) return null;
+          if (pos.at[2][fromColumn] !== null) return null;
           if (targetPiece !== null) return null;
         }
         else if (drow > 1 || targetPiece !== null) return null;
