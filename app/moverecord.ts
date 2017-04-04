@@ -1,4 +1,5 @@
-import { MoveData } from "./pieces/movedata";
+import { MoveData, MoveFlags } from "./pieces/movedata"
+import Position from "./position"
 
 export enum Notation {
   ShortAlgebraic,
@@ -27,6 +28,23 @@ export default class MoveRecord {
     this._notationString = move;
     this._glyph = glyph;
     this._comment = comment;
+  }
+
+  // Evaluate this object in given position context
+  eval(pos: Position): MoveData {
+    let lan = this._notationString;
+    let pieceCode = '';
+    let shft = 0;
+    if (/^[rnbqk]/i.test(lan)) {
+       shft = 1;
+       pieceCode = lan[0];
+    }
+    let fromColumn = lan.charCodeAt(shft) - 97;
+    let fromRow = 56 - lan.charCodeAt(shft + 1);  
+    let toColumn = lan.charCodeAt(shft + 3) - 97;
+    let toRow = 56 - lan.charCodeAt(shft + 4);
+    let md = new MoveData(fromRow, fromColumn, toRow, toColumn);
+    return md;
   }
 
   get comment(): string {

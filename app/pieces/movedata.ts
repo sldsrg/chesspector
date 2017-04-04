@@ -32,26 +32,17 @@ export class MoveData {
       String.fromCharCode(97 + this.toColumn) + 
       String.fromCharCode(56 - this.toRow);
     let piece = pos.at[this.fromRow][this.fromColumn];
-    if (!piece) 
+    if (!piece) {
       throw "getLAN called for empty square";
-    else if (piece instanceof Pawn)
-      return `${from}-${to}`;
-    else
-      return `${piece.fenCode}${from}-${to}`;
+    }
+    else { 
+      let code = piece.fenCode;
+      if (/p/i.test(code)) {
+        return `${from}-${to}`;
+      }
+      return `${code}${from}-${to}`;
+    }
   }
 
-  static fromLAN(lan: string,): MoveData {
-    let pieceCode = '';
-    let shft = 0;
-    if (/^[rnbqk]/i.test(lan)) {
-       shft = 1;
-       pieceCode = lan[0];
-    }
-    let fromColumn = lan.charCodeAt(shft) - 97;
-    let fromRow = 56 - lan.charCodeAt(shft + 1);  
-    let toColumn = lan.charCodeAt(shft + 3) - 97;
-    let toRow = 56 - lan.charCodeAt(shft + 4);
-    let md = new MoveData(fromRow, fromColumn, toRow, toColumn);
-    return md;
-  }
+
 }

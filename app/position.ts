@@ -26,7 +26,7 @@ export default class Position {
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null]
   ];
-  private _whitePieces: IPiece[]  = []; // White King first
+  private _whitePieces: IPiece[] = []; // White King first
   private _blackPieces: IPiece[] = []; // Black King first
 
   private _whitesToMove: boolean;
@@ -185,4 +185,5 @@ export default class Position {
     }
 
   }
+
 }
