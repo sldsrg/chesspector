@@ -6,15 +6,16 @@ export default class Movekeeper {
   private _firstMove: MoveRecord;
 
   constructor(lan: string = null) {
-    if (lan === null)
+    if (lan === null) {
       this._firstMove = null;
-    else
-      this._firstMove = Moveparser.parseLAN(lan);
+    }
+    else {
+      Moveparser.parse(this._firstMove, lan);
+    }
   }
   
   get hasMoves(): boolean {
-    if (this._firstMove === null) return false;
-    return true;
+    return this._firstMove !== null;
   }
 
   get first(): MoveRecord {
@@ -47,16 +48,5 @@ export default class Movekeeper {
         scan = null;
       }
     }
-  }
-
-  // return number of half-moves on main thread
-  get length() {
-    let len = 0;
-    let scan = this._firstMove;
-    while (scan) {
-      len++;
-      scan = scan.next;
-    }
-    return len;
   }
 }

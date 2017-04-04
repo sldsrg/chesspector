@@ -14,6 +14,7 @@ export default class MoveRecord {
   private _comment: string;
   private _next: MoveRecord;
   private _previous: MoveRecord;
+  private _forks: MoveRecord[];
 
   constructor(
     num: number,
@@ -26,6 +27,14 @@ export default class MoveRecord {
     this._notationString = move;
     this._glyph = glyph;
     this._comment = comment;
+  }
+
+  get comment(): string {
+    return this._comment;
+  }
+
+  set comment(value: string) {
+    this._comment = value;
   }
 
   get next(): MoveRecord {
@@ -42,5 +51,25 @@ export default class MoveRecord {
 
   set previous(value: MoveRecord) {
     this._previous = value;
+  }
+
+  fork(rec: MoveRecord) {
+    if (this._forks) {
+      this._forks.push(rec);
+    }
+    else {
+      this._forks = [rec];
+    }
+  }
+
+  // return number of half-moves from current to the end
+  get length() {
+    let len = 0;
+    let scan: MoveRecord = this;
+    while (scan) {
+      len++;
+      scan = scan.next;
+    }
+    return len;
   }
 }
