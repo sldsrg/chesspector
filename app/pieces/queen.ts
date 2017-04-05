@@ -3,8 +3,17 @@ import Position from '../position';
 import {MoveData, MoveFlags} from './movedata';
 
 export default class Queen implements IPiece {
+  
+  private _row: number;
+  private _column: number;
 
-  constructor(public readonly isWhite: boolean) {
+  constructor(
+    row: number,
+    column: number,
+    public readonly isWhite: boolean) 
+  {
+    this._row = row;
+    this._column = column;
   }
 
   get fenCode(): string {
@@ -13,29 +22,28 @@ export default class Queen implements IPiece {
 
   public getPseudoLegalMove(
     pos: Position,
-    fromRow: number, fromColumn: number,
     toRow: number, toColumn: number): MoveData 
   {
     // keep diagonal, vertical or horizontal
-    if (Math.abs(fromColumn - toColumn) !== Math.abs(fromRow - toRow) &&
-      fromColumn != toColumn && fromRow != toRow) return null;
+    if (Math.abs(this._column - toColumn) !== Math.abs(this._row - toRow) &&
+      this._column != toColumn && this._row != toRow) return null;
 
     // check on obstacle
-    let i_step = toRow - fromRow;
+    let i_step = toRow - this._row;
     if (i_step != 0) i_step = Math.sign(i_step);
 
-    let j_step = toColumn - fromColumn;
+    let j_step = toColumn - this._column;
     if (j_step != 0) j_step = Math.sign(j_step);
 
-    let i = fromRow + i_step;
-    let j = fromColumn + j_step;
+    let i = this._row + i_step;
+    let j = this._column + j_step;
     while (i != toRow || j != toColumn) {
       if (pos.at[i][j] !== null) return null;
       i += i_step;
       j += j_step;
     }
 
-    let moveData = new MoveData(fromRow, fromColumn, toRow, toColumn);
+    let moveData = new MoveData(this._row, this._column, toRow, toColumn);
     let capturedPiece = pos.at[toRow][toColumn];
     if (capturedPiece != null) {
         // can't capture own piece

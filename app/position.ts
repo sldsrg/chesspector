@@ -78,6 +78,14 @@ export default class Position {
     return this._position;
   }
 
+  get whitePieces(): IPiece[] {
+    return this._whitePieces;
+  }
+
+  get blackPieces(): IPiece[] {
+    return this._blackPieces;
+  }
+
   clear() {
     // TODO: position
     this._violations = [];
@@ -110,7 +118,7 @@ export default class Position {
         }
       }
       else {
-        let piece = newPiece(ch);
+        let piece = newPiece(ch, curRow, curCol);
         if (piece.isWhite) {
           if (piece.fenCode === "K") {
             if (this._whitePieces.length > 0 && this._whitePieces[0].fenCode === "K") {
@@ -183,7 +191,5 @@ export default class Position {
          this._captureEnpassantTarget = parts[2].toLowerCase().charCodeAt(0) - 97;
       }
     }
-
   }
-
 }

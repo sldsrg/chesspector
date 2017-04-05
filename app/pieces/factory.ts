@@ -6,15 +6,15 @@ import Bishop from './bishop';
 import Queen from './queen';
 import King from './king';
 
-export default function newPiece(code: string): IPiece {
+export default function newPiece(code: string, row: number, column: number): IPiece {
   let isWhite = /[RNBQKP]/.test(code);
   switch (code.toUpperCase()) {
-  case 'P': return new Pawn(isWhite); 
-  case 'R': return new Rook(isWhite); 
-  case 'N': return new Knight(isWhite); 
-  case 'B': return new Bishop(isWhite); 
-  case 'Q': return new Queen(isWhite); 
-  case 'K': return new King(isWhite); 
+  case 'P': return new Pawn(row, column, isWhite); 
+  case 'R': return new Rook(row, column, isWhite); 
+  case 'N': return new Knight(row, column, isWhite); 
+  case 'B': return new Bishop(row, column, isWhite); 
+  case 'Q': return new Queen(row, column, isWhite); 
+  case 'K': return new King(row, column, isWhite); 
   default:  return null;
   }
 }

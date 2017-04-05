@@ -17,7 +17,6 @@ export default class Inspector {
     let toRow = 8 - toRank;
     let toCol = toFile;
     let piece = this._pos.at[fromRow][fromCol];
-    if (piece === null) return null;
-    return piece.getPseudoLegalMove(this._pos, fromRow, fromCol, toRow, toCol);
+    return piece === null ? null : piece.getPseudoLegalMove(this._pos, toRow, toCol);
   }
 }

@@ -1,6 +1,6 @@
 import MoveRecord from "./moverecord";
 import { MoveData } from "./pieces/movedata";
-import Moveparser from "./moveparser";
+import MoveParser  from "./moveparser";
 
 export default class Movekeeper {
   private _firstMove: MoveRecord;
@@ -10,7 +10,8 @@ export default class Movekeeper {
       this._firstMove = null;
     }
     else {
-      Moveparser.parse(this._firstMove, lan);
+      let parser = new MoveParser(lan);
+      this._firstMove = parser.parse();
     }
   }
   

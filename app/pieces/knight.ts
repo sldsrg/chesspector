@@ -3,8 +3,17 @@ import Position from '../position';
 import {MoveData, MoveFlags} from './movedata';
 
 export default class Knight implements IPiece {
+
+  private _row: number;
+  private _column: number;
  
-  constructor(public readonly isWhite: boolean) {
+  constructor(
+    row: number,
+    column: number,
+    public readonly isWhite: boolean) 
+  {
+    this._row = row;
+    this._column = column;
   }
 
   get fenCode(): string {
@@ -13,14 +22,13 @@ export default class Knight implements IPiece {
 
   public getPseudoLegalMove(
     pos: Position,
-    fromRow: number, fromColumn: number,
     toRow: number, toColumn: number): MoveData 
   {
-    let istep = Math.abs(toRow - fromRow);
-    let jstep = Math.abs(toColumn - fromColumn);
+    let istep = Math.abs(toRow - this._row);
+    let jstep = Math.abs(toColumn - this._column);
     if (istep == 0 || jstep == 0 || istep + jstep != 3) return null;
 
-    let moveData = new MoveData(fromRow, fromColumn, toRow, toColumn);
+    let moveData = new MoveData(this._row, this._column, toRow, toColumn);
     let captured = pos.at[toRow][toColumn];
     if (captured != null) {
       // can't capture own piece

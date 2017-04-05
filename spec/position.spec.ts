@@ -3,11 +3,11 @@ import Position from '../app/position';
 
 describe("Piece", function() {
   it("constructed with code in upper case must be white piece", function() {
-    let pce = newPiece('P');
+    let pce = newPiece('P', 0, 0 );
     expect(pce.isWhite).toBe(true);
   }); 
   it("constructed with code in lower case must be black piece", function() {
-    let pce = newPiece('p');
+    let pce = newPiece('p', 0, 0 );
     expect(pce.isWhite).toBe(false);
   });
 });

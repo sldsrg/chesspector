@@ -69,12 +69,12 @@ describe("The pawn has five legal moves:",
           let moveData = whitesInspector.getMove("f3", "g4");
           expect(moveData).not.toBeNull();
           expect(moveData.flags).toBe(MoveFlags.Capture);
-          expect(moveData.capturedPiece).not.toBeNull;
+          expect(moveData.capturedPiece).not.toBeNull();
 
           moveData = blacksInspector.getMove("d7", "e6");
           expect(moveData).not.toBeNull();
           expect(moveData.flags).toBe(MoveFlags.Capture);
-          expect(moveData.capturedPiece).not.toBeNull;
+          expect(moveData.capturedPiece).not.toBeNull();
         });
 
         it("Try to capture own piece fail.", function() {
@@ -99,12 +99,12 @@ describe("The pawn has five legal moves:",
           let moveData = whitesInspector.getMove("e5", "f6");
           expect(moveData).not.toBeNull();
           expect(moveData.flags).toBe(MoveFlags.CaptureEnPassant);
-          expect(moveData.capturedPiece).not.toBeNull;
+          expect(moveData.capturedPiece).not.toBeNull();
 
           moveData = blacksInspector.getMove("g4", "f3");
           expect(moveData).not.toBeNull();
           expect(moveData.flags).toBe(MoveFlags.CaptureEnPassant);
-          expect(moveData.capturedPiece).not.toBeNull;
+          expect(moveData.capturedPiece).not.toBeNull();
         });
     });  
     // TODO: check en-passant flag toggle
