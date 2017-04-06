@@ -26,11 +26,11 @@ export default class Knight implements IPiece {
   {
     let istep = Math.abs(toRow - this._row);
     let jstep = Math.abs(toColumn - this._column);
-    if (istep == 0 || jstep == 0 || istep + jstep != 3) return null;
+    if (istep === 0 || jstep === 0 || istep + jstep !== 3) return null;
 
     let moveData = new MoveData(this._row, this._column, toRow, toColumn);
     let captured = pos.at[toRow][toColumn];
-    if (captured != null) {
+    if (captured !== null) {
       // can't capture own piece
       if (this.isWhite === captured.isWhite) return null;
         moveData.flags = MoveFlags.Capture,

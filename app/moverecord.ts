@@ -32,7 +32,7 @@ export default class MoveRecord {
     else if (/^[0o]-[0o](-[0o])?$/i.test(move)) {
       this._notationType = Notation.Castling;
     }
-    else if (/^([rnbqk]?)([a-h]){1,2}(\d){1,2}$/i.test(move)) {
+    else if (/^[rnbqk]?[a-h]?\d?x?[a-h]\d$/i.test(move)) {
       this._notationType = Notation.ShortAlgebraic;
     }
     else {
@@ -61,7 +61,7 @@ export default class MoveRecord {
       return md;
     }
     else if (this._notationType === Notation.ShortAlgebraic) {
-      let res = /^([rnbqk]?)([a-h])?(\d)?([a-h])(\d)$/i.exec(this._notationString);
+      let res = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this._notationString);
       let pieceCode = res[1];
       if (pieceCode === '') {
         pieceCode = 'P';

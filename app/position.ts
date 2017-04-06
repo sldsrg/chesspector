@@ -172,7 +172,7 @@ export default class Position {
     let enpassantTarget = parts[2];
 
     if (parts.length > 0) {
-        this._whitesToMove = (parts[0] == "w");
+        this._whitesToMove = (parts[0] === "w");
     }
     else this._whitesToMove = true;
 
