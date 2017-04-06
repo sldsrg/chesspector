@@ -1,7 +1,7 @@
 import Movekeeper from "../app/movekeeper";
 import MoveRecord from "../app/moverecord";
 
-describe(`Movekeeper`, function() {
+describe(`MoveKeeper`, function() {
   describe(`when created without parameters`, () => {
     let movekeeper: Movekeeper;
 

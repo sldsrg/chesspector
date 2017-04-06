@@ -62,19 +62,26 @@ export default class MoveRecord {
     }
     else if (this._notationType === Notation.ShortAlgebraic) {
       let res = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this._notationString);
+      
       let pieceCode = res[1];
-      if (pieceCode === '') {
-        pieceCode = 'P';
-      }
+      if (pieceCode === '') pieceCode = 'P';
+
+      let fromColumn;
+      if (res[2] !== undefined) fromColumn = res[2].charCodeAt(0) - 97;
+
+      let fromRow;
+      if (res[3] !== undefined) fromRow = 56 - res[3].charCodeAt(0);
+
       let toColumn = res[4].charCodeAt(0) - 97;
+
       let toRow = 56 - res[5].charCodeAt(0);
+
       for(let piece of pos.whitePieces) {
-        if (piece.fenCode === pieceCode) {
-          let md = piece.getPseudoLegalMove(pos, toRow, toColumn);
-          if (md !== null) {
-            return md;
-          }
-        }
+        if (piece.fenCode !== pieceCode) continue;
+        if (fromColumn !== undefined && piece.column !== fromColumn) continue;
+        if (fromRow !== undefined && piece.row !== fromRow) continue;
+        let md = piece.getPseudoLegalMove(pos, toRow, toColumn);
+        if (md !== null) return md;
       }
     }
     else {

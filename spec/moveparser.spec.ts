@@ -1,7 +1,7 @@
 import MoveParser from "../app/moveparser";
 import MoveRecord from "../app/moverecord";
 
-describe(`Moveparser`, function() {
+describe(`MoveParser`, function() {
 
     describe(`when parse single line of moves recorded in LAN`, () => {
         let first: MoveRecord;

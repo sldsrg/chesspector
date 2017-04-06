@@ -46,18 +46,10 @@ describe(`MoveRecord`, () => {
     describe(`when constructed with SAN`, () => {
         let recPawn: MoveRecord;
         let recKnight: MoveRecord;
-        let recRook1: MoveRecord;
-        let recRook2: MoveRecord;
-        let recBishop1: MoveRecord;
-        let recBishop2: MoveRecord;
 
         beforeAll(() => {
             recPawn = new MoveRecord(1, "e4");
             recKnight = new MoveRecord(1, "Nf3");
-            recRook1 = new MoveRecord(1, "R1a3");
-            recRook2 = new MoveRecord(1, "R6a3");
-            recBishop1 = new MoveRecord(1, "Bcxe7");
-            recBishop2 = new MoveRecord(1, "Bgxe7");
         });
 
         describe(`and evaluated in positional context`, () => {
@@ -87,6 +79,50 @@ describe(`MoveRecord`, () => {
                 expect(data.fromColumn).toBe(6);
                 expect(data.toColumn).toBe(5);
                 expect(data.capturedPiece).toBeNull();
+            });
+
+            it(`can distinct between two rook moves with different rank`, () => {
+                let rec = new MoveRecord(1, "R1a3");
+                let data = rec.eval(position);
+                expect(data).not.toBeNull();      
+                expect(data.flags).toBe(MoveFlags.Quiet);
+                expect(data.fromRow).toBe(7);
+                expect(data.toRow).toBe(5);
+                expect(data.fromColumn).toBe(0);
+                expect(data.toColumn).toBe(0);
+                expect(data.capturedPiece).toBeNull();
+
+                rec = new MoveRecord(1, "R6a3");
+                data = rec.eval(position);
+                expect(data).not.toBeNull();      
+                expect(data.flags).toBe(MoveFlags.Quiet);
+                expect(data.fromRow).toBe(2);
+                expect(data.toRow).toBe(5);
+                expect(data.fromColumn).toBe(0);
+                expect(data.toColumn).toBe(0);
+                expect(data.capturedPiece).toBeNull();
+            });
+
+            it(`can distinct between two bishop moves with different file`, () => {
+                let rec = new MoveRecord(1, "Bcxe7");
+                let data = rec.eval(position);
+                expect(data).not.toBeNull();      
+                expect(data.flags).toBe(MoveFlags.Capture);
+                expect(data.fromRow).toBe(3);
+                expect(data.toRow).toBe(1);
+                expect(data.fromColumn).toBe(2);
+                expect(data.toColumn).toBe(4);
+                expect(data.capturedPiece).not.toBeNull();                
+                
+                rec = new MoveRecord(1, "Bgxe7");
+                data = rec.eval(position);
+                expect(data).not.toBeNull();      
+                expect(data.flags).toBe(MoveFlags.Capture);
+                expect(data.fromRow).toBe(3);
+                expect(data.toRow).toBe(1);
+                expect(data.fromColumn).toBe(6);
+                expect(data.toColumn).toBe(4);
+                expect(data.capturedPiece).not.toBeNull();
             });
         });
     });

@@ -2,8 +2,10 @@ import Position from '../position';
 import { MoveData } from "./movedata";
 
 interface IPiece {
-  isWhite: boolean; 
-  fenCode: string;
+  readonly isWhite: boolean; 
+  readonly fenCode: string;
+  readonly row: number;
+  readonly column: number;
 
   getPseudoLegalMove(   
     pos: Position,

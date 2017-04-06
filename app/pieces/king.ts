@@ -4,32 +4,26 @@ import {MoveData, MoveFlags} from './movedata';
 
 export default class King implements IPiece {
   
-  private _row: number;
-  private _column: number;
+  readonly fenCode: string;
 
   constructor(
-    row: number,
-    column: number,
+    public readonly row: number,
+    public readonly column: number,
     public readonly isWhite: boolean)
   {
-    this._row = row;
-    this._column = column;
-  }
-
-  get fenCode(): string {
-    return this.isWhite ? 'K' : 'k';
+    this.fenCode = this.isWhite ? 'K' : 'k';
   }
 
   public getPseudoLegalMove(
     pos: Position,
     toRow: number, toColumn: number): MoveData 
   {
-    if (Math.abs(toRow - this._row) > 1) return null;
-    let moveData = new MoveData(this._row, this._column, toRow, toColumn);
-    if (Math.abs(toColumn - this._column) > 1) {
+    if (Math.abs(toRow - this.row) > 1) return null;
+    let moveData = new MoveData(this.row, this.column, toRow, toColumn);
+    if (Math.abs(toColumn - this.column) > 1) {
       // check castling ability
       if (this.isWhite) { 
-        if (this._row !== 7 || this._column !== 4 || toRow !== 7) return null;
+        if (this.row !== 7 || this.column !== 4 || toRow !== 7) return null;
 
         if (toColumn === 2 && pos.whiteCastlingLongEnabled) {
           if (pos.at[7][1] !== null) return null;
@@ -46,7 +40,7 @@ export default class King implements IPiece {
         }    
       }
       else {
-        if (this._row !== 0 || this._column !== 4 || toRow !== 0) return null;
+        if (this.row !== 0 || this.column !== 4 || toRow !== 0) return null;
 
         if (toColumn === 2 && pos.blackCastlingLongEnabled) {
           if (pos.at[0][1] !== null) return null;
