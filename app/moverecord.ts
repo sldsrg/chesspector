@@ -1,4 +1,5 @@
 import { MoveData, MoveFlags } from "./pieces/movedata"
+import IPiece from "./pieces/piece"
 import Position from "./position"
 
 export enum Notation {
@@ -84,9 +85,20 @@ export default class MoveRecord {
         if (md !== null) return md;
       }
     }
-    else {
-      return null;
+    else if (this._notationType === Notation.Castling) {
+      let toRow = 0; // defaults to black's row
+      let toColumn = 2; // defaults to queen's side
+      if (/^[0o]-[0o]$/i.test(this._notationString)) toColumn = 6;
+
+      let king = pos.blackPieces[0];
+      if (pos.whitesToMove) {
+        king = pos.whitePieces[0];
+        toRow = 7;
+      } 
+      if (king.row !== toRow || king.column !== 4) return null;
+      return king.getPseudoLegalMove(pos, toRow, toColumn);
     }
+    return null;  
   }
 
   get comment(): string {
