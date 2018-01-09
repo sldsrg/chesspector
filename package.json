@@ -5,13 +5,13 @@
     "start": "lite-server"
   },
   "devDependencies": {
-    "@types/es6-shim": "^0.0.29",
-    "@types/jasmine": "^2.5.46",
-    "jasmine-core": "^2.5.2",
+    "@types/es6-shim": "^0.31.35",
+    "@types/jasmine": "^2.8.3",
+    "jasmine-core": "^2.8.0",
     "lite-server": "^2.3.0",
-    "plugin-typescript": "^7.0.6",
-    "systemjs": "0.19.47",
-    "tslint": "^5.0.0",
-    "typescript": "^2.2.2"
+    "plugin-typescript": "^8.0.0",
+    "systemjs": "^0.20.19",
+    "tslint": "^5.8.0",
+    "typescript": "~2.6.1"
   }
 }

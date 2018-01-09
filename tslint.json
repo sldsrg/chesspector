@@ -3,7 +3,7 @@
 		"jasmine": true
 	},  
 	"extends": [
-      "tslint:recommended"
+		"tslint:recommended"
   ],
   "rules": {
 		"no-unused-expression": true,
@@ -11,7 +11,6 @@
 		"curly": false,
 		"class-name": true,
 		"semicolon": [ true, "never"],
-		"linebreak-style": [ true, "LF" ],
 		"triple-equals": true,
 		"no-console": false,
 		"object-literal-sort-keys": false

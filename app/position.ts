@@ -1,6 +1,9 @@
 import newPiece from "./pieces/factory"
 import IPiece from "./pieces/piece"
 
+/** class represent chess pieces with its coordinates and
+ *  ability to make special move, i.e castling and capture en-passant
+ **/
 export default class Position {
 
   public static readonly NOTES = {
@@ -14,6 +17,7 @@ export default class Position {
     PAWN_ON_LAST_RANK: "Pawn on last rank illegal",
   }
 
+  /** FEN representation of initial position */
   public static readonly INITIAL: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk -"
 
   private position: IPiece[][] = [
@@ -38,6 +42,9 @@ export default class Position {
 
   private mViolations: string[]
 
+  /** construct Position from given FEN representation
+   *  @param fen - FEN representation
+   */
   constructor(fen: string) {
     this.parse(fen)
   }
@@ -93,6 +100,9 @@ export default class Position {
     this.mBlackPieces = []
   }
 
+  /** Set current position from given FEN representation
+   *  @param fen - FEN representation
+   */
   public parse(fen: string) {
     this.clear()
     this.mWhitesToMove = false
