@@ -1,6 +1,6 @@
-import IPiece from "./piece";
-import Position from "../position";
-import Pawn from "./pawn";
+import Position from "../position"
+import Pawn from "./pawn"
+import IPiece from "./piece"
 
 export enum MoveFlags {
     Quiet = 0,
@@ -22,27 +22,25 @@ export class MoveData {
     public toColumn: number,
     public flags: MoveFlags = MoveFlags.Quiet,
     public capturedPiece: IPiece = null,
-    public promotedPieceCode: string = '\0') { }
+    public promotedPieceCode: string = "\0") { }
 
-  getLAN(pos: Position): string {
-    let from = 
-      String.fromCharCode(97 + this.fromColumn) + 
-      String.fromCharCode(56 - this.fromRow);   
-    let to = 
-      String.fromCharCode(97 + this.toColumn) + 
-      String.fromCharCode(56 - this.toRow);
-    let piece = pos.at[this.fromRow][this.fromColumn];
+  public getLAN(pos: Position): string {
+    const from =
+      String.fromCharCode(97 + this.fromColumn) +
+      String.fromCharCode(56 - this.fromRow)
+    const to =
+      String.fromCharCode(97 + this.toColumn) +
+      String.fromCharCode(56 - this.toRow)
+    const piece = pos.at[this.fromRow][this.fromColumn]
     if (!piece) {
-      throw "getLAN called for empty square";
-    }
-    else { 
-      let code = piece.fenCode;
+      throw new Error("getLAN called for empty square")
+    } else {
+      const code = piece.fenCode
       if (/p/i.test(code)) {
-        return `${from}-${to}`;
+        return `${from}-${to}`
       }
-      return `${code}${from}-${to}`;
+      return `${code}${from}-${to}`
     }
   }
-
 
 }

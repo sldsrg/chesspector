@@ -8,9 +8,10 @@
     "@types/es6-shim": "^0.0.29",
     "@types/jasmine": "^2.5.46",
     "jasmine-core": "^2.5.2",
-    "typescript": "^2.2.2",
-    "tslint": "^5.0.0",
+    "lite-server": "^2.3.0",
     "plugin-typescript": "^7.0.6",
-    "systemjs": "0.19.47"
+    "systemjs": "0.19.47",
+    "tslint": "^5.0.0",
+    "typescript": "^2.2.2"
   }
 }
