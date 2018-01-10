@@ -1,12 +1,6 @@
-import Bishop from "./bishop"
-import King from "./king"
-import Knight from "./knight"
-import Pawn from "./pawn"
-import IPiece from "./piece"
-import Queen from "./queen"
-import Rook from "./rook"
+import { IPiece, Bishop, King, Knight, Pawn, Queen, Rook } from ".."
 
-export default function newPiece(code: string, row: number, column: number): IPiece {
+export function newPiece(code: string, row: number, column: number): IPiece {
   const isWhite = /[RNBQKP]/.test(code)
   switch (code.toUpperCase()) {
   case "P": return new Pawn(row, column, isWhite)

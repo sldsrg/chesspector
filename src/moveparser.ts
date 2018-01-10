@@ -1,4 +1,4 @@
-import MoveRecord from "./moverecord"
+import { MoveRecord } from "."
 
 enum ParserState {
     none,       // пробел, табулятор, перенос строки или конец варианта
@@ -11,7 +11,7 @@ enum ParserState {
     terminator,  // результат партии ["1-0"|"0-1"|"1/2-1/2"] ("*" определяется сразу)
 }
 
-export default class MoveParser {
+export class MoveParser {
   private mSrc: string
   private mPos: number
 

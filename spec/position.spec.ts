@@ -1,8 +1,7 @@
 import * as mocha from "mocha"
 import * as chai from "chai"
 
-import newPiece from "../src/pieces/factory"
-import Position from "../src/position"
+import { newPiece, Position } from "../src"
 
 const expect = chai.expect
 

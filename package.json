@@ -1,8 +1,10 @@
 {
   "name": "chesspector",
   "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "compile": "tsc",
     "test": "mocha --reporter spec --compilers ts:ts-node/register spec/**/*.spec.ts"
   },
   "devDependencies": {

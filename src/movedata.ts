@@ -1,6 +1,4 @@
-import Position from "../position"
-import Pawn from "./pawn"
-import IPiece from "./piece"
+import { IPiece, Position } from "."
 
 export enum MoveFlags {
     Quiet = 0,

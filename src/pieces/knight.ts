@@ -1,8 +1,6 @@
-import Position from "../position"
-import {MoveData, MoveFlags} from "./movedata"
-import IPiece from "./piece"
+import { IPiece, Position, MoveData, MoveFlags } from ".."
 
-export default class Knight implements IPiece {
+export class Knight implements IPiece {
 
   public readonly fenCode: string
 

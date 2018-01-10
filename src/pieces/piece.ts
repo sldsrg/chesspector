@@ -1,7 +1,6 @@
-import Position from "../position"
-import { MoveData } from "./movedata"
+import { Position, MoveData } from ".."
 
-interface IPiece {
+export interface IPiece {
   readonly isWhite: boolean
   readonly fenCode: string
   readonly row: number
@@ -11,5 +10,3 @@ interface IPiece {
     pos: Position,
     toRow: number, toColumn: number): MoveData
 }
-
-export default IPiece

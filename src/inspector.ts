@@ -1,10 +1,7 @@
-import Position from "position"
-import { MoveData } from "./pieces/movedata"
-import IPiece from "./pieces/piece"
+import { IPiece, MoveData, Position } from "."
 
-export default class Inspector {
+export class Inspector {
   constructor(private position: Position) {
-
   }
 
   public getMove(sqFrom: string, sqTo: string): MoveData {

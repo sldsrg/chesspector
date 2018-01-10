@@ -1,10 +1,9 @@
-import newPiece from "./pieces/factory"
-import IPiece from "./pieces/piece"
+import { IPiece, newPiece } from "."
 
 /** class represent chess pieces with its coordinates and
  *  ability to make special move, i.e castling and capture en-passant
  **/
-export default class Position {
+export class Position {
 
   public static readonly NOTES = {
     MISSING_WHITE_KING: "Missing white King",

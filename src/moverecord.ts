@@ -1,6 +1,4 @@
-import { MoveData, MoveFlags } from "./pieces/movedata"
-import IPiece from "./pieces/piece"
-import Position from "./position"
+import { MoveData, MoveFlags, Position } from "."
 
 export enum Notation {
   ShortAlgebraic,
@@ -9,7 +7,7 @@ export enum Notation {
 }
 
 // represent structure to organize hierarchical recordings of game or solution.
-export default class MoveRecord {
+export class MoveRecord {
   private mNumOfHalfmove: number
   private mNotationType: Notation
   private mNotationString: string

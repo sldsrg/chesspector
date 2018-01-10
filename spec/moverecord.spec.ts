@@ -1,9 +1,7 @@
 import * as mocha from "mocha"
 import * as chai from "chai"
 
-import MoveRecord from "../src/moverecord"
-import { MoveFlags } from "../src/pieces/movedata"
-import Position from "../src/position"
+import { MoveRecord, MoveFlags, Position } from "../src"
 
 const expect = chai.expect
 

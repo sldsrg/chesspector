@@ -1,8 +1,6 @@
-import MoveParser from "./moveparser"
-import MoveRecord from "./moverecord"
-import { MoveData } from "./pieces/movedata"
+import { MoveData, MoveParser, MoveRecord } from "."
 
-export default class Movekeeper {
+export class Movekeeper {
   private mFirstMove: MoveRecord
 
   constructor(lan: string = null) {

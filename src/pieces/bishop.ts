@@ -1,8 +1,6 @@
-import Position from "../position"
-import {MoveData, MoveFlags} from "./movedata"
-import IPiece from "./piece"
+import { IPiece, Position, MoveData, MoveFlags } from ".."
 
-export default class Bishop implements IPiece {
+export class Bishop implements IPiece {
 
   public readonly fenCode: string
 
