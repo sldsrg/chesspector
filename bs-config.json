@@ -1,6 +1,0 @@
-{
-  "files": [ "./**/*.{html,htm,css,js,ts}" ],
-  "port": 8000,
-  "browser": "chrome",
-  "startPath": "/SpecRunner.html"
-}

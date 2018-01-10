@@ -2,16 +2,16 @@
   "name": "chesspector",
   "version": "0.0.1",
   "scripts": {
-    "start": "lite-server"
+    "build": "tsc",
+    "test": "mocha --reporter spec --compilers ts:ts-node/register spec/**/*.spec.ts"
   },
   "devDependencies": {
-    "@types/es6-shim": "^0.31.35",
-    "@types/jasmine": "^2.8.3",
-    "jasmine-core": "^2.8.0",
-    "lite-server": "^2.3.0",
-    "plugin-typescript": "^8.0.0",
-    "systemjs": "^0.20.19",
+    "@types/chai": "^4.1.0",
+    "@types/mocha": "^2.2.46",
+    "chai": "^4.1.2",
+    "mocha": "^4.1.0",
+    "ts-node": "^4.1.0",
     "tslint": "^5.8.0",
-    "typescript": "~2.6.1"
+    "typescript": "^2.6.2"
   }
 }

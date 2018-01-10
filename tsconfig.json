@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
     "target": "es2015",
-    "module": "system",
-    "lib": [ "es2015", "dom" ],
-    "declaration": true
+    "module": "commonjs",
+    "outDir": "./dist"
   },
-  "exclude": [
-    "node_modules"
+  "include": [
+    "src/**/*"
   ]
 }
