@@ -1,9 +1,7 @@
-import * as mocha from "mocha"
-import * as chai from "chai"
+import "mocha"
+import { expect } from "chai"
 
 import { newPiece, Position } from "../src"
-
-const expect = chai.expect
 
 describe("Piece", () => {
   it("constructed with code in upper case must be white piece", () => {
@@ -72,14 +70,14 @@ describe("Chessboard position", () => {
 
   it("detect 'white king castling enabled' flags", () => {
     const pos = new Position("r3k2r/8/8/8/8/8/8/R3K2R w QK -")
-    expect(pos.whiteCastlingLongEnabled).to.be.true
-    expect(pos.whiteCastlingShortEnabled).to.be.true
+    expect(pos.whiteCastlingLongEnabled).to.equal(true)
+    expect(pos.whiteCastlingShortEnabled).to.equal(true)
   })
 
   it("detect 'black king castling enabled' flags", () => {
     const pos = new Position("r3k2r/8/8/8/8/8/8/R3K2R w qk -")
-    expect(pos.blackCastlingLongEnabled).to.be.true
-    expect(pos.blackCastlingShortEnabled).to.be.true
+    expect(pos.blackCastlingLongEnabled).to.equal(true)
+    expect(pos.blackCastlingShortEnabled).to.equal(true)
   })
 
   it("detect 'all castlings disabled' flags", () => {
@@ -102,11 +100,11 @@ describe("Chessboard position", () => {
 describe("Initial chessboard position", () => {
   it("must be valid", () => {
     const pos = new Position(Position.INITIAL)
-    expect(pos.isValid()).to.be.true
+    expect(pos.isValid()).to.equal(true)
   })
 
   it("whites to move", () => {
     const pos = new Position(Position.INITIAL)
-    expect(pos.whitesToMove).to.be.true
+    expect(pos.whitesToMove).to.equal(true)
   })
 })

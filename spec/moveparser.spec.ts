@@ -1,9 +1,7 @@
-import * as mocha from "mocha"
-import * as chai from "chai"
+import "mocha"
+import { expect } from "chai"
 
 import { MoveParser, MoveRecord } from "../src"
-
-const expect = chai.expect
 
 describe(`MoveParser`, () => {
 
@@ -16,7 +14,7 @@ describe(`MoveParser`, () => {
     })
 
     it(`return non empty result`, () => {
-      expect(first).to.exist
+      expect(first).not.to.equal(null)
     })
 
     it(`number of nodes from first evaluates to correct value`, () => {
@@ -33,7 +31,7 @@ describe(`MoveParser`, () => {
     })
 
     it(`return non empty result`, () => {
-      expect(first).to.exist
+      expect(first).not.to.equal(null)
     })
 
     it(`number of nodes from first evaluates to correct value`, () => {
@@ -50,7 +48,7 @@ describe(`MoveParser`, () => {
     })
 
     it(`return non empty result`, () => {
-      expect(first).to.exist
+      expect(first).not.to.equal(null)
     })
 
     it(`number of nodes from first evaluates to correct value`, () => {

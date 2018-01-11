@@ -5,7 +5,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "compile": "tsc",
-    "test": "mocha --reporter spec --compilers ts:ts-node/register spec/**/*.spec.ts"
+    "test": "mocha -r ts-node/register spec/**/*.spec.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.1.0",

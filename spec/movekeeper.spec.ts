@@ -1,9 +1,7 @@
-import * as mocha from "mocha"
-import * as chai from "chai"
+import "mocha"
+import { expect } from "chai"
 
 import { Movekeeper, MoveRecord } from "../src"
-
-const expect = chai.expect
 
 describe(`MoveKeeper`, () => {
   describe(`when created without parameters`, () => {

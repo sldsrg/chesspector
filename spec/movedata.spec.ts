@@ -1,9 +1,7 @@
-import * as mocha from "mocha"
-import * as chai from "chai"
+import "mocha"
+import { expect } from "chai"
 
 import { MoveData, MoveFlags, Position, Inspector } from "../src"
-
-const expect = chai.expect
 
 describe("The pawn has five legal moves:", () => {
 
@@ -20,10 +18,8 @@ describe("The pawn has five legal moves:", () => {
       immediately in front of it on the same file.`, () => {
       it("Inspector return valid data.", () => {
         let moveData = whitesInspector.getMove("d2", "d3")
-        expect(moveData).to.exist
         expect(moveData.flags).to.equal(MoveFlags.Quiet)
         moveData = blacksInspector.getMove("d7", "d6")
-        expect(moveData).to.exist
         expect(moveData.flags).to.equal(MoveFlags.Quiet)
       })
 
@@ -43,10 +39,8 @@ describe("The pawn has five legal moves:", () => {
       provided both squares are unoccupied.`, () => {
       it("Inspector return valid data.", () => {
         let moveData = whitesInspector.getMove("d2", "d4")
-        expect(moveData).to.exist
         expect(moveData.flags).to.equal(MoveFlags.Quiet)
         moveData = blacksInspector.getMove("d7", "d5")
-        expect(moveData).to.exist
         expect(moveData.flags).to.equal(MoveFlags.Quiet)
       })
 
@@ -66,14 +60,12 @@ describe("The pawn has five legal moves:", () => {
       piece which is diagonally in front of it on an adjacent file, capturing that piece.`, () => {
       it("Inspector return valid data.", () => {
         let moveData = whitesInspector.getMove("f3", "g4")
-        expect(moveData).to.exist
         expect(moveData.flags).to.equal(MoveFlags.Capture)
-        expect(moveData.capturedPiece).to.exist
+        expect(moveData.capturedPiece).not.to.equal(null)
 
         moveData = blacksInspector.getMove("d7", "e6")
-        expect(moveData).to.exist
         expect(moveData.flags).to.equal(MoveFlags.Capture)
-        expect(moveData.capturedPiece).to.exist
+        expect(moveData.capturedPiece).not.to.equal(null)
       })
 
       it("Try to capture own piece fail.", () => {
@@ -95,14 +87,12 @@ describe("The pawn has five legal moves:", () => {
       following this advance.`, () => {
       it("Inspector return valid data.", () => {
         let moveData = whitesInspector.getMove("e5", "f6")
-        expect(moveData).to.exist
         expect(moveData.flags).to.equal(MoveFlags.CaptureEnPassant)
-        expect(moveData.capturedPiece).to.exist
+        expect(moveData.capturedPiece).not.to.equal(null)
 
         moveData = blacksInspector.getMove("g4", "f3")
-        expect(moveData).to.exist
         expect(moveData.flags).to.equal(MoveFlags.CaptureEnPassant)
-        expect(moveData.capturedPiece).to.exist
+        expect(moveData.capturedPiece).not.to.equal(null)
       })
     })
   // TODO: check en-passant flag toggle
@@ -125,11 +115,9 @@ describe(`The king can move in two different ways, by:`, () => {
 
     it("Inspector return valid data for valid move.", () => {
       let moveData = inspector.getMove("e1", "d2")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove("e1", "e2")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Capture)
     })
 
@@ -141,22 +129,18 @@ describe(`The king can move in two different ways, by:`, () => {
     it("Inspector return valid data on white king castrling.", () => {
       const inspector = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R w QK -"))
       let moveData = inspector.getMove("e1", "g1")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.CastlingShort)
 
       moveData = inspector.getMove("e1", "c1")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.CastlingLong)
     })
 
     it("Inspector return valid data on black king castrling.", () => {
       const inspector = new Inspector(new Position("r3k2r/8/8/8/8/8/8/R3K2R b qk -"))
       let moveData = inspector.getMove("e8", "g8")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.CastlingShort)
 
       moveData = inspector.getMove("e8", "c8")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.CastlingLong)
     })
 
@@ -194,15 +178,12 @@ describe(`The queen moves to any square along the file, the rank
 
     it("Inspector return valid data for valid move.", () => {
       let moveData = inspector.getMove("d3", "d5")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove("d3", "c4")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove("d3", "f5")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Capture)
     })
 
@@ -231,11 +212,9 @@ describe(`The rook moves to any square along the file or the rank
 
     it("Inspector return valid data for valid move.", () => {
       let moveData = inspector.getMove("a1", "c1")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove("a1", "a2")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Capture)
     })
 
@@ -263,11 +242,9 @@ describe(`The bishop moves to any square along a diagonal on which it stands.
 
     it("Inspector return valid data for valid move.", () => {
       let moveData = inspector.getMove("d3", "a6")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove("d3", "f5")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Capture)
     })
 
@@ -295,11 +272,9 @@ describe(`The knight moves to one of the squares nearest to that on
 
     it("Inspector return valid data for valid move.", () => {
       let moveData = inspector.getMove("d2", "f3")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove("d2", "e4")
-      expect(moveData).to.exist
       expect(moveData.flags).to.equal(MoveFlags.Capture)
     })
 
