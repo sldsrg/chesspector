@@ -5,6 +5,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "compile": "tsc",
+    "prepack": "tsc",
     "test": "mocha -r ts-node/register spec/**/*.spec.ts"
   },
   "devDependencies": {
