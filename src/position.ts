@@ -1,4 +1,5 @@
-import { IPiece, newPiece } from "."
+import { IPiece } from './pieces/piece'
+import { newPiece } from './pieces/factory'
 
 /** class represent chess pieces with its coordinates and
  *  ability to make special move, i.e castling and capture en-passant
@@ -6,18 +7,18 @@ import { IPiece, newPiece } from "."
 export class Position {
 
   public static readonly NOTES = {
-    MISSING_WHITE_KING: "Missing white King",
-    MISSING_BLACK_KING: "Missing black King",
-    TOO_MANY_WHITE_PIECES: "Too many white pieces",
-    TOO_MANY_BLACK_PIECES: "Too many black pieces",
-    TOO_MANY_WHITE_KINGS: "Too many white king",
-    TOO_MANY_BLACK_KINGS: "Too many black king",
-    PAWN_ON_FIRST_RANK: "Pawn on first rank illegal",
-    PAWN_ON_LAST_RANK: "Pawn on last rank illegal",
+    MISSING_WHITE_KING: 'Missing white King',
+    MISSING_BLACK_KING: 'Missing black King',
+    TOO_MANY_WHITE_PIECES: 'Too many white pieces',
+    TOO_MANY_BLACK_PIECES: 'Too many black pieces',
+    TOO_MANY_WHITE_KINGS: 'Too many white king',
+    TOO_MANY_BLACK_KINGS: 'Too many black king',
+    PAWN_ON_FIRST_RANK: 'Pawn on first rank illegal',
+    PAWN_ON_LAST_RANK: 'Pawn on last rank illegal',
   }
 
   /** FEN representation of initial position */
-  public static readonly INITIAL: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk -"
+  public static readonly INITIAL: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk -'
 
   private position: IPiece[][] = [
     [null, null, null, null, null, null, null, null],
@@ -116,19 +117,19 @@ export class Position {
     let k
     for (k = 0; k < l && curRow < 8 && curCol < 8; k++) {
       const ch = fen[k]
-      if (ch === " ") continue
+      if (ch === ' ') continue
       if (/\d/.test(ch)) {
         curCol += Number.parseInt(ch)
-      } else if (ch === "/") {
+      } else if (ch === '/') {
         if (curCol !== 0) {
           console.log(`Invalid FEN at position ${k} (char ${ch}) row ${curRow}, col ${curCol}`)
-          throw new Error("Invalid FEN")
+          throw new Error('Invalid FEN')
         }
       } else {
         const piece = newPiece(ch, curRow, curCol)
         if (piece.isWhite) {
-          if (piece.fenCode === "K") {
-            if (this.mWhitePieces.length > 0 && this.mWhitePieces[0].fenCode === "K") {
+          if (piece.fenCode === 'K') {
+            if (this.mWhitePieces.length > 0 && this.mWhitePieces[0].fenCode === 'K') {
               this.mViolations.push(Position.NOTES.TOO_MANY_WHITE_KINGS)
             }
             this.mWhitePieces.unshift(piece)
@@ -136,8 +137,8 @@ export class Position {
             this.mWhitePieces.push(piece)
           }
         } else {
-          if (piece.fenCode === "k") {
-            if (this.mBlackPieces.length > 0 && this.mBlackPieces[0].fenCode === "k") {
+          if (piece.fenCode === 'k') {
+            if (this.mBlackPieces.length > 0 && this.mBlackPieces[0].fenCode === 'k') {
               this.mViolations.push(Position.NOTES.TOO_MANY_BLACK_KINGS)
             }
             this.mBlackPieces.unshift(piece)
@@ -159,10 +160,10 @@ export class Position {
       }
     }
 
-    if (this.mWhitePieces.length === 0 || this.mWhitePieces[0].fenCode !== "K") {
+    if (this.mWhitePieces.length === 0 || this.mWhitePieces[0].fenCode !== 'K') {
       this.mViolations.push(Position.NOTES.MISSING_WHITE_KING)
     }
-    if (this.mBlackPieces.length === 0 || this.mBlackPieces[0].fenCode !== "k") {
+    if (this.mBlackPieces.length === 0 || this.mBlackPieces[0].fenCode !== 'k') {
       this.mViolations.push(Position.NOTES.MISSING_BLACK_KING)
     }
     if (this.mWhitePieces.length > 16) {
@@ -171,23 +172,23 @@ export class Position {
     if (this.mBlackPieces.length > 16) {
       this.mViolations.push(Position.NOTES.TOO_MANY_BLACK_PIECES)
     }
-    const parts = fen.slice(k).trim().split(" ")
+    const parts = fen.slice(k).trim().split(' ')
     const castlingAbility = parts[1]
     const enpassantTarget = parts[2]
 
     if (parts.length > 0) {
-        this.mWhitesToMove = (parts[0] === "w")
+        this.mWhitesToMove = (parts[0] === 'w')
     } else this.mWhitesToMove = true
 
     if (parts.length > 1) {
-      this.mWhiteCastlingLongEnabled = parts[1].includes("Q")
-      this.mWhiteCastlingShortEnabled = parts[1].includes("K")
-      this.mBlackCastlingLongEnabled = parts[1].includes("q")
-      this.mBlackCastlingShortEnabled = parts[1].includes("k")
+      this.mWhiteCastlingLongEnabled = parts[1].includes('Q')
+      this.mWhiteCastlingShortEnabled = parts[1].includes('K')
+      this.mBlackCastlingLongEnabled = parts[1].includes('q')
+      this.mBlackCastlingShortEnabled = parts[1].includes('k')
     }
 
     if (parts.length > 2) {
-      if (parts[2][0] === "-") {
+      if (parts[2][0] === '-') {
         this.mCaptureEnpassantTarget = -1
       } else {
          this.mCaptureEnpassantTarget = parts[2].toLowerCase().charCodeAt(0) - 97

@@ -1,4 +1,5 @@
-import { IPiece, Position } from "."
+import { IPiece } from './pieces/piece'
+import { Position } from './position'
 
 export enum MoveFlags {
     Quiet = 0,
@@ -20,7 +21,7 @@ export class MoveData {
     public toColumn: number,
     public flags: MoveFlags = MoveFlags.Quiet,
     public capturedPiece: IPiece = null,
-    public promotedPieceCode: string = "\0") { }
+    public promotedPieceCode: string = '\0') { }
 
   public getLAN(pos: Position): string {
     const from =
@@ -31,7 +32,7 @@ export class MoveData {
       String.fromCharCode(56 - this.toRow)
     const piece = pos.at[this.fromRow][this.fromColumn]
     if (!piece) {
-      throw new Error("getLAN called for empty square")
+      throw new Error('getLAN called for empty square')
     } else {
       const code = piece.fenCode
       if (/p/i.test(code)) {

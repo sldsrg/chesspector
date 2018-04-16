@@ -1,4 +1,5 @@
-import { MoveData, MoveFlags, Position } from "."
+import { MoveData, MoveFlags } from './movedata'
+import { Position } from './position'
 
 export enum Notation {
   ShortAlgebraic,

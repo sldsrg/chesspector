@@ -11,6 +11,7 @@
 		"no-duplicate-variable": true,
 		"curly": false,
 		"class-name": true,
+		"quotemark": [true, "single"],
 		"semicolon": [ true, "never"],
 		"triple-equals": true,
 		"no-console": false,

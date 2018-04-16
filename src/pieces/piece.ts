@@ -1,4 +1,5 @@
-import { Position, MoveData } from ".."
+import { Position } from '../position'
+import { MoveData } from '../movedata'
 
 export interface IPiece {
   readonly isWhite: boolean

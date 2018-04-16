@@ -1,4 +1,6 @@
-import { MoveData, MoveParser, MoveRecord } from "."
+import { MoveData } from './movedata'
+import { MoveParser } from './moveparser'
+import { MoveRecord } from './moverecord'
 
 export class Movekeeper {
   private mFirstMove: MoveRecord

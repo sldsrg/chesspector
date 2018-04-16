@@ -1,4 +1,6 @@
-import { IPiece, Position, MoveData, MoveFlags } from ".."
+import { IPiece } from './piece'
+import { Position } from '../position'
+import { MoveData, MoveFlags } from '../movedata'
 
 export class Queen implements IPiece {
 
@@ -8,7 +10,7 @@ export class Queen implements IPiece {
     public readonly row: number,
     public readonly column: number,
     public readonly isWhite: boolean) {
-    this.fenCode = this.isWhite ? "Q" : "q"
+    this.fenCode = this.isWhite ? 'Q' : 'q'
   }
 
   public getPseudoLegalMove(

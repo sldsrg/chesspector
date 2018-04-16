@@ -1,4 +1,4 @@
-import { MoveRecord } from "."
+import { MoveRecord } from './moverecord'
 
 enum ParserState {
     none,       // пробел, табулятор, перенос строки или конец варианта

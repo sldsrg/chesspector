@@ -1,4 +1,6 @@
-import { IPiece, Position, MoveData, MoveFlags } from ".."
+import { IPiece } from './piece'
+import { Position } from '../position'
+import { MoveData, MoveFlags } from '../movedata'
 
 export class Bishop implements IPiece {
 
@@ -8,7 +10,7 @@ export class Bishop implements IPiece {
     public readonly row: number,
     public readonly column: number,
     public readonly isWhite: boolean) {
-    this.fenCode = this.isWhite ? "B" : "b"
+    this.fenCode = this.isWhite ? 'B' : 'b'
   }
 
   public getPseudoLegalMove(

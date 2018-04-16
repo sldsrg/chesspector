@@ -1,4 +1,6 @@
-import { IPiece, Position, MoveData, MoveFlags } from ".."
+import { IPiece } from './piece'
+import { Position } from '../position'
+import { MoveData, MoveFlags } from '../movedata'
 
 export class Rook implements IPiece {
 
@@ -8,7 +10,7 @@ export class Rook implements IPiece {
     public readonly row: number,
     public readonly column: number,
     public readonly isWhite: boolean) {
-    this.fenCode = this.isWhite ? "R" : "r"
+    this.fenCode = this.isWhite ? 'R' : 'r'
   }
 
   public getPseudoLegalMove(

@@ -1,4 +1,6 @@
-import { IPiece, MoveData, Position } from "."
+import { IPiece } from './pieces/piece'
+import { MoveData } from './movedata'
+import { Position } from './position'
 
 export class Inspector {
   constructor(private position: Position) {
