@@ -1,7 +1,7 @@
-import "mocha"
-import { expect } from "chai"
+import 'mocha'
+import { expect } from 'chai'
 
-import { MoveRecord, MoveFlags, Position } from "../src"
+import { MoveRecord, MoveFlags, Position } from '../src'
 
 describe(`MoveRecord`, () => {
   describe(`when constructed with LAN`, () => {
@@ -9,11 +9,11 @@ describe(`MoveRecord`, () => {
       let position: Position
 
       before(() => {
-        position = new Position("4k2r/4p3/R7/2B3B1/8/8/4P3/R3K1N1 w Qk -")
+        position = new Position('4k2r/4p3/R7/2B3B1/8/8/4P3/R3K1N1 w Qk -')
       })
 
       it(`return valid MoveData object for pawn move`, () => {
-        const rec = new MoveRecord(1, "e2-e4")
+        const rec = new MoveRecord(1, 'e2-e4')
         const data = rec.eval(position)
         expect(data.flags).to.equal(MoveFlags.Quiet)
         expect(data.fromRow).to.equal(6)
@@ -24,7 +24,7 @@ describe(`MoveRecord`, () => {
       })
 
       it(`return valid MoveData object for knight move`, () => {
-        const rec = new MoveRecord(1, "Ng1-f3")
+        const rec = new MoveRecord(1, 'Ng1-f3')
         const data = rec.eval(position)
         expect(data.flags).to.equal(MoveFlags.Quiet)
         expect(data.fromRow).to.equal(7)
@@ -35,7 +35,7 @@ describe(`MoveRecord`, () => {
       })
 
       it(`return valid MoveData object for long castling`, () => {
-        const rec = new MoveRecord(1, "O-O-O")
+        const rec = new MoveRecord(1, 'O-O-O')
         const data = rec.eval(position)
         expect(data.flags).to.equal(MoveFlags.CastlingLong)
         expect(data.fromRow).to.equal(7)
@@ -52,15 +52,15 @@ describe(`MoveRecord`, () => {
     let recKnight: MoveRecord
 
     before(() => {
-      recPawn = new MoveRecord(1, "e4")
-      recKnight = new MoveRecord(1, "Nf3")
+      recPawn = new MoveRecord(1, 'e4')
+      recKnight = new MoveRecord(1, 'Nf3')
     })
 
     describe(`and evaluated in positional context`, () => {
       let position: Position
 
       before(() => {
-        position = new Position("4k2r/4p3/R7/2B3B1/8/8/4P3/R3K1N1 w Qk -")
+        position = new Position('4k2r/4p3/R7/2B3B1/8/8/4P3/R3K1N1 w Qk -')
       })
 
       it(`return valid MoveData object for pawn move`, () => {
@@ -84,7 +84,7 @@ describe(`MoveRecord`, () => {
       })
 
       it(`can distinct between two rook moves with different rank`, () => {
-        let rec = new MoveRecord(1, "R1a3")
+        let rec = new MoveRecord(1, 'R1a3')
         let data = rec.eval(position)
         expect(data.flags).to.equal(MoveFlags.Quiet)
         expect(data.fromRow).to.equal(7)
@@ -93,7 +93,7 @@ describe(`MoveRecord`, () => {
         expect(data.toColumn).to.equal(0)
         expect(data.capturedPiece).to.equal(null)
 
-        rec = new MoveRecord(1, "R6a3")
+        rec = new MoveRecord(1, 'R6a3')
         data = rec.eval(position)
         expect(data.flags).to.equal(MoveFlags.Quiet)
         expect(data.fromRow).to.equal(2)
@@ -104,7 +104,7 @@ describe(`MoveRecord`, () => {
       })
 
       it(`can distinct between two bishop moves with different file`, () => {
-        let rec = new MoveRecord(1, "Bcxe7")
+        let rec = new MoveRecord(1, 'Bcxe7')
         let data = rec.eval(position)
         expect(data.flags).to.equal(MoveFlags.Capture)
         expect(data.fromRow).to.equal(3)
@@ -113,7 +113,7 @@ describe(`MoveRecord`, () => {
         expect(data.toColumn).to.equal(4)
         expect(data.capturedPiece).not.to.equal(null)
 
-        rec = new MoveRecord(1, "Bgxe7")
+        rec = new MoveRecord(1, 'Bgxe7')
         data = rec.eval(position)
         expect(data.flags).to.equal(MoveFlags.Capture)
         expect(data.fromRow).to.equal(3)

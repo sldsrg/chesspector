@@ -1,7 +1,7 @@
-import "mocha"
-import { expect } from "chai"
+import 'mocha'
+import { expect } from 'chai'
 
-import { MoveParser, MoveRecord } from "../src"
+import { MoveParser, MoveRecord } from '../src'
 
 describe(`MoveParser`, () => {
 
@@ -9,7 +9,7 @@ describe(`MoveParser`, () => {
     let first: MoveRecord
 
     before(() => {
-      const parser = new MoveParser("1.e2-e4 e7-e5 2.Ng1-f3 Nb8-c6 3.Bf1-c4")
+      const parser = new MoveParser('1.e2-e4 e7-e5 2.Ng1-f3 Nb8-c6 3.Bf1-c4')
       first = parser.parse()
     })
 
@@ -26,7 +26,7 @@ describe(`MoveParser`, () => {
     let first: MoveRecord
 
     before(() => {
-      const parser = new MoveParser("1.e4 e5 2.Nf3 Nc6 3.Bc4")
+      const parser = new MoveParser('1.e4 e5 2.Nf3 Nc6 3.Bc4')
       first = parser.parse()
     })
 
@@ -43,7 +43,7 @@ describe(`MoveParser`, () => {
     let first: MoveRecord
 
     before(() => {
-      const parser = new MoveParser("1.e4 e5 2.Nf3 (2.Nc3 Nc6 3.Nf3) Nc6 3.Bc4")
+      const parser = new MoveParser('1.e4 e5 2.Nf3 (2.Nc3 Nc6 3.Nf3) Nc6 3.Bc4')
       first = parser.parse()
     })
 
@@ -60,7 +60,7 @@ describe(`MoveParser`, () => {
     let first: MoveRecord
 
     before(() => {
-      const parser = new MoveParser("1.e2-e4 e7-e5 {simple comment} 2.Ng1-f3 Nb8-c6 3.Bf1-c4")
+      const parser = new MoveParser('1.e2-e4 e7-e5 {simple comment} 2.Ng1-f3 Nb8-c6 3.Bf1-c4')
       first = parser.parse()
     })
 
@@ -69,7 +69,7 @@ describe(`MoveParser`, () => {
     })
 
     it(`and comment text is correct`, () => {
-      expect(first.next.comment).to.equal("simple comment")
+      expect(first.next.comment).to.equal('simple comment')
     })
   })
 })

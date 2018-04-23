@@ -1,7 +1,7 @@
-import "mocha"
-import { expect } from "chai"
+import 'mocha'
+import { expect } from 'chai'
 
-import { Movekeeper, MoveRecord } from "../src"
+import { Movekeeper, MoveRecord } from '../src'
 
 describe(`MoveKeeper`, () => {
   describe(`when created without parameters`, () => {
@@ -16,7 +16,7 @@ describe(`MoveKeeper`, () => {
     })
 
     it(`and no more empty, when added new move`, () => {
-      movekeeper.add(new MoveRecord(1, "e2-e4"))
+      movekeeper.add(new MoveRecord(1, 'e2-e4'))
       expect(movekeeper.hasMoves).to.equal(true)
     })
 
