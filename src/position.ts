@@ -3,7 +3,7 @@ import { newPiece } from './pieces/factory'
 
 /** class represent chess pieces with its coordinates and
  *  ability to make special move, i.e castling and capture en-passant
- **/
+ */
 export class Position {
 
   public static readonly NOTES = {

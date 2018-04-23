@@ -32,7 +32,7 @@ export class MoveRecord {
     } else if (/^[rnbqk]?[a-h]?\d?x?[a-h]\d$/i.test(move)) {
       this.mNotationType = Notation.ShortAlgebraic
     } else {
-      throw new Error("Invalid move notation")
+      throw new Error('Invalid move notation')
     }
 
     this.mGlyph = glyph
@@ -43,7 +43,7 @@ export class MoveRecord {
   public eval(pos: Position): MoveData {
     if (this.mNotationType === Notation.LongAlgebraic) {
       const lan = this.mNotationString
-      let pieceCode = ""
+      let pieceCode = ''
       let shft = 0
       if (/^[rnbqk]/i.test(lan)) {
         shft = 1
@@ -59,7 +59,7 @@ export class MoveRecord {
       const res = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this.mNotationString)
 
       let pieceCode = res[1]
-      if (pieceCode === "") pieceCode = "P"
+      if (pieceCode === '') pieceCode = 'P'
 
       let fromColumn
       if (res[2] !== undefined) fromColumn = res[2].charCodeAt(0) - 97

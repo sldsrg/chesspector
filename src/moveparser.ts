@@ -24,10 +24,10 @@ export class MoveParser {
   public parse(): MoveRecord {
     let tempNum = 0
     let tempNAG = 0
-    let tempNotation = ""
-    let tempComment = ""
+    let tempNotation = ''
+    let tempComment = ''
     let tempMove: MoveRecord = null
-    let pieceCode = ""
+    let pieceCode = ''
     let whiteToMove = true
     let state: ParserState
     let firstMove: MoveRecord = null
@@ -35,58 +35,58 @@ export class MoveParser {
 
     for (; this.mPos < this.mSrc.length; this.mPos++) {
       let c = this.mSrc[this.mPos]
-      if ("\r" === c) {
-        c = " " // новую строку интерпретируем как разделитель
-      } else if ("\n" === c) {
-        c = " "
+      if ('\r' === c) {
+        c = ' ' // новую строку интерпретируем как разделитель
+      } else if ('\n' === c) {
+        c = ' '
       }
       switch (state) {
       case ParserState.none:
         if (/\d/.test(c)) {
           tempNum = Number.parseInt(c)
           state = ParserState.num
-        } else if (c === ".") {
+        } else if (c === '.') {
           state = ParserState.period
-        } else if (c === "{") {
-          tempComment = ""
+        } else if (c === '{') {
+          tempComment = ''
           state = ParserState.comment
-        } else if (c === "$") {
+        } else if (c === '$') {
           tempNAG = 0
           state = ParserState.nag
         } else if (/[PRNBQKabcdefghO0]/.test(c)) {
           tempNotation = c
-          pieceCode = "P"
+          pieceCode = 'P'
           if (/[PRNBQK]/.test(c)) {
              pieceCode = c
           }
           state = ParserState.move
           // TODO  0-0(-0) O-O(-O) => piece code = 'K'
-        } else if (c === "(") {
+        } else if (c === '(') {
           this.mPos++
           tempMove.fork(this.parse())
           state = ParserState.none
-        } else if (c === ")") {
+        } else if (c === ')') {
           return firstMove
         } else if (/S/.test(c)) {
-          throw new Error("PGN file format error")
+          throw new Error('PGN file format error')
         }
         break
       case ParserState.num:
         if (/\d/.test(c)) {
             tempNum = tempNum * 10 + Number.parseInt(c)
-        } else if (c === ".") {
+        } else if (c === '.') {
           state = ParserState.period
         } else if (/\w/.test(c)) {
           state = ParserState.none
-        } else if (c === "-" || c === "/") {
+        } else if (c === '-' || c === '/') {
           // terminator = number + c.ToString();
           state = ParserState.terminator
         } else {
-          throw new Error("PGN file format error")
+          throw new Error('PGN file format error')
         }
         break
       case ParserState.period:
-        if (c === ".") {
+        if (c === '.') {
           state = ParserState.periods
         } else {
           tempNotation = c
@@ -95,17 +95,17 @@ export class MoveParser {
         }
         break
       case ParserState.periods:
-        if (c === ".") {
+        if (c === '.') {
           state = ParserState.none
           whiteToMove = false
         } else {
-          throw new Error("PGN file format error")
+          throw new Error('PGN file format error')
         }
         break
       case ParserState.move:
         if (/[PRNBQKabcdefgh12345678-]/.test(c)) {
           tempNotation += c
-        } else if ( c === " " || c === ")") {
+        } else if ( c === ' ' || c === ')') {
           if (tempMove) {
             tempMove.next = new MoveRecord(tempNum, tempNotation)
             tempMove = tempMove.next
@@ -120,14 +120,14 @@ export class MoveParser {
           // redundant because number calculated from previous move
           // current.Number = tempNumber;
 
-          if (c === ")") {
+          if (c === ')') {
             return firstMove
           }
 
           whiteToMove = !whiteToMove
           state = ParserState.none
         } else {
-          throw new Error("PGN file format error")
+          throw new Error('PGN file format error')
         }
         break
       case ParserState.nag:
@@ -137,11 +137,11 @@ export class MoveParser {
           // current.NAG = tempNAG;
           state = ParserState.none
         } else {
-          throw new Error("PGN file format error")
+          throw new Error('PGN file format error')
         }
         break
       case ParserState.comment:
-        if (c === "}") {
+        if (c === '}') {
           tempMove.comment = tempComment
           state = ParserState.none
         } else {
