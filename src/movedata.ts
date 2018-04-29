@@ -1,5 +1,6 @@
 import { IPiece } from './pieces/piece'
 import { Position } from './position'
+import { ActionType, IAction } from './action'
 
 export enum MoveFlags {
     Quiet = 0,
@@ -42,4 +43,15 @@ export class MoveData {
     }
   }
 
+  public get actions(): IAction[] {
+    const res = new Array<IAction>()
+    if (this.flags === MoveFlags.Quiet) {
+      res.push({
+        type: ActionType.Move,
+        from: {row: this.fromRow, column: this.fromColumn},
+        to: {row: this.toRow, column: this.toColumn}
+      })
+    }
+    return res
+  } 
 }
