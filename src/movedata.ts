@@ -45,11 +45,38 @@ export class MoveData {
 
   public get actions(): IAction[] {
     const res = new Array<IAction>()
-    if (this.flags === MoveFlags.Quiet) {
+    res.push({
+      type: ActionType.Move,
+      from: {row: this.fromRow, column: this.fromColumn},
+      to: {row: this.toRow, column: this.toColumn}
+    })
+    if (this.flags === MoveFlags.Quiet) return res    
+    if (this.flags === MoveFlags.Capture || this.flags === MoveFlags.CaptureEnPassant) {
+      res.push({
+        type: ActionType.Delete,
+        from: {row: this.capturedPiece.row, column: this.capturedPiece.column}
+      })
+    } else if (this.flags === MoveFlags.CastlingShort) {
       res.push({
         type: ActionType.Move,
-        from: {row: this.fromRow, column: this.fromColumn},
-        to: {row: this.toRow, column: this.toColumn}
+        from: {row: this.fromRow, column: 7},
+        to: {row: this.toRow, column: 5}
+      })
+    } else if (this.flags === MoveFlags.CastlingLong) {
+      res.push({
+        type: ActionType.Move,
+        from: {row: this.fromRow, column: 0},
+        to: {row: this.toRow, column: 2}
+      })
+    } else if (this.flags === MoveFlags.PawnPromotion) {
+      res.push({
+        type: ActionType.Delete,
+        from: {row: this.toRow, column: this.toColumn}
+      })
+      res.push({
+        type: ActionType.Insert,
+        to: {row: this.toRow, column: this.toColumn},
+        code: this.promotedPieceCode
       })
     }
     return res
