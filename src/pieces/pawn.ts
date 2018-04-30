@@ -1,16 +1,10 @@
-import { IPiece } from './piece'
+import { Piece } from './piece'
 import { Position } from '../position'
 import { MoveData, MoveFlags } from '../movedata'
 
-export class Pawn implements IPiece {
-
-  public readonly fenCode: string
-
-  constructor(
-    public readonly row: number,
-    public readonly column: number,
-    public readonly isWhite: boolean) {
-    this.fenCode = this.isWhite ? 'P' : 'p'
+export class Pawn extends Piece {
+  constructor( row: number, column: number, isWhite: boolean) {
+    super(row, column, isWhite, isWhite ? 'P' : 'p')
   }
 
   public getPseudoLegalMove(

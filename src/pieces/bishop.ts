@@ -1,16 +1,10 @@
-import { IPiece } from './piece'
+import { Piece } from './piece'
 import { Position } from '../position'
 import { MoveData, MoveFlags } from '../movedata'
 
-export class Bishop implements IPiece {
-
-  public readonly fenCode: string
-
-  constructor(
-    public readonly row: number,
-    public readonly column: number,
-    public readonly isWhite: boolean) {
-    this.fenCode = this.isWhite ? 'B' : 'b'
+export class Bishop extends Piece {
+  constructor( row: number, column: number, isWhite: boolean) {
+    super(row, column, isWhite, isWhite ? 'B' : 'b')
   }
 
   public getPseudoLegalMove(

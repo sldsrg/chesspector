@@ -1,4 +1,4 @@
-import { IPiece } from './pieces/piece'
+import { Piece } from './pieces/piece'
 import { Position } from './position'
 import { ActionType, IAction } from './action'
 
@@ -21,7 +21,7 @@ export class MoveData {
     public toRow: number,
     public toColumn: number,
     public flags: MoveFlags = MoveFlags.Quiet,
-    public capturedPiece: IPiece = null,
+    public capturedPiece: Piece = null,
     public promotedPieceCode: string = '\0') { }
 
   public getLAN(pos: Position): string {

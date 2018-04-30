@@ -1,4 +1,4 @@
-import { IPiece } from './pieces/piece'
+import { Piece } from './pieces/piece'
 import { newPiece } from './pieces/factory'
 
 /** class represent chess pieces with its coordinates and
@@ -20,7 +20,7 @@ export class Position {
   /** FEN representation of initial position */
   public static readonly INITIAL: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk -'
 
-  private position: IPiece[][] = [
+  private position: Piece[][] = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -30,8 +30,8 @@ export class Position {
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
   ]
-  private mWhitePieces: IPiece[] = [] // White King first
-  private mBlackPieces: IPiece[] = [] // Black King first
+  private mWhitePieces: Piece[] = [] // White King first
+  private mBlackPieces: Piece[] = [] // Black King first
 
   private mWhitesToMove: boolean
   private mWhiteCastlingLongEnabled: boolean
@@ -81,15 +81,15 @@ export class Position {
     return this.mCaptureEnpassantTarget
   }
 
-  get at(): IPiece[][] {
+  get at(): Piece[][] {
     return this.position
   }
 
-  get whitePieces(): IPiece[] {
+  get whitePieces(): Piece[] {
     return this.mWhitePieces
   }
 
-  get blackPieces(): IPiece[] {
+  get blackPieces(): Piece[] {
     return this.mBlackPieces
   }
 

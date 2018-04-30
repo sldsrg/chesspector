@@ -1,4 +1,4 @@
-import { IPiece } from './pieces/piece'
+import { Piece } from './pieces/piece'
 import { MoveData } from './movedata'
 import { Position } from './position'
 
