@@ -6,7 +6,7 @@ export class Inspector {
   constructor(private position: Position) {
   }
 
-  public getMove(sqFrom: string, sqTo: string): MoveData {
+  public getMove(sqFrom: string, sqTo: string): MoveData | undefined {
     const fromFile = sqFrom.charCodeAt(0) - 97
     const fromRank = sqFrom.charCodeAt(1) - 48
     const toFile = sqTo.charCodeAt(0) - 97
@@ -16,6 +16,7 @@ export class Inspector {
     const toRow = 8 - toRank
     const toCol = toFile
     const piece = this.position.at[fromRow][fromCol]
-    return piece === null ? null : piece.getPseudoLegalMove(this.position, toRow, toCol)
+    if (!piece) throw `Piece not found at ${sqFrom}`
+    return piece.getPseudoLegalMove(this.position, toRow, toCol)
   }
 }

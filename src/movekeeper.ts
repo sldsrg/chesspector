@@ -3,47 +3,46 @@ import { MoveParser } from './moveparser'
 import { MoveRecord } from './moverecord'
 
 export class Movekeeper {
-  private mFirstMove: MoveRecord
+  private __firstMove: MoveRecord | undefined
 
-  constructor(lan: string = null) {
-    if (lan === null) {
-      this.mFirstMove = null
-    } else {
+  constructor(lan?: string) {
+    if (lan) {
       const parser = new MoveParser(lan)
-      this.mFirstMove = parser.parse()
+      this.__firstMove = parser.parse()
     }
   }
 
   get hasMoves(): boolean {
-    return this.mFirstMove !== null
+    return this.__firstMove !== undefined
   }
 
   get first(): MoveRecord {
-    return this.mFirstMove
+    if (!this.hasMoves) throw 'Failed to get first record on empty list'
+    return this.__firstMove!
   }
 
   public add(move: MoveRecord) {
     if (this.hasMoves) {
-      let scan = this.mFirstMove
+      let scan = this.first
       while (scan.next) {
         scan = scan.next
       }
       scan.next = move
     } else {
-      this.mFirstMove = move
+      this.__firstMove = move
     }
   }
 
   public remove(move: MoveRecord) {
     if (this.hasMoves) {
-      if (this.mFirstMove === move) {
-        this.mFirstMove = null
+      if (this.__firstMove === move) {
+        delete this.__firstMove
       } else {
-        let scan = this.mFirstMove
-        while (scan !== move) {
+        let scan = this.first
+        while (scan.next && scan.next !== move) {
           scan = scan.next
         }
-        scan = null
+        if (scan.next) delete scan.next
       }
     }
   }

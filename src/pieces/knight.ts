@@ -9,16 +9,16 @@ export class Knight extends Piece {
 
   public getPseudoLegalMove(
     pos: Position,
-    toRow: number, toColumn: number): MoveData {
+    toRow: number, toColumn: number): MoveData | undefined {
     const istep = Math.abs(toRow - this.row)
     const jstep = Math.abs(toColumn - this.column)
-    if (istep === 0 || jstep === 0 || istep + jstep !== 3) return null
+    if (istep === 0 || jstep === 0 || istep + jstep !== 3) return
 
     const moveData = new MoveData(this.row, this.column, toRow, toColumn)
     const captured = pos.at[toRow][toColumn]
-    if (captured !== null) {
+    if (captured) {
       // can't capture own piece
-      if (this.isWhite === captured.isWhite) return null
+      if (this.isWhite === captured.isWhite) return
       moveData.flags = MoveFlags.Capture,
         moveData.capturedPiece = captured
     }

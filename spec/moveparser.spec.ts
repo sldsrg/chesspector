@@ -13,10 +13,6 @@ describe(`MoveParser`, () => {
       first = parser.parse()
     })
 
-    it(`return non empty result`, () => {
-      expect(first).not.to.equal(null)
-    })
-
     it(`number of nodes from first evaluates to correct value`, () => {
       expect(first.length).to.equal(5)
     })

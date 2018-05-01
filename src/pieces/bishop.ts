@@ -9,9 +9,9 @@ export class Bishop extends Piece {
 
   public getPseudoLegalMove(
     pos: Position,
-    toRow: number, toColumn: number): MoveData {
+    toRow: number, toColumn: number): MoveData | undefined {
     // keep diagonal, vertical or horizontal
-    if (Math.abs(this.column - toColumn) !== Math.abs(this.row - toRow)) return null
+    if (Math.abs(this.column - toColumn) !== Math.abs(this.row - toRow)) return
 
     // check on obstacle
     let iStep = toRow - this.row
@@ -23,16 +23,16 @@ export class Bishop extends Piece {
     let i = this.row + iStep
     let j = this.column + jStep
     while (i !== toRow || j !== toColumn) {
-      if (pos.at[i][j] !== null) return null
+      if (pos.at[i][j]) return
       i += iStep
       j += jStep
     }
 
     const moveData = new MoveData(this.row, this.column, toRow, toColumn)
     const capturedPiece = pos.at[toRow][toColumn]
-    if (capturedPiece !== null) {
+    if (capturedPiece) {
         // can't capture own piece
-        if (this.isWhite === capturedPiece.isWhite) return null
+        if (this.isWhite === capturedPiece.isWhite) return
         moveData.capturedPiece = capturedPiece
         moveData.flags = MoveFlags.Capture
     }

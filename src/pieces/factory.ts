@@ -15,6 +15,7 @@ export function newPiece(code: string, row: number, column: number): Piece {
   case 'B': return new Bishop(row, column, isWhite)
   case 'Q': return new Queen(row, column, isWhite)
   case 'K': return new King(row, column, isWhite)
-  default:  return null
   }
+  throw 'Invalid piece'
+  
 }

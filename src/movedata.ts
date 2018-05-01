@@ -21,8 +21,12 @@ export class MoveData {
     public toRow: number,
     public toColumn: number,
     public flags: MoveFlags = MoveFlags.Quiet,
-    public capturedPiece: Piece = null,
-    public promotedPieceCode: string = '\0') { }
+    public capturedPiece?: Piece,
+    public promotedPieceCode?: string) {
+      if (this.flags & (MoveFlags.Capture | MoveFlags.CaptureEnPassant) && !this.capturedPiece) {
+        throw 'Captured piece undefined'
+      }
+    }
 
   public getLAN(pos: Position): string {
     const from =
@@ -54,7 +58,7 @@ export class MoveData {
     if (this.flags === MoveFlags.Capture || this.flags === MoveFlags.CaptureEnPassant) {
       res.push({
         type: ActionType.Delete,
-        from: {row: this.capturedPiece.row, column: this.capturedPiece.column}
+        from: {row: this.capturedPiece!.row, column: this.capturedPiece!.column}
       })
     } else if (this.flags === MoveFlags.CastlingShort) {
       res.push({

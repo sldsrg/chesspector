@@ -63,24 +63,24 @@ describe('Chessboard position', () => {
     expect(pos.violations).to.contain(Position.NOTES.PAWN_ON_LAST_RANK)
   })
 
-  it('detect \'blacks to move\' flag', () => {
+  it('detect "blacks to move" flag', () => {
     const pos = new Position('r3k2r/8/8/8/8/8/8/R3K2R b QKqk -')
     expect(pos.whitesToMove).to.equal(false)
   })
 
-  it('detect \'white king castling enabled\' flags', () => {
+  it('detect "white king castling enabled" flags', () => {
     const pos = new Position('r3k2r/8/8/8/8/8/8/R3K2R w QK -')
     expect(pos.whiteCastlingLongEnabled).to.equal(true)
     expect(pos.whiteCastlingShortEnabled).to.equal(true)
   })
 
-  it('detect \'black king castling enabled\' flags', () => {
+  it('detect "black king castling enabled" flags', () => {
     const pos = new Position('r3k2r/8/8/8/8/8/8/R3K2R w qk -')
     expect(pos.blackCastlingLongEnabled).to.equal(true)
     expect(pos.blackCastlingShortEnabled).to.equal(true)
   })
 
-  it('detect \'all castlings disabled\' flags', () => {
+  it('detect "all castlings disabled" flags', () => {
     const pos = new Position('r3k2r/8/8/8/8/8/8/R3K2R w - -')
     expect(pos.whiteCastlingLongEnabled).to.equal(false)
     expect(pos.whiteCastlingShortEnabled).to.equal(false)

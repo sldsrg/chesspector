@@ -18,19 +18,19 @@ describe('The pawn has five legal moves:', () => {
       immediately in front of it on the same file.`, () => {
       it('Inspector return valid data.', () => {
         let moveData = whitesInspector.getMove('d2', 'd3')
-        expect(moveData.flags).to.equal(MoveFlags.Quiet)
+        expect(moveData!.flags).to.equal(MoveFlags.Quiet)
         moveData = blacksInspector.getMove('d7', 'd6')
-        expect(moveData.flags).to.equal(MoveFlags.Quiet)
+        expect(moveData!.flags).to.equal(MoveFlags.Quiet)
       })
 
       it('Try to move backward fail.', () => {
-        expect(whitesInspector.getMove('d5', 'd4')).to.equal(null)
-        expect(blacksInspector.getMove('g4', 'g5')).to.equal(null)
+        expect(whitesInspector.getMove('e5', 'e4')).to.be.undefined
+        expect(blacksInspector.getMove('g4', 'g5')).to.be.undefined
       })
 
       it('Try to move on occuped square fail.', () => {
-        expect(whitesInspector.getMove('f4', 'f5')).to.equal(null)
-        expect(blacksInspector.getMove('e7', 'e6')).to.equal(null)
+        expect(whitesInspector.getMove('f4', 'f5')).to.be.undefined
+        expect(blacksInspector.getMove('e7', 'e6')).to.be.undefined
       })
     })
 
@@ -39,19 +39,19 @@ describe('The pawn has five legal moves:', () => {
       provided both squares are unoccupied.`, () => {
       it('Inspector return valid data.', () => {
         let moveData = whitesInspector.getMove('d2', 'd4')
-        expect(moveData.flags).to.equal(MoveFlags.Quiet)
+        expect(moveData!.flags).to.equal(MoveFlags.Quiet)
         moveData = blacksInspector.getMove('d7', 'd5')
-        expect(moveData.flags).to.equal(MoveFlags.Quiet)
+        expect(moveData!.flags).to.equal(MoveFlags.Quiet)
       })
 
       it('Try to move over obstacle fail.', () => {
-        expect(whitesInspector.getMove('h2', 'h4')).to.equal(null)
-        expect(blacksInspector.getMove('e7', 'e5')).to.equal(null)
+        expect(whitesInspector.getMove('h2', 'h4')).to.be.undefined
+        expect(blacksInspector.getMove('e7', 'e5')).to.be.undefined
       })
 
       it('Try to move on occuped square fail.', () => {
-        expect(whitesInspector.getMove('g2', 'g4')).to.equal(null)
-        expect(blacksInspector.getMove('c7', 'c5')).to.equal(null)
+        expect(whitesInspector.getMove('g2', 'g4')).to.be.undefined
+        expect(blacksInspector.getMove('c7', 'c5')).to.be.undefined
       })
     })
 
@@ -60,22 +60,22 @@ describe('The pawn has five legal moves:', () => {
       piece which is diagonally in front of it on an adjacent file, capturing that piece.`, () => {
       it('Inspector return valid data.', () => {
         let moveData = whitesInspector.getMove('f3', 'g4')
-        expect(moveData.flags).to.equal(MoveFlags.Capture)
-        expect(moveData.capturedPiece).not.to.equal(null)
+        expect(moveData!.flags).to.equal(MoveFlags.Capture)
+        expect(moveData!.capturedPiece).not.to.be.undefined
 
         moveData = blacksInspector.getMove('d7', 'e6')
-        expect(moveData.flags).to.equal(MoveFlags.Capture)
-        expect(moveData.capturedPiece).not.to.equal(null)
+        expect(moveData!.flags).to.equal(MoveFlags.Capture)
+        expect(moveData!.capturedPiece).not.to.be.undefined
       })
 
       it('Try to capture own piece fail.', () => {
-        expect(whitesInspector.getMove('g2', 'f3')).to.equal(null)
-        expect(blacksInspector.getMove('e7', 'f6')).to.equal(null)
+        expect(whitesInspector.getMove('g2', 'f3')).to.be.undefined
+        expect(blacksInspector.getMove('e7', 'f6')).to.be.undefined
       })
 
       it('Try to move like capture on empty square fail.', () => {
-        expect(whitesInspector.getMove('d2', 'c3')).to.equal(null)
-        expect(blacksInspector.getMove('g4', 'h3')).to.equal(null)
+        expect(whitesInspector.getMove('d2', 'c3')).to.be.undefined
+        expect(blacksInspector.getMove('g4', 'h3')).to.be.undefined
       })
     })
 
@@ -87,12 +87,12 @@ describe('The pawn has five legal moves:', () => {
       following this advance.`, () => {
       it('Inspector return valid data.', () => {
         let moveData = whitesInspector.getMove('e5', 'f6')
-        expect(moveData.flags).to.equal(MoveFlags.CaptureEnPassant)
-        expect(moveData.capturedPiece).not.to.equal(null)
+        expect(moveData!.flags).to.equal(MoveFlags.CaptureEnPassant)
+        expect(moveData!.capturedPiece).not.to.be.undefined
 
         moveData = blacksInspector.getMove('g4', 'f3')
-        expect(moveData.flags).to.equal(MoveFlags.CaptureEnPassant)
-        expect(moveData.capturedPiece).not.to.equal(null)
+        expect(moveData!.flags).to.equal(MoveFlags.CaptureEnPassant)
+        expect(moveData!.capturedPiece).not.to.be.undefined
       })
     })
   // TODO: check en-passant flag toggle
@@ -115,53 +115,53 @@ describe(`The king can move in two different ways, by:`, () => {
 
     it('Inspector return valid data for valid move.', () => {
       let moveData = inspector.getMove('e1', 'd2')
-      expect(moveData.flags).to.equal(MoveFlags.Quiet)
+      expect(moveData!.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove('e1', 'e2')
-      expect(moveData.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.flags).to.equal(MoveFlags.Capture)
     })
 
     it('Invalid move fail.', () => {
-      expect(inspector.getMove('e1', 'a1')).to.equal(null)
+      expect(inspector.getMove('e1', 'a1')).to.be.undefined
     })
   })
   describe(`b) castling.`, () => {
     it('Inspector return valid data on white king castrling.', () => {
       const inspector = new Inspector(new Position('r3k2r/8/8/8/8/8/8/R3K2R w QK -'))
       let moveData = inspector.getMove('e1', 'g1')
-      expect(moveData.flags).to.equal(MoveFlags.CastlingShort)
+      expect(moveData!.flags).to.equal(MoveFlags.CastlingShort)
 
       moveData = inspector.getMove('e1', 'c1')
-      expect(moveData.flags).to.equal(MoveFlags.CastlingLong)
+      expect(moveData!.flags).to.equal(MoveFlags.CastlingLong)
     })
 
     it('Inspector return valid data on black king castrling.', () => {
       const inspector = new Inspector(new Position('r3k2r/8/8/8/8/8/8/R3K2R b qk -'))
       let moveData = inspector.getMove('e8', 'g8')
-      expect(moveData.flags).to.equal(MoveFlags.CastlingShort)
+      expect(moveData!.flags).to.equal(MoveFlags.CastlingShort)
 
       moveData = inspector.getMove('e8', 'c8')
-      expect(moveData.flags).to.equal(MoveFlags.CastlingLong)
+      expect(moveData!.flags).to.equal(MoveFlags.CastlingLong)
     })
 
     it('Fails if castling not alowed', () => {
       let inspector = new Inspector(new Position('r3k2r/8/8/8/8/8/8/R3K2R w - -'))
-      expect(inspector.getMove('e1', 'c1')).to.equal(null)
-      expect(inspector.getMove('e1', 'g1')).to.equal(null)
+      expect(inspector.getMove('e1', 'c1')).to.be.undefined
+      expect(inspector.getMove('e1', 'g1')).to.be.undefined
 
       inspector = new Inspector(new Position('r3k2r/8/8/8/8/8/8/R3K2R b - -'))
-      expect(inspector.getMove('e8', 'c8')).to.equal(null)
-      expect(inspector.getMove('e8', 'g8')).to.equal(null)
+      expect(inspector.getMove('e8', 'c8')).to.be.undefined
+      expect(inspector.getMove('e8', 'g8')).to.be.undefined
     })
 
     it('Fails if obstacle present between rook and king', () => {
       let inspector = new Inspector(new Position('4k3/8/8/8/8/8/8/RN2KB1R w KQ -'))
-      expect(inspector.getMove('e1', 'c1')).to.equal(null)
-      expect(inspector.getMove('e1', 'g1')).to.equal(null)
+      expect(inspector.getMove('e1', 'c1')).to.be.undefined
+      expect(inspector.getMove('e1', 'g1')).to.be.undefined
 
       inspector = new Inspector(new Position('rn2kb1r/8/8/8/8/8/8/4K3 b qk -'))
-      expect(inspector.getMove('e8', 'c8')).to.equal(null)
-      expect(inspector.getMove('e8', 'g8')).to.equal(null)
+      expect(inspector.getMove('e8', 'c8')).to.be.undefined
+      expect(inspector.getMove('e8', 'g8')).to.be.undefined
     })
   })
 })
@@ -178,25 +178,25 @@ describe(`The queen moves to any square along the file, the rank
 
     it('Inspector return valid data for valid move.', () => {
       let moveData = inspector.getMove('d3', 'd5')
-      expect(moveData.flags).to.equal(MoveFlags.Quiet)
+      expect(moveData!.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove('d3', 'c4')
-      expect(moveData.flags).to.equal(MoveFlags.Quiet)
+      expect(moveData!.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove('d3', 'f5')
-      expect(moveData.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.flags).to.equal(MoveFlags.Capture)
     })
 
     it('Move not diagonal, vertical or horizontal fail.', () => {
-      expect(inspector.getMove('d3', 'c6')).to.equal(null)
+      expect(inspector.getMove('d3', 'c6')).to.be.undefined
     })
 
     it('Move over any intervening pieces fail.', () => {
-      expect(inspector.getMove('d3', 'b1')).to.equal(null)
+      expect(inspector.getMove('d3', 'b1')).to.be.undefined
     })
 
     it('Capture own pieces fail.', () => {
-      expect(inspector.getMove('d3', 'c2')).to.equal(null)
+      expect(inspector.getMove('d3', 'c2')).to.be.undefined
     })
   })
 
@@ -212,22 +212,22 @@ describe(`The rook moves to any square along the file or the rank
 
     it('Inspector return valid data for valid move.', () => {
       let moveData = inspector.getMove('a1', 'c1')
-      expect(moveData.flags).to.equal(MoveFlags.Quiet)
+      expect(moveData!.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove('a1', 'a2')
-      expect(moveData.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.flags).to.equal(MoveFlags.Capture)
     })
 
     it('Move not vertical or horizontal fail.', () => {
-      expect(inspector.getMove('a1', 'c3')).to.equal(null)
+      expect(inspector.getMove('a1', 'c3')).to.be.undefined
     })
 
     it('Move over any intervening pieces fail.', () => {
-      expect(inspector.getMove('a1', 'a8')).to.equal(null)
+      expect(inspector.getMove('a1', 'a8')).to.be.undefined
     })
 
     it('Capture own pieces fail.', () => {
-      expect(inspector.getMove('a1', 'e1')).to.equal(null)
+      expect(inspector.getMove('a1', 'e1')).to.be.undefined
     })
   })
 
@@ -242,22 +242,22 @@ describe(`The bishop moves to any square along a diagonal on which it stands.
 
     it('Inspector return valid data for valid move.', () => {
       let moveData = inspector.getMove('d3', 'a6')
-      expect(moveData.flags).to.equal(MoveFlags.Quiet)
+      expect(moveData!.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove('d3', 'f5')
-      expect(moveData.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.flags).to.equal(MoveFlags.Capture)
     })
 
     it('Move not diagonal fail.', () => {
-      expect(inspector.getMove('d3', 'd6')).to.equal(null)
+      expect(inspector.getMove('d3', 'd6')).to.be.undefined
     })
 
     it('Move over any intervening pieces fail.', () => {
-      expect(inspector.getMove('d3', 'h7')).to.equal(null)
+      expect(inspector.getMove('d3', 'h7')).to.be.undefined
     })
 
     it('Capture own pieces fail.', () => {
-      expect(inspector.getMove('d3', 'c2')).to.equal(null)
+      expect(inspector.getMove('d3', 'c2')).to.be.undefined
     })
   })
 
@@ -272,17 +272,17 @@ describe(`The knight moves to one of the squares nearest to that on
 
     it('Inspector return valid data for valid move.', () => {
       let moveData = inspector.getMove('d2', 'f3')
-      expect(moveData.flags).to.equal(MoveFlags.Quiet)
+      expect(moveData!.flags).to.equal(MoveFlags.Quiet)
 
       moveData = inspector.getMove('d2', 'e4')
-      expect(moveData.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.flags).to.equal(MoveFlags.Capture)
     })
 
     it('Incorrect move fail.', () => {
-      expect(inspector.getMove('d2', 'd4')).to.equal(null)
+      expect(inspector.getMove('d2', 'd4')).to.be.undefined
     })
 
     it('Capture own pieces fail.', () => {
-      expect(inspector.getMove('d2', 'c4')).to.equal(null)
+      expect(inspector.getMove('d2', 'c4')).to.be.undefined
     })
   })

@@ -4,6 +4,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
+    "strictNullChecks": true,
     "target": "es2015",
     "module": "commonjs",
     "outDir": "./dist"

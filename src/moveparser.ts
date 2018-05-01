@@ -26,11 +26,11 @@ export class MoveParser {
     let tempNAG = 0
     let tempNotation = ''
     let tempComment = ''
-    let tempMove: MoveRecord = null
+    let tempMove: MoveRecord | undefined
     let pieceCode = ''
     let whiteToMove = true
     let state: ParserState
-    let firstMove: MoveRecord = null
+    let firstMove: MoveRecord | undefined
     state = ParserState.none
 
     for (; this.mPos < this.mSrc.length; this.mPos++) {
@@ -63,10 +63,14 @@ export class MoveParser {
           // TODO  0-0(-0) O-O(-O) => piece code = 'K'
         } else if (c === '(') {
           this.mPos++
-          tempMove.fork(this.parse())
+          if (!tempMove) throw 'Fork without root'
+          const fork = this.parse()
+          if (!fork) throw 'Bad fork'          
+          tempMove!.fork(fork!)
           state = ParserState.none
         } else if (c === ')') {
-          return firstMove
+          if (!firstMove) throw 'Move parser failed'
+          return firstMove!
         } else if (/S/.test(c)) {
           throw new Error('PGN file format error')
         }
@@ -113,7 +117,7 @@ export class MoveParser {
             tempMove = new MoveRecord(tempNum, tempNotation)
           }
 
-          if (firstMove === null) {
+          if (!firstMove) {
             firstMove = tempMove
           }
 
@@ -142,7 +146,8 @@ export class MoveParser {
         break
       case ParserState.comment:
         if (c === '}') {
-          tempMove.comment = tempComment
+          if(!tempMove) throw 'Comment without move'
+          tempMove!.comment = tempComment
           state = ParserState.none
         } else {
           tempComment += c
@@ -159,11 +164,11 @@ export class MoveParser {
         tempMove = new MoveRecord(tempNum, tempNotation)
       }
 
-      if (firstMove === null) {
+      if (!firstMove) {
         firstMove = tempMove
       }
     }
-
-    return firstMove
+    if (!firstMove) throw 'Move parser failed'
+    return firstMove!
   }
 }

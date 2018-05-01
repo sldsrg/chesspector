@@ -19,12 +19,12 @@ export class Piece {
 
   getPseudoLegalMove(
     pos: Position,
-    toRow: number, toColumn: number): MoveData { return null }
+    toRow: number, toColumn: number): MoveData | undefined { return }
 
   moveTo(
     pos: Position,
-    toRow: number, toColumn: number) {
-      pos.at[this.row][this.column] = null
+    toRow: number, toColumn: number): void {
+      delete pos.at[this.row][this.column]
       pos.at[toRow][toColumn] = this
       this.__row = toRow
       this.__column = toColumn

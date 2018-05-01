@@ -9,40 +9,35 @@ export enum Notation {
 
 // represent structure to organize hierarchical recordings of game or solution.
 export class MoveRecord {
-  private mNumOfHalfmove: number
-  private mNotationType: Notation
-  private mNotationString: string
-  private mGlyph: number
-  private mComment: string
-  private mNext: MoveRecord
-  private mPrevious: MoveRecord
-  private mForks: MoveRecord[]
+  private __numOfHalfmove: number
+  private __notationType: Notation
+  private __notationString: string
+  private __next: MoveRecord
+  private __previous: MoveRecord
+  private __forks: MoveRecord[]
 
   constructor(
     num: number,
     move: string,
-    glyph: number = 0,
-    comment: string = null) {
-    this.mNumOfHalfmove = num
-    this.mNotationString = move
+    public glyph?: number,
+    public comment?: string) {
+    this.__numOfHalfmove = num
+    this.__notationString = move
     if (/^([rnbqk]?)([a-h])(\d)([-x])([a-h])(\d)(=[rnbq])?$/i.test(move)) {
-      this.mNotationType = Notation.LongAlgebraic
+      this.__notationType = Notation.LongAlgebraic
     } else if (/^[0o]-[0o](-[0o])?$/i.test(move)) {
-      this.mNotationType = Notation.Castling
+      this.__notationType = Notation.Castling
     } else if (/^[rnbqk]?[a-h]?\d?x?[a-h]\d$/i.test(move)) {
-      this.mNotationType = Notation.ShortAlgebraic
+      this.__notationType = Notation.ShortAlgebraic
     } else {
       throw new Error('Invalid move notation')
     }
-
-    this.mGlyph = glyph
-    this.mComment = comment
   }
 
   // Evaluate this object in given position context
-  public eval(pos: Position): MoveData {
-    if (this.mNotationType === Notation.LongAlgebraic) {
-      const lan = this.mNotationString
+  public eval(pos: Position): MoveData | undefined {
+    if (this.__notationType === Notation.LongAlgebraic) {
+      const lan = this.__notationString
       let pieceCode = ''
       let shft = 0
       if (/^[rnbqk]/i.test(lan)) {
@@ -55,74 +50,74 @@ export class MoveRecord {
       const toRow = 56 - lan.charCodeAt(shft + 4)
       const md = new MoveData(fromRow, fromColumn, toRow, toColumn)
       return md
-    } else if (this.mNotationType === Notation.ShortAlgebraic) {
-      const res = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this.mNotationString)
+    } else if (this.__notationType === Notation.ShortAlgebraic) {
+      const exres = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this.__notationString)
+      if (!exres) throw `Invalid move notation ${this.__notationString}`
+      const res = exres!
 
-      let pieceCode = res[1]
-      if (pieceCode === '') pieceCode = 'P'
+      let pieceCode: string = res[1] ? res[1] : 'P'
 
-      let fromColumn
-      if (res[2] !== undefined) fromColumn = res[2].charCodeAt(0) - 97
+      let fromColumn: number | undefined
+      let fromRow: number | undefined
+      let toColumn: number | undefined
+      let toRow: number | undefined
+      if (res[2]) fromColumn = res[2]!.charCodeAt(0) - 97
+      if (res[3]) fromRow = 56 - res[3]!.charCodeAt(0)
+      if (res[4]) toColumn = res[4]!.charCodeAt(0) - 97
+      if (res[5]) toRow = 56 - res[5]!.charCodeAt(0)
 
-      let fromRow
-      if (res[3] !== undefined) fromRow = 56 - res[3].charCodeAt(0)
+      // TODO: must throw expection if target file undefined
+      // TODO: must evaluate missing rank for shortened pawn capture notation
 
-      const toColumn = res[4].charCodeAt(0) - 97
-
-      const toRow = 56 - res[5].charCodeAt(0)
-
-      for (const piece of pos.whitePieces) {
+      const activePieces = pos.whitesToMove ? pos.whitePieces : pos.blackPieces
+      // scan for first acceptable piece
+      for (const piece of activePieces) {
         if (piece.fenCode !== pieceCode) continue
-        if (fromColumn !== undefined && piece.column !== fromColumn) continue
-        if (fromRow !== undefined && piece.row !== fromRow) continue
-        const md = piece.getPseudoLegalMove(pos, toRow, toColumn)
-        if (md !== null) return md
+        if (fromColumn && piece.column !== fromColumn) continue
+        if (fromRow && piece.row !== fromRow) continue
+        const md = piece.getPseudoLegalMove(pos, toRow!, toColumn!)
+        // return if piece can play considered move
+        if (md) return md
       }
-    } else if (this.mNotationType === Notation.Castling) {
+    } else if (this.__notationType === Notation.Castling) {
       let toRow = 0 // defaults to black's row
       let toColumn = 2 // defaults to queen's side
-      if (/^[0o]-[0o]$/i.test(this.mNotationString)) toColumn = 6
+      if (/^[0o]-[0o]$/i.test(this.__notationString)) toColumn = 6
 
       let king = pos.blackPieces[0]
       if (pos.whitesToMove) {
         king = pos.whitePieces[0]
         toRow = 7
       }
-      if (king.row !== toRow || king.column !== 4) return null
-      return king.getPseudoLegalMove(pos, toRow, toColumn)
+      if (!king) throw 'King must be first in array of pieces'
+      
+      if (king!.row !== toRow || king!.column !== 4) return
+      return king!.getPseudoLegalMove(pos, toRow, toColumn)
     }
-    return null
-  }
-
-  get comment(): string {
-    return this.mComment
-  }
-
-  set comment(value: string) {
-    this.mComment = value
+    return
   }
 
   get next(): MoveRecord {
-    return this.mNext
+    return this.__next
   }
 
   set next(value: MoveRecord) {
-    this.mNext = value
+    this.__next = value
   }
 
   get previous(): MoveRecord {
-    return this.mPrevious
+    return this.__previous
   }
 
   set previous(value: MoveRecord) {
-    this.mPrevious = value
+    this.__previous = value
   }
 
   public fork(rec: MoveRecord) {
-    if (this.mForks) {
-      this.mForks.push(rec)
+    if (this.__forks) {
+      this.__forks.push(rec)
     } else {
-      this.mForks = [rec]
+      this.__forks = [rec]
     }
   }
 
