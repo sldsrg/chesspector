@@ -24,7 +24,7 @@ export class MoveData {
     public capturedPiece?: Piece,
     public promotedPieceCode?: string) {
       if (this.flags & (MoveFlags.Capture | MoveFlags.CaptureEnPassant) && !this.capturedPiece) {
-        throw 'Captured piece undefined'
+        throw new Error('Captured piece undefined')
       }
     }
 
@@ -54,7 +54,7 @@ export class MoveData {
       from: {row: this.fromRow, column: this.fromColumn},
       to: {row: this.toRow, column: this.toColumn}
     })
-    if (this.flags === MoveFlags.Quiet) return res    
+    if (this.flags === MoveFlags.Quiet) return res
     if (this.flags === MoveFlags.Capture || this.flags === MoveFlags.CaptureEnPassant) {
       res.push({
         type: ActionType.Delete,
@@ -84,5 +84,5 @@ export class MoveData {
       })
     }
     return res
-  } 
+  }
 }

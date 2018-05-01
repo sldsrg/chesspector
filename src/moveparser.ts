@@ -63,13 +63,13 @@ export class MoveParser {
           // TODO  0-0(-0) O-O(-O) => piece code = 'K'
         } else if (c === '(') {
           this.mPos++
-          if (!tempMove) throw 'Fork without root'
+          if (!tempMove) throw new Error('Fork without root')
           const fork = this.parse()
-          if (!fork) throw 'Bad fork'          
+          if (!fork) throw new Error('Bad fork')
           tempMove!.fork(fork!)
           state = ParserState.none
         } else if (c === ')') {
-          if (!firstMove) throw 'Move parser failed'
+          if (!firstMove) throw new Error('Move parser failed')
           return firstMove!
         } else if (/S/.test(c)) {
           throw new Error('PGN file format error')
@@ -146,7 +146,7 @@ export class MoveParser {
         break
       case ParserState.comment:
         if (c === '}') {
-          if(!tempMove) throw 'Comment without move'
+          if (!tempMove) throw new Error('Comment without move')
           tempMove!.comment = tempComment
           state = ParserState.none
         } else {
@@ -168,7 +168,7 @@ export class MoveParser {
         firstMove = tempMove
       }
     }
-    if (!firstMove) throw 'Move parser failed'
+    if (!firstMove) throw new Error('Move parser failed')
     return firstMove!
   }
 }

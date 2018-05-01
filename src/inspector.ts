@@ -16,7 +16,7 @@ export class Inspector {
     const toRow = 8 - toRank
     const toCol = toFile
     const piece = this.position.at[fromRow][fromCol]
-    if (!piece) throw `Piece not found at ${sqFrom}`
+    if (!piece) throw new Error(`Piece not found at ${sqFrom}`)
     return piece.getPseudoLegalMove(this.position, toRow, toCol)
   }
 }

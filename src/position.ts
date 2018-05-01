@@ -20,7 +20,7 @@ export class Position {
   /** FEN representation of initial position */
   public static readonly INITIAL: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk -'
 
-  private position: Piece[][] = [[],[],[],[],[],[],[],[]]
+  private position: Piece[][] = [[], [], [], [], [], [], [], []]
   private mWhitePieces: Piece[] = [] // White King first
   private mBlackPieces: Piece[] = [] // Black King first
 

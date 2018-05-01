@@ -9,26 +9,26 @@ export enum Notation {
 
 // represent structure to organize hierarchical recordings of game or solution.
 export class MoveRecord {
-  private __numOfHalfmove: number
-  private __notationType: Notation
-  private __notationString: string
-  private __next: MoveRecord
-  private __previous: MoveRecord
-  private __forks: MoveRecord[]
+  private _numOfHalfmove: number
+  private _notationType: Notation
+  private _notationString: string
+  private _next: MoveRecord
+  private _previous: MoveRecord
+  private _forks: MoveRecord[]
 
   constructor(
     num: number,
     move: string,
     public glyph?: number,
     public comment?: string) {
-    this.__numOfHalfmove = num
-    this.__notationString = move
+    this._numOfHalfmove = num
+    this._notationString = move
     if (/^([rnbqk]?)([a-h])(\d)([-x])([a-h])(\d)(=[rnbq])?$/i.test(move)) {
-      this.__notationType = Notation.LongAlgebraic
+      this._notationType = Notation.LongAlgebraic
     } else if (/^[0o]-[0o](-[0o])?$/i.test(move)) {
-      this.__notationType = Notation.Castling
+      this._notationType = Notation.Castling
     } else if (/^[rnbqk]?[a-h]?\d?x?[a-h]\d$/i.test(move)) {
-      this.__notationType = Notation.ShortAlgebraic
+      this._notationType = Notation.ShortAlgebraic
     } else {
       throw new Error('Invalid move notation')
     }
@@ -36,8 +36,8 @@ export class MoveRecord {
 
   // Evaluate this object in given position context
   public eval(pos: Position): MoveData | undefined {
-    if (this.__notationType === Notation.LongAlgebraic) {
-      const lan = this.__notationString
+    if (this._notationType === Notation.LongAlgebraic) {
+      const lan = this._notationString
       let pieceCode = ''
       let shft = 0
       if (/^[rnbqk]/i.test(lan)) {
@@ -50,12 +50,12 @@ export class MoveRecord {
       const toRow = 56 - lan.charCodeAt(shft + 4)
       const md = new MoveData(fromRow, fromColumn, toRow, toColumn)
       return md
-    } else if (this.__notationType === Notation.ShortAlgebraic) {
-      const exres = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this.__notationString)
-      if (!exres) throw `Invalid move notation ${this.__notationString}`
+    } else if (this._notationType === Notation.ShortAlgebraic) {
+      const exres = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this._notationString)
+      if (!exres) throw new Error(`Invalid move notation ${this._notationString}`)
       const res = exres!
 
-      let pieceCode: string = res[1] ? res[1] : 'P'
+      const pieceCode: string = res[1] ? res[1] : 'P'
 
       let fromColumn: number | undefined
       let fromRow: number | undefined
@@ -79,18 +79,18 @@ export class MoveRecord {
         // return if piece can play considered move
         if (md) return md
       }
-    } else if (this.__notationType === Notation.Castling) {
+    } else if (this._notationType === Notation.Castling) {
       let toRow = 0 // defaults to black's row
       let toColumn = 2 // defaults to queen's side
-      if (/^[0o]-[0o]$/i.test(this.__notationString)) toColumn = 6
+      if (/^[0o]-[0o]$/i.test(this._notationString)) toColumn = 6
 
       let king = pos.blackPieces[0]
       if (pos.whitesToMove) {
         king = pos.whitePieces[0]
         toRow = 7
       }
-      if (!king) throw 'King must be first in array of pieces'
-      
+      if (!king) throw new Error('King must be first in array of pieces')
+
       if (king!.row !== toRow || king!.column !== 4) return
       return king!.getPseudoLegalMove(pos, toRow, toColumn)
     }
@@ -98,26 +98,26 @@ export class MoveRecord {
   }
 
   get next(): MoveRecord {
-    return this.__next
+    return this._next
   }
 
   set next(value: MoveRecord) {
-    this.__next = value
+    this._next = value
   }
 
   get previous(): MoveRecord {
-    return this.__previous
+    return this._previous
   }
 
   set previous(value: MoveRecord) {
-    this.__previous = value
+    this._previous = value
   }
 
   public fork(rec: MoveRecord) {
-    if (this.__forks) {
-      this.__forks.push(rec)
+    if (this._forks) {
+      this._forks.push(rec)
     } else {
-      this.__forks = [rec]
+      this._forks = [rec]
     }
   }
 

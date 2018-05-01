@@ -16,6 +16,5 @@ export function newPiece(code: string, row: number, column: number): Piece {
   case 'Q': return new Queen(row, column, isWhite)
   case 'K': return new King(row, column, isWhite)
   }
-  throw 'Invalid piece'
-  
+  throw new Error('Invalid piece')
 }

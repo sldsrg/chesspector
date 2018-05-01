@@ -3,22 +3,22 @@ import { MoveParser } from './moveparser'
 import { MoveRecord } from './moverecord'
 
 export class Movekeeper {
-  private __firstMove: MoveRecord | undefined
+  private _firstMove: MoveRecord | undefined
 
   constructor(lan?: string) {
     if (lan) {
       const parser = new MoveParser(lan)
-      this.__firstMove = parser.parse()
+      this._firstMove = parser.parse()
     }
   }
 
   get hasMoves(): boolean {
-    return this.__firstMove !== undefined
+    return this._firstMove !== undefined
   }
 
   get first(): MoveRecord {
-    if (!this.hasMoves) throw 'Failed to get first record on empty list'
-    return this.__firstMove!
+    if (!this.hasMoves) throw new Error('Failed to get first record on empty list')
+    return this._firstMove!
   }
 
   public add(move: MoveRecord) {
@@ -29,14 +29,14 @@ export class Movekeeper {
       }
       scan.next = move
     } else {
-      this.__firstMove = move
+      this._firstMove = move
     }
   }
 
   public remove(move: MoveRecord) {
     if (this.hasMoves) {
-      if (this.__firstMove === move) {
-        delete this.__firstMove
+      if (this._firstMove === move) {
+        delete this._firstMove
       } else {
         let scan = this.first
         while (scan.next && scan.next !== move) {
