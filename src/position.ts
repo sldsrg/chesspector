@@ -20,75 +20,82 @@ export class Position {
   /** FEN representation of initial position */
   public static readonly INITIAL: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk -'
 
-  private position: Piece[][] = [[], [], [], [], [], [], [], []]
-  private mWhitePieces: Piece[] = [] // White King first
-  private mBlackPieces: Piece[] = [] // Black King first
+  private _rows: Piece[][] = [[], [], [], [], [], [], [], []]
+  private _whitePieces: Piece[] = [] // White King first
+  private _blackPieces: Piece[] = [] // Black King first
 
-  private mWhitesToMove: boolean
-  private mWhiteCastlingLongEnabled: boolean
-  private mWhiteCastlingShortEnabled: boolean
-  private mBlackCastlingLongEnabled: boolean
-  private mBlackCastlingShortEnabled: boolean
-  private mCaptureEnpassantTarget: number
+  private _whitesToMove: boolean
+  private _whiteCastlingLongEnabled: boolean
+  private _whiteCastlingShortEnabled: boolean
+  private _blackCastlingLongEnabled: boolean
+  private _blackCastlingShortEnabled: boolean
+  private _captureEnpassantTarget: number
 
-  private mViolations: string[]
+  private _violations: string[]
 
   /** construct Position from given FEN representation
-   *  @param fen - FEN representation
+   *  @param fen FEN representation
    */
   constructor(fen: string) {
     this.parse(fen)
   }
 
   public isValid(): boolean {
-    return this.mViolations.length === 0
+    return this._violations.length === 0
   }
 
   get violations(): string[] {
-    return this.mViolations
+    return this._violations
   }
 
   get whitesToMove(): boolean {
-    return this.mWhitesToMove
+    return this._whitesToMove
+  }
+
+  /**
+   * Switch next turn to move
+   */
+  public nextTurnToMove() {
+    this._whitesToMove = !this._whitesToMove
   }
 
   get whiteCastlingLongEnabled(): boolean {
-    return this.mWhiteCastlingLongEnabled
+    return this._whiteCastlingLongEnabled
   }
 
   get whiteCastlingShortEnabled(): boolean {
-    return this.mWhiteCastlingShortEnabled
+    return this._whiteCastlingShortEnabled
   }
 
   get blackCastlingLongEnabled(): boolean {
-    return this.mBlackCastlingLongEnabled
+    return this._blackCastlingLongEnabled
   }
 
   get blackCastlingShortEnabled(): boolean {
-    return this.mBlackCastlingShortEnabled
+    return this._blackCastlingShortEnabled
   }
 
   get captureEnpassantTarget(): number {
-    return this.mCaptureEnpassantTarget
+    return this._captureEnpassantTarget
   }
 
   get at(): Piece[][] {
-    return this.position
+    return this._rows
   }
 
   get whitePieces(): Piece[] {
-    return this.mWhitePieces
+    return this._whitePieces
   }
 
   get blackPieces(): Piece[] {
-    return this.mBlackPieces
+    return this._blackPieces
   }
 
   public clear() {
     // TODO: position
-    this.mViolations = []
-    this.mWhitePieces = []
-    this.mBlackPieces = []
+    this._violations = []
+    this._whitePieces = []
+    this._blackPieces = []
   }
 
   /** Set current position from given FEN representation
@@ -96,11 +103,11 @@ export class Position {
    */
   public parse(fen: string) {
     this.clear()
-    this.mWhitesToMove = false
+    this._whitesToMove = false
     const l = fen.length
     if (l === 0) {
-      this.mViolations.push(Position.NOTES.MISSING_WHITE_KING)
-      this.mViolations.push(Position.NOTES.MISSING_BLACK_KING)
+      this._violations.push(Position.NOTES.MISSING_WHITE_KING)
+      this._violations.push(Position.NOTES.MISSING_BLACK_KING)
       return
     }
     let curRow = 0
@@ -120,29 +127,29 @@ export class Position {
         const piece = newPiece(ch, curRow, curCol)
         if (piece.isWhite) {
           if (piece.fenCode === 'K') {
-            if (this.mWhitePieces.length > 0 && this.mWhitePieces[0].fenCode === 'K') {
-              this.mViolations.push(Position.NOTES.TOO_MANY_WHITE_KINGS)
+            if (this._whitePieces.length > 0 && this._whitePieces[0].fenCode === 'K') {
+              this._violations.push(Position.NOTES.TOO_MANY_WHITE_KINGS)
             }
-            this.mWhitePieces.unshift(piece)
+            this._whitePieces.unshift(piece)
           } else {
-            this.mWhitePieces.push(piece)
+            this._whitePieces.push(piece)
           }
         } else {
           if (piece.fenCode === 'k') {
-            if (this.mBlackPieces.length > 0 && this.mBlackPieces[0].fenCode === 'k') {
-              this.mViolations.push(Position.NOTES.TOO_MANY_BLACK_KINGS)
+            if (this._blackPieces.length > 0 && this._blackPieces[0].fenCode === 'k') {
+              this._violations.push(Position.NOTES.TOO_MANY_BLACK_KINGS)
             }
-            this.mBlackPieces.unshift(piece)
+            this._blackPieces.unshift(piece)
           } else {
-            this.mBlackPieces.push(piece)
+            this._blackPieces.push(piece)
           }
         }
         if (/p/i.test(piece.fenCode)) {
-          if (curRow === 0) this.mViolations.push(Position.NOTES.PAWN_ON_LAST_RANK)
-          if (curRow === 7) this.mViolations.push(Position.NOTES.PAWN_ON_FIRST_RANK)
+          if (curRow === 0) this._violations.push(Position.NOTES.PAWN_ON_LAST_RANK)
+          if (curRow === 7) this._violations.push(Position.NOTES.PAWN_ON_FIRST_RANK)
         }
 
-        this.position[curRow][curCol] = piece
+        this._rows[curRow][curCol] = piece
         curCol++
       }
       if (curCol === 8) {
@@ -151,38 +158,38 @@ export class Position {
       }
     }
 
-    if (this.mWhitePieces.length === 0 || this.mWhitePieces[0].fenCode !== 'K') {
-      this.mViolations.push(Position.NOTES.MISSING_WHITE_KING)
+    if (this._whitePieces.length === 0 || this._whitePieces[0].fenCode !== 'K') {
+      this._violations.push(Position.NOTES.MISSING_WHITE_KING)
     }
-    if (this.mBlackPieces.length === 0 || this.mBlackPieces[0].fenCode !== 'k') {
-      this.mViolations.push(Position.NOTES.MISSING_BLACK_KING)
+    if (this._blackPieces.length === 0 || this._blackPieces[0].fenCode !== 'k') {
+      this._violations.push(Position.NOTES.MISSING_BLACK_KING)
     }
-    if (this.mWhitePieces.length > 16) {
-      this.mViolations.push(Position.NOTES.TOO_MANY_WHITE_PIECES)
+    if (this._whitePieces.length > 16) {
+      this._violations.push(Position.NOTES.TOO_MANY_WHITE_PIECES)
     }
-    if (this.mBlackPieces.length > 16) {
-      this.mViolations.push(Position.NOTES.TOO_MANY_BLACK_PIECES)
+    if (this._blackPieces.length > 16) {
+      this._violations.push(Position.NOTES.TOO_MANY_BLACK_PIECES)
     }
     const parts = fen.slice(k).trim().split(' ')
     const castlingAbility = parts[1]
     const enpassantTarget = parts[2]
 
     if (parts.length > 0) {
-        this.mWhitesToMove = (parts[0] === 'w')
-    } else this.mWhitesToMove = true
+        this._whitesToMove = (parts[0] === 'w')
+    } else this._whitesToMove = true
 
     if (parts.length > 1) {
-      this.mWhiteCastlingLongEnabled = parts[1].includes('Q')
-      this.mWhiteCastlingShortEnabled = parts[1].includes('K')
-      this.mBlackCastlingLongEnabled = parts[1].includes('q')
-      this.mBlackCastlingShortEnabled = parts[1].includes('k')
+      this._whiteCastlingLongEnabled = parts[1].includes('Q')
+      this._whiteCastlingShortEnabled = parts[1].includes('K')
+      this._blackCastlingLongEnabled = parts[1].includes('q')
+      this._blackCastlingShortEnabled = parts[1].includes('k')
     }
 
     if (parts.length > 2) {
       if (parts[2][0] === '-') {
-        this.mCaptureEnpassantTarget = -1
+        this._captureEnpassantTarget = -1
       } else {
-         this.mCaptureEnpassantTarget = parts[2].toLowerCase().charCodeAt(0) - 97
+         this._captureEnpassantTarget = parts[2].toLowerCase().charCodeAt(0) - 97
       }
     }
   }
