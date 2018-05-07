@@ -3,18 +3,19 @@ import { MoveData } from './movedata'
 import { Position } from './position'
 import { IAction, ActionType } from './action'
 
-import {Observable, Observer, Subscriber} from 'rxjs'
-import { Action } from 'rxjs/scheduler/Action';
+import { Observable } from 'rxjs/Observable'
+import { Observer} from 'rxjs/Observer'
+import { Subscriber} from 'rxjs/Subscriber'
 
 export class Inspector {
   public actions: Observable<IAction>
   private _actionsObserver: Subscriber<IAction>
 
   constructor(private position: Position) {
-    this.actions = new Observable(observer => this._actionsObserver = observer)
+    this.actions = new Observable((observer: Subscriber<IAction>) => this._actionsObserver = observer)
   }
 
-   /**
+  /**
    * Check if square not ocuped by any piece.
    * @param row zero-based index from top
    * @param column zero-based index from left
@@ -55,10 +56,10 @@ export class Inspector {
 
   /**
    * Do passed move: modify position, change turn to move and send related actions
-   * @param md necessary data to make move 
+   * @param md necessary data to make move
    */
   public doMove(md: MoveData): void {
-    for (const action of md.actions) {    
+    for (const action of md.actions) {
       switch (action.type) {
         case ActionType.Move:
           const {row, column} = action.from!
@@ -70,7 +71,6 @@ export class Inspector {
           break
         default:
           throw new Error('Incorrect move action')
-          
       }
     }
   }
