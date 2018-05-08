@@ -193,4 +193,49 @@ export class Position {
       }
     }
   }
+
+  /**
+   * toString
+   */
+  public toString(): string {
+    const res: string[] = []
+
+    for (let i = 0; i < 8; i++) {
+      const r = this._rows[i]
+      let n = 0 // number of contiguous empty squares
+      for (let j = 0; j < 8; j++) {
+        const c = r[j]
+        if (c === undefined) n++
+        else {
+          if (n > 0) {
+            res.push(n.toString())
+            n = 0
+          }
+          res.push(c.fenCode)
+        }
+      }
+      if (n > 0) res.push(n.toString())
+      res.push('/')
+    }
+    res.pop() // remove last slash
+
+    res.push(this._whitesToMove ? ' w ' : ' b ')
+
+    if (
+      this._whiteCastlingShortEnabled ||
+      this._whiteCastlingLongEnabled ||
+      this._blackCastlingShortEnabled ||
+      this._blackCastlingLongEnabled
+    ) {
+      if (this._whiteCastlingLongEnabled) res.push('Q')
+      if (this._whiteCastlingShortEnabled) res.push('K')
+      if (this._blackCastlingLongEnabled) res.push('q')
+      if (this._blackCastlingShortEnabled) res.push('k')
+    } else res.push('-')
+    res.push(' ')
+    if (this._captureEnpassantTarget === -1) res.push('-')
+    else res.push('abcdefgh'[this._captureEnpassantTarget])
+
+    return res.join('')
+  }
 }

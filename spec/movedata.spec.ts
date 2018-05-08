@@ -61,11 +61,11 @@ describe('The pawn has five legal moves:', () => {
       it('Inspector return valid data.', () => {
         let moveData = whitesInspector.getMove('f3', 'g4')
         expect(moveData!.flags).to.equal(MoveFlags.Capture)
-        expect(moveData!.capturedPiece).not.to.be.undefined
+        expect(moveData!.capturedPiece!.fenCode).to.equal('p')
 
         moveData = blacksInspector.getMove('d7', 'e6')
         expect(moveData!.flags).to.equal(MoveFlags.Capture)
-        expect(moveData!.capturedPiece).not.to.be.undefined
+        expect(moveData!.capturedPiece!.fenCode).to.equal('P')
       })
 
       it('Try to capture own piece fail.', () => {
@@ -88,11 +88,12 @@ describe('The pawn has five legal moves:', () => {
       it('Inspector return valid data.', () => {
         let moveData = whitesInspector.getMove('e5', 'f6')
         expect(moveData!.flags).to.equal(MoveFlags.CaptureEnPassant)
-        expect(moveData!.capturedPiece).not.to.be.undefined
+        expect(moveData!.capturedPiece!.fenCode).to.equal('p')
 
         moveData = blacksInspector.getMove('g4', 'f3')
         expect(moveData!.flags).to.equal(MoveFlags.CaptureEnPassant)
         expect(moveData!.capturedPiece).not.to.be.undefined
+        expect(moveData!.capturedPiece!.fenCode).to.equal('P')
       })
     })
   // TODO: check en-passant flag toggle
@@ -110,15 +111,18 @@ describe(`The king can move in two different ways, by:`, () => {
     let inspector: Inspector
 
     before(() => {
-      inspector = new Inspector(new Position('4k3/8/8/8/8/8/4n3/4K3'))
+      inspector = new Inspector(new Position('4k3/8/8/8/8/8/4n3/4K3 w'))
+    })
+
+    it('Inspector return valid data for quiet move.', () => {
+      const moveData = inspector.getMove('e1', 'd2')
+      expect(moveData!.flags).to.equal(MoveFlags.Quiet)
     })
 
     it('Inspector return valid data for valid move.', () => {
-      let moveData = inspector.getMove('e1', 'd2')
-      expect(moveData!.flags).to.equal(MoveFlags.Quiet)
-
-      moveData = inspector.getMove('e1', 'e2')
+      const moveData = inspector.getMove('e1', 'e2')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.capturedPiece!.fenCode).to.equal('n')
     })
 
     it('Invalid move fail.', () => {
@@ -185,6 +189,7 @@ describe(`The queen moves to any square along the file, the rank
 
       moveData = inspector.getMove('d3', 'f5')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.capturedPiece!.fenCode).to.equal('b')
     })
 
     it('Move not diagonal, vertical or horizontal fail.', () => {
@@ -216,6 +221,7 @@ describe(`The rook moves to any square along the file or the rank
 
       moveData = inspector.getMove('a1', 'a2')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.capturedPiece!.fenCode).to.equal('p')
     })
 
     it('Move not vertical or horizontal fail.', () => {
@@ -246,6 +252,7 @@ describe(`The bishop moves to any square along a diagonal on which it stands.
 
       moveData = inspector.getMove('d3', 'f5')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.capturedPiece!.fenCode).to.equal('b')
     })
 
     it('Move not diagonal fail.', () => {
@@ -276,6 +283,7 @@ describe(`The knight moves to one of the squares nearest to that on
 
       moveData = inspector.getMove('d2', 'e4')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
+      expect(moveData!.capturedPiece!.fenCode).to.equal('p')
     })
 
     it('Incorrect move fail.', () => {

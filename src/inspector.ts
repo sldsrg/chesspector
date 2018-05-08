@@ -12,7 +12,11 @@ export class Inspector {
   private _actionsObserver: Subscriber<IAction>
 
   constructor(private position: Position) {
-    this.actions = new Observable((observer: Subscriber<IAction>) => this._actionsObserver = observer)
+    this.actions = new Observable((observer: any) => this._actionsObserver = observer)
+  }
+
+  public get FEN(): string {
+    return this.position.toString()
   }
 
   /**
@@ -51,6 +55,10 @@ export class Inspector {
     const toCol = toFile
     const piece = this.position.at[fromRow][fromCol]
     if (!piece) throw new Error(`Piece not found at ${sqFrom}`)
+    if (piece.isWhite !== this.position.whitesToMove) {
+      const turn = this.position.whitesToMove ? 'whites' : 'blacks'
+      throw new Error(`Try to move ${piece.isWhite ? 'white' : 'black'} piece on ${turn} turn`)
+    }
     return piece.getPseudoLegalMove(this.position, toRow, toCol)
   }
 
@@ -60,18 +68,20 @@ export class Inspector {
    */
   public doMove(md: MoveData): void {
     for (const action of md.actions) {
+      const {row, column} = action.from!
       switch (action.type) {
         case ActionType.Move:
-          const {row, column} = action.from!
-          const {row: toRow, column: toColumn} = action.to!
-          const piece = this.position.at[row][column]
-          piece.moveTo(this.position, toRow, toColumn)
+          this.position.at[row][column].moveTo(this.position, action.to!.row, action.to!.column)
           this._actionsObserver.next(action)
-          this.position.nextTurnToMove()
+          break
+        case ActionType.Delete:
+          delete this.position.at[row][column]
+          this._actionsObserver.next(action)
           break
         default:
           throw new Error('Incorrect move action')
       }
     }
+    this.position.nextTurnToMove()
   }
 }

@@ -98,13 +98,21 @@ describe('Chessboard position', () => {
 })
 
 describe('Initial chessboard position', () => {
+  let position: Position
+
+  beforeEach(() => {
+    position = new Position(Position.INITIAL)
+  })
+
   it('must be valid', () => {
-    const pos = new Position(Position.INITIAL)
-    expect(pos.isValid()).to.equal(true)
+    expect(position.isValid()).to.equal(true)
   })
 
   it('whites to move', () => {
-    const pos = new Position(Position.INITIAL)
-    expect(pos.whitesToMove).to.equal(true)
+    expect(position.whitesToMove).to.equal(true)
+  })
+
+  it('"toString" method return correct FEN representation', () => {
+    expect(position.toString()).to.equal(Position.INITIAL)
   })
 })

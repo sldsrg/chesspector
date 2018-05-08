@@ -48,7 +48,7 @@ export class MoveData {
   }
 
   public get actions(): IAction[] {
-    const res = new Array<IAction>()
+    const res = []
     res.push({
       type: ActionType.Move,
       from: {row: this.fromRow, column: this.fromColumn},
@@ -58,7 +58,8 @@ export class MoveData {
     if (this.flags === MoveFlags.Capture || this.flags === MoveFlags.CaptureEnPassant) {
       res.push({
         type: ActionType.Delete,
-        from: {row: this.capturedPiece!.row, column: this.capturedPiece!.column}
+        from: {row: this.capturedPiece!.row, column: this.capturedPiece!.column},
+        code: this.capturedPiece!.fenCode
       })
     } else if (this.flags === MoveFlags.CastlingShort) {
       res.push({

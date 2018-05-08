@@ -26,7 +26,8 @@ describe('MoveData actions getter', () => {
     })
     expect(res[1]).to.deep.equal({
       type: ActionType.Delete,
-      from: { row: 5, column: 5}
+      from: { row: 5, column: 5},
+      code: 'p'
     })
   })
 
@@ -41,7 +42,8 @@ describe('MoveData actions getter', () => {
     })
     expect(res[1]).to.deep.equal({
       type: ActionType.Delete,
-      from: { row: 3, column: 5}
+      from: { row: 3, column: 5},
+      code: 'p'
     })
   })
 
