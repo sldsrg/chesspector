@@ -70,7 +70,7 @@ export class MoveData {
       res.push({
         type: ActionType.Move,
         from: {row: this.fromRow, column: 0},
-        to: {row: this.toRow, column: 2}
+        to: {row: this.toRow, column: 3}
       })
     } else if (this.flags === MoveFlags.PawnPromotion) {
       res.push({

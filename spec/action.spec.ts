@@ -73,7 +73,7 @@ describe('MoveData actions getter', () => {
     expect(res[1]).to.deep.equal({
       type: ActionType.Move,
       from: { row: 7, column: 0},
-      to: {row: 7, column: 2}
+      to: {row: 7, column: 3}
     })
   })
 
