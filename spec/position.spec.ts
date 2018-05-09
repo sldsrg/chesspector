@@ -97,6 +97,49 @@ describe('Chessboard position', () => {
   })
 })
 
+describe('Position`s method', () => {
+  let pos: Position
+  beforeEach(() => {
+    pos = new Position('8/3pp3/4Pp2/8/R4Ppk/8/8/3K4 b - f')
+  })
+
+  it('deletePiece should throw if no piece at specified row and column', () => {
+    expect(() => pos.deletePiece({row: 0, column: 0})).throw('Piece not found at [0, 0]')
+  })
+
+  it('deletePiece should remove spcified white piece', () => {
+    const before = pos.whitePieces.length
+    pos.deletePiece({row: 4, column: 0})
+    expect(pos.toString()).to.equal('8/3pp3/4Pp2/8/5Ppk/8/8/3K4 b - f')
+    expect(pos.whitePieces).to.have.lengthOf(before - 1)
+  })
+
+  it('deletePiece should remove spcified black piece', () => {
+    const before = pos.blackPieces.length
+    pos.deletePiece({row: 1, column: 3})
+    expect(pos.toString()).to.equal('8/4p3/4Pp2/8/R4Ppk/8/8/3K4 b - f')
+    expect(pos.blackPieces).to.have.lengthOf(before - 1)
+  })
+
+  it('movePiece should throw if no piece foun at specified row and column', () => {
+    expect(() => pos.movePiece({row: 0, column: 0}, {row: 1, column: 1}))
+    .throw('Piece not found at [0, 0]')
+  })
+
+  it('movePiece to empty square should correct update position and moved piece', () => {
+    pos.movePiece({row: 1, column: 3}, {row: 2, column: 3})
+    expect(pos.toString()).to.be.equal('8/4p3/3pPp2/8/R4Ppk/8/8/3K4 b - f')
+    expect(pos.at[2][3].square).to.be.deep.equal({row: 2, column: 3})
+  })
+
+  it('movePiece to occupied square should correct update position and pieces set', () => {
+    const before = pos.whitePieces.length
+    pos.movePiece({row: 1, column: 3}, {row: 2, column: 4})
+    expect(pos.toString()).to.be.equal('8/4p3/4pp2/8/R4Ppk/8/8/3K4 b - f')
+    expect(pos.whitePieces).to.have.lengthOf(before - 1)
+  })
+})
+
 describe('Initial chessboard position', () => {
   let position: Position
 

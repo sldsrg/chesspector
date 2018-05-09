@@ -16,10 +16,8 @@ export enum MoveFlags {
 
 export class MoveData {
   constructor(
-    public fromRow: number,
-    public fromColumn: number,
-    public toRow: number,
-    public toColumn: number,
+    public from: {row: number, column: number},
+    public to: {row: number, column: number},
     public flags: MoveFlags = MoveFlags.Quiet,
     public capturedPiece?: Piece,
     public promotedPieceCode?: string) {
@@ -30,12 +28,12 @@ export class MoveData {
 
   public getLAN(pos: Position): string {
     const from =
-      String.fromCharCode(97 + this.fromColumn) +
-      String.fromCharCode(56 - this.fromRow)
+      String.fromCharCode(97 + this.from.column) +
+      String.fromCharCode(56 - this.from.row)
     const to =
-      String.fromCharCode(97 + this.toColumn) +
-      String.fromCharCode(56 - this.toRow)
-    const piece = pos.at[this.fromRow][this.fromColumn]
+      String.fromCharCode(97 + this.to.column) +
+      String.fromCharCode(56 - this.to.row)
+    const piece = pos.at[this.from.row][this.from.column]
     if (!piece) {
       throw new Error('getLAN called for empty square')
     } else {
@@ -51,36 +49,36 @@ export class MoveData {
     const res = []
     res.push({
       type: ActionType.Move,
-      from: {row: this.fromRow, column: this.fromColumn},
-      to: {row: this.toRow, column: this.toColumn}
+      from: {row: this.from.row, column: this.from.column},
+      to: {row: this.to.row, column: this.to.column}
     })
     if (this.flags === MoveFlags.Quiet) return res
     if (this.flags === MoveFlags.Capture || this.flags === MoveFlags.CaptureEnPassant) {
       res.push({
         type: ActionType.Delete,
-        from: {row: this.capturedPiece!.row, column: this.capturedPiece!.column},
+        from: this.capturedPiece!.square,
         code: this.capturedPiece!.fenCode
       })
     } else if (this.flags === MoveFlags.CastlingShort) {
       res.push({
         type: ActionType.Move,
-        from: {row: this.fromRow, column: 7},
-        to: {row: this.toRow, column: 5}
+        from: {row: this.from.row, column: 7},
+        to: {row: this.to.row, column: 5}
       })
     } else if (this.flags === MoveFlags.CastlingLong) {
       res.push({
         type: ActionType.Move,
-        from: {row: this.fromRow, column: 0},
-        to: {row: this.toRow, column: 3}
+        from: {row: this.from.row, column: 0},
+        to: {row: this.to.row, column: 3}
       })
     } else if (this.flags === MoveFlags.PawnPromotion) {
       res.push({
         type: ActionType.Delete,
-        from: {row: this.toRow, column: this.toColumn}
+        from: {...this.to}
       })
       res.push({
         type: ActionType.Insert,
-        to: {row: this.toRow, column: this.toColumn},
+        to: {...this.to},
         code: this.promotedPieceCode
       })
     }

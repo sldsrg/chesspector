@@ -1,5 +1,5 @@
 import { Piece } from './pieces/piece'
-import { MoveData } from './movedata'
+import { MoveData, MoveFlags } from './movedata'
 import { Position } from './position'
 import { IAction, ActionType } from './action'
 
@@ -67,20 +67,12 @@ export class Inspector {
    * @param md necessary data to make move
    */
   public doMove(md: MoveData): void {
+    if (md.flags === MoveFlags.Quiet || md.flags === MoveFlags.Capture) {
+      this.position.movePiece(md.from, md.to)
+    }
+
     for (const action of md.actions) {
-      const {row, column} = action.from!
-      switch (action.type) {
-        case ActionType.Move:
-          this.position.at[row][column].moveTo(this.position, action.to!.row, action.to!.column)
-          this._actionsObserver.next(action)
-          break
-        case ActionType.Delete:
-          delete this.position.at[row][column]
-          this._actionsObserver.next(action)
-          break
-        default:
-          throw new Error('Incorrect move action')
-      }
+      this._actionsObserver.next(action)
     }
     this.position.nextTurnToMove()
   }

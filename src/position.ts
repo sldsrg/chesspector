@@ -59,6 +59,50 @@ export class Position {
     this._whitesToMove = !this._whitesToMove
   }
 
+  /**
+   * deletePiece
+   * @param from row zero based row index from top
+   *             column zero based column index from left
+   */
+  public deletePiece(from: {row: number, column: number}) {
+    const {row, column} = from
+    const piece = this.at[row][column]
+    if (!piece) throw Error(`Piece not found at [${row}, ${column}]`)
+    if (piece.isWhite) {
+      this._whitePieces = this._whitePieces.filter((p: Piece) => p !== piece)
+    } else {
+      this._blackPieces = this._blackPieces.filter((p: Piece) => p !== piece)
+    }
+    delete this._rows[row][column]
+  }
+
+  /**
+   * movePiece - technical move, w/o rules control.
+   * Source and target squares specified as object with numeric properties
+   * @row zero based row index from top
+   * @column zero based column index from left
+   * @param from specified source square
+   * @param to specified target square
+   */
+  public movePiece(
+    from: {row: number, column: number},
+    to: {row: number, column: number}
+  ) {
+    const piece = this._rows[from.row][from.column]
+    if (!piece) throw Error(`Piece not found at [${from.row}, ${from.column}]`)
+    const target = this._rows[to.row][to.column]
+    if (target) {
+      if (target.isWhite) {
+        this._whitePieces = this._whitePieces.filter((p: Piece) => p !== target)
+      } else {
+        this._blackPieces = this._blackPieces.filter((p: Piece) => p !== target)
+      }
+    }
+    piece.square = {...to}
+    this._rows[to.row][to.column] = piece
+    delete this._rows[from.row][from.column]
+  }
+
   get whiteCastlingLongEnabled(): boolean {
     return this._whiteCastlingLongEnabled
   }

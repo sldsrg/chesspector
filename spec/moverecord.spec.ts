@@ -16,10 +16,8 @@ describe(`MoveRecord`, () => {
         const rec = new MoveRecord(1, 'e2-e4')
         const data = rec.eval(position)
         expect(data!.flags).to.equal(MoveFlags.Quiet)
-        expect(data!.fromRow).to.equal(6)
-        expect(data!.toRow).to.equal(4)
-        expect(data!.fromColumn).to.equal(4)
-        expect(data!.toColumn).to.equal(4)
+        expect(data!.from).to.deep.equal({row: 6, column: 4})
+        expect(data!.to).to.deep.equal({row: 4, column: 4})
         expect(data!.capturedPiece).to.be.undefined
       })
 
@@ -27,10 +25,8 @@ describe(`MoveRecord`, () => {
         const rec = new MoveRecord(1, 'Ng1-f3')
         const data = rec.eval(position)
         expect(data!.flags).to.equal(MoveFlags.Quiet)
-        expect(data!.fromRow).to.equal(7)
-        expect(data!.toRow).to.equal(5)
-        expect(data!.fromColumn).to.equal(6)
-        expect(data!.toColumn).to.equal(5)
+        expect(data!.from).to.deep.equal({row: 7, column: 6})
+        expect(data!.to).to.deep.equal({row: 5, column: 5})
         expect(data!.capturedPiece).to.be.undefined
       })
 
@@ -38,10 +34,8 @@ describe(`MoveRecord`, () => {
         const rec = new MoveRecord(1, 'O-O-O')
         const data = rec.eval(position)
         expect(data!.flags).to.equal(MoveFlags.CastlingLong)
-        expect(data!.fromRow).to.equal(7)
-        expect(data!.toRow).to.equal(7)
-        expect(data!.fromColumn).to.equal(4)
-        expect(data!.toColumn).to.equal(2)
+        expect(data!.from).to.deep.equal({row: 7, column: 4})
+        expect(data!.to).to.deep.equal({row: 7, column: 2})
         expect(data!.capturedPiece).to.be.undefined
       })
     })
@@ -66,20 +60,16 @@ describe(`MoveRecord`, () => {
       it(`return valid MoveData object for pawn move`, () => {
         const data = recPawn.eval(position)
         expect(data!.flags).to.equal(MoveFlags.Quiet)
-        expect(data!.fromRow).to.equal(6)
-        expect(data!.toRow).to.equal(4)
-        expect(data!.fromColumn).to.equal(4)
-        expect(data!.toColumn).to.equal(4)
+        expect(data!.from).to.deep.equal({row: 6, column: 4})
+        expect(data!.to).to.deep.equal({row: 4, column: 4})
         expect(data!.capturedPiece).to.be.undefined
       })
 
       it(`return valid MoveData object for knight move`, () => {
         const data = recKnight.eval(position)
         expect(data!.flags).to.equal(MoveFlags.Quiet)
-        expect(data!.fromRow).to.equal(7)
-        expect(data!.toRow).to.equal(5)
-        expect(data!.fromColumn).to.equal(6)
-        expect(data!.toColumn).to.equal(5)
+        expect(data!.from).to.deep.equal({row: 7, column: 6})
+        expect(data!.to).to.deep.equal({row: 5, column: 5})
         expect(data!.capturedPiece).to.be.undefined
       })
 
@@ -87,19 +77,15 @@ describe(`MoveRecord`, () => {
         let rec = new MoveRecord(1, 'R1a3')
         let data = rec.eval(position)
         expect(data!.flags).to.equal(MoveFlags.Quiet)
-        expect(data!.fromRow).to.equal(7)
-        expect(data!.toRow).to.equal(5)
-        expect(data!.fromColumn).to.equal(0)
-        expect(data!.toColumn).to.equal(0)
+        expect(data!.from).to.deep.equal({row: 7, column: 0})
+        expect(data!.to).to.deep.equal({row: 5, column: 0})
         expect(data!.capturedPiece).to.be.undefined
 
         rec = new MoveRecord(1, 'R6a3')
         data = rec.eval(position)
         expect(data!.flags).to.equal(MoveFlags.Quiet)
-        expect(data!.fromRow).to.equal(2)
-        expect(data!.toRow).to.equal(5)
-        expect(data!.fromColumn).to.equal(0)
-        expect(data!.toColumn).to.equal(0)
+        expect(data!.from).to.deep.equal({row: 2, column: 0})
+        expect(data!.to).to.deep.equal({row: 5, column: 0})
         expect(data!.capturedPiece).to.be.undefined
       })
 
@@ -107,19 +93,15 @@ describe(`MoveRecord`, () => {
         let rec = new MoveRecord(1, 'Bcxe7')
         let data = rec.eval(position)
         expect(data!.flags).to.equal(MoveFlags.Capture)
-        expect(data!.fromRow).to.equal(3)
-        expect(data!.toRow).to.equal(1)
-        expect(data!.fromColumn).to.equal(2)
-        expect(data!.toColumn).to.equal(4)
+        expect(data!.from).to.deep.equal({row: 3, column: 2})
+        expect(data!.to).to.deep.equal({row: 1, column: 4})
         expect(data!.capturedPiece).not.to.be.undefined
 
         rec = new MoveRecord(1, 'Bgxe7')
         data = rec.eval(position)
         expect(data!.flags).to.equal(MoveFlags.Capture)
-        expect(data!.fromRow).to.equal(3)
-        expect(data!.toRow).to.equal(1)
-        expect(data!.fromColumn).to.equal(6)
-        expect(data!.toColumn).to.equal(4)
+        expect(data!.from).to.deep.equal({row: 3, column: 6})
+        expect(data!.to).to.deep.equal({row: 1, column: 4})
         expect(data!.capturedPiece).not.to.be.undefined
       })
     })

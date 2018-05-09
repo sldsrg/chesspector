@@ -11,24 +11,24 @@ export class Rook extends Piece {
     pos: Position,
     toRow: number, toColumn: number): MoveData | undefined {
     // keep vertical or horizontal
-    if (this.column !== toColumn && this.row !== toRow) return
+    if (this.square.column !== toColumn && this.square.row !== toRow) return
 
     // check on obstacle
-    let iStep = toRow - this.row
+    let iStep = toRow - this.square.row
     if (iStep !== 0) iStep = Math.sign(iStep)
 
-    let jStep = toColumn - this.column
+    let jStep = toColumn - this.square.column
     if (jStep !== 0) jStep = Math.sign(jStep)
 
-    let i = this.row + iStep
-    let j = this.column + jStep
+    let i = this.square.row + iStep
+    let j = this.square.column + jStep
     while (i !== toRow || j !== toColumn) {
       if (pos.at[i][j]) return
       i += iStep
       j += jStep
     }
 
-    const moveData = new MoveData(this.row, this.column, toRow, toColumn)
+    const moveData = new MoveData(this.square, {row: toRow, column: toColumn})
     const capturedPiece = pos.at[toRow][toColumn]
     if (capturedPiece) {
         // can't capture own piece

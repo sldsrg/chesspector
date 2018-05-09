@@ -18,7 +18,7 @@ describe('Inspector class', () => {
   describe('whites to move', () => {
 
     beforeEach(() => {
-      const pos = new Position('r3k3/3p4/8/8/8/8/4P3/R3K3 w qQ -')
+      const pos = new Position('r3k3/p2p4/8/8/8/8/4P3/R3K3 w qQ -')
       inspector = new Inspector(pos)
       spy = sinon.spy()
       subscription = inspector.actions.subscribe(spy)
@@ -60,25 +60,25 @@ describe('Inspector class', () => {
     })
 
     it('push "move" and "delete" actions for capture', () => {
-      const md = inspector.getMove('a1', 'a8')
+      const md = inspector.getMove('a1', 'a7')
       inspector.doMove(md!)
       expect(spy).to.have.been.calledTwice
       expect(spy).to.have.been.calledWith({
         type: ActionType.Move,
         from: {row: 7, column: 0},
-        to: {row: 0, column: 0}
+        to: {row: 1, column: 0}
       })
       expect(spy).to.have.been.calledWith({
         type: ActionType.Delete,
-        from: {row: 0, column: 0},
-        code: 'r'
+        from: {row: 1, column: 0},
+        code: 'p'
       })
     })
 
     it('change position after capture', () => {
-      const md = inspector.getMove('a1', 'a8')
+      const md = inspector.getMove('a1', 'a7')
       inspector.doMove(md!)
-      expect(inspector.FEN).to.equal('R3k3/3p4/8/8/8/8/4P3/4K3 w - -')
+      expect(inspector.FEN).to.equal('r3k3/R2p4/8/8/8/8/4P3/4K3 b Qq -')
     })
 
   })

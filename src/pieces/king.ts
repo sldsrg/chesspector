@@ -10,12 +10,12 @@ export class King extends Piece {
   public getPseudoLegalMove(
     pos: Position,
     toRow: number, toColumn: number): MoveData | undefined {
-    if (Math.abs(toRow - this.row) > 1) return
-    const moveData = new MoveData(this.row, this.column, toRow, toColumn)
-    if (Math.abs(toColumn - this.column) > 1) {
+    if (Math.abs(toRow - this.square.row) > 1) return
+    const moveData = new MoveData(this.square, {row: toRow, column: toColumn})
+    if (Math.abs(toColumn - this.square.column) > 1) {
       // check castling ability
       if (this.isWhite) {
-        if (this.row !== 7 || this.column !== 4 || toRow !== 7) return
+        if (this.square.row !== 7 || this.square.column !== 4 || toRow !== 7) return
 
         if (toColumn === 2 && pos.whiteCastlingLongEnabled) {
           if (pos.at[7][1] || pos.at[7][2] || pos.at[7][3]) return
@@ -27,7 +27,7 @@ export class King extends Piece {
           return moveData
         }
       } else {
-        if (this.row !== 0 || this.column !== 4 || toRow !== 0) return
+        if (this.square.row !== 0 || this.square.column !== 4 || toRow !== 0) return
 
         if (toColumn === 2 && pos.blackCastlingLongEnabled) {
           if (pos.at[0][1] || pos.at[0][2] || pos.at[0][3]) return

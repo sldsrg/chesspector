@@ -5,7 +5,7 @@ import { MoveData, MoveFlags, ActionType, newPiece } from '../src'
 
 describe('MoveData actions getter', () => {
   it('return move action for quiet move', () => {
-    const data = new MoveData(6, 4, 4, 4, MoveFlags.Quiet)
+    const data = new MoveData({row: 6, column: 4}, {row: 4, column: 4}, MoveFlags.Quiet)
     const res = data.actions
     expect(res.length).to.equal(1)
     expect(res[0]).to.deep.equal({
@@ -16,7 +16,7 @@ describe('MoveData actions getter', () => {
   })
 
   it('return move and delete actions for capture move', () => {
-    const data = new MoveData(6, 4, 5, 5, MoveFlags.Capture, newPiece('p', 5, 5))
+    const data = new MoveData({row: 6, column: 4}, {row: 5, column: 5}, MoveFlags.Capture, newPiece('p', 5, 5))
     const res = data.actions
     expect(res.length).to.equal(2)
     expect(res[0]).to.deep.equal({
@@ -32,7 +32,7 @@ describe('MoveData actions getter', () => {
   })
 
   it('return move and delete actions for capture en-passant move', () => {
-    const data = new MoveData(3, 4, 2, 5, MoveFlags.CaptureEnPassant, newPiece('p', 3, 5))
+    const data = new MoveData({row: 3, column: 4}, {row: 2, column: 5}, MoveFlags.CaptureEnPassant, newPiece('p', 3, 5))
     const res = data.actions
     expect(res.length).to.equal(2)
     expect(res[0]).to.deep.equal({
@@ -48,7 +48,11 @@ describe('MoveData actions getter', () => {
   })
 
   it('return two move actions for short castling move', () => {
-    const data = new MoveData(7, 4, 7, 6, MoveFlags.CastlingShort)
+    const data = new MoveData(
+      {row: 7, column: 4},
+      {row: 7, column: 6},
+      MoveFlags.CastlingShort
+    )
     const res = data.actions
     expect(res.length).to.equal(2)
     expect(res[0]).to.deep.equal({
@@ -64,7 +68,7 @@ describe('MoveData actions getter', () => {
   })
 
   it('return two move actions for long castling move', () => {
-    const data = new MoveData(7, 4, 7, 1, MoveFlags.CastlingLong)
+    const data = new MoveData({row: 7, column: 4}, {row: 7, column: 1}, MoveFlags.CastlingLong)
     const res = data.actions
     expect(res.length).to.equal(2)
     expect(res[0]).to.deep.equal({
@@ -80,7 +84,13 @@ describe('MoveData actions getter', () => {
   })
 
   it('return three move actions for pawn promotion move', () => {
-    const data = new MoveData(6, 2, 7, 2, MoveFlags.PawnPromotion, undefined, 'Q')
+    const data = new MoveData(
+      {row: 6, column: 2},
+      {row: 7, column: 2},
+      MoveFlags.PawnPromotion,
+      undefined,
+      'Q'
+    )
     const res = data.actions
     expect(res.length).to.equal(3)
     expect(res[0]).to.deep.equal({

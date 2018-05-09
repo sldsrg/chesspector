@@ -48,7 +48,10 @@ export class MoveRecord {
       const fromRow = 56 - lan.charCodeAt(shft + 1)
       const toColumn = lan.charCodeAt(shft + 3) - 97
       const toRow = 56 - lan.charCodeAt(shft + 4)
-      const md = new MoveData(fromRow, fromColumn, toRow, toColumn)
+      const md = new MoveData(
+        {row: fromRow, column: fromColumn},
+        {row: toRow, column: toColumn}
+      )
       return md
     } else if (this._notationType === Notation.ShortAlgebraic) {
       const exres = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this._notationString)
@@ -73,8 +76,8 @@ export class MoveRecord {
       // scan for first acceptable piece
       for (const piece of activePieces) {
         if (piece.fenCode !== pieceCode) continue
-        if (fromColumn && piece.column !== fromColumn) continue
-        if (fromRow && piece.row !== fromRow) continue
+        if (fromColumn && piece.square.column !== fromColumn) continue
+        if (fromRow && piece.square.row !== fromRow) continue
         const md = piece.getPseudoLegalMove(pos, toRow!, toColumn!)
         // return if piece can play considered move
         if (md) return md
@@ -91,7 +94,7 @@ export class MoveRecord {
       }
       if (!king) throw new Error('King must be first in array of pieces')
 
-      if (king!.row !== toRow || king!.column !== 4) return
+      if (king!.square.row !== toRow || king!.square.column !== 4) return
       return king!.getPseudoLegalMove(pos, toRow, toColumn)
     }
     return

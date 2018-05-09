@@ -10,11 +10,11 @@ export class Knight extends Piece {
   public getPseudoLegalMove(
     pos: Position,
     toRow: number, toColumn: number): MoveData | undefined {
-    const istep = Math.abs(toRow - this.row)
-    const jstep = Math.abs(toColumn - this.column)
+    const istep = Math.abs(toRow - this.square.row)
+    const jstep = Math.abs(toColumn - this.square.column)
     if (istep === 0 || jstep === 0 || istep + jstep !== 3) return
 
-    const moveData = new MoveData(this.row, this.column, toRow, toColumn)
+    const moveData = new MoveData(this.square, {row: toRow, column: toColumn})
     const captured = pos.at[toRow][toColumn]
     if (captured) {
       // can't capture own piece
