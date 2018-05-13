@@ -107,14 +107,14 @@ export class MoveParser {
         }
         break
       case ParserState.move:
-        if (/[PRNBQKabcdefgh12345678x#-]/.test(c)) {
+        if (/[PRNBQKabcdefgh12345678x+#-]/.test(c)) {
           tempNotation += c
         } else if ( c === ' ' || c === ')') {
           if (tempMove) {
-            tempMove.next = new MoveRecord(tempNum, tempNotation)
+            tempMove.next = new MoveRecord(tempNum, whiteToMove, tempNotation)
             tempMove = tempMove.next
           } else {
-            tempMove = new MoveRecord(tempNum, tempNotation)
+            tempMove = new MoveRecord(tempNum, whiteToMove, tempNotation)
           }
 
           if (!firstMove) {
@@ -158,10 +158,10 @@ export class MoveParser {
 
     if (state === ParserState.move) {
       if (tempMove) {
-        tempMove.next = new MoveRecord(tempNum, tempNotation)
+        tempMove.next = new MoveRecord(tempNum, whiteToMove, tempNotation)
         tempMove = tempMove.next
       } else {
-        tempMove = new MoveRecord(tempNum, tempNotation)
+        tempMove = new MoveRecord(tempNum, whiteToMove, tempNotation)
       }
 
       if (!firstMove) {

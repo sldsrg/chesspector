@@ -9,7 +9,8 @@ export enum Notation {
 
 // represent structure to organize hierarchical recordings of game or solution.
 export class MoveRecord {
-  private _numOfHalfmove: number
+  private _moveNumber: number
+  private _whiteMove: boolean
   private _notationType: Notation
   private _notationString: string
   private _next: MoveRecord
@@ -18,16 +19,18 @@ export class MoveRecord {
 
   constructor(
     num: number,
+    whiteMove: boolean,
     move: string,
     public glyph?: number,
     public comment?: string) {
-    this._numOfHalfmove = num
+    this._moveNumber = num
+    this._whiteMove = whiteMove
     this._notationString = move
-    if (/^([rnbqk]?)([a-h])(\d)([-x])([a-h])(\d)(=[rnbq])?$/i.test(move)) {
+    if (/^([rnbqk]?)([a-h])(\d)([-x])([a-h])(\d)(=[rnbq])?([#+])?$/i.test(move)) {
       this._notationType = Notation.LongAlgebraic
     } else if (/^[0o]-[0o](-[0o])?$/i.test(move)) {
       this._notationType = Notation.Castling
-    } else if (/^[rnbqk]?[a-h]?\d?x?[a-h]\d#?$/i.test(move)) {
+    } else if (/^[rnbqk]?[a-h]?\d?x?[a-h]\d[#+]?$/i.test(move)) {
       this._notationType = Notation.ShortAlgebraic
     } else {
       throw new Error(`Invalid move notation "${move}"`)
@@ -133,5 +136,12 @@ export class MoveRecord {
       scan = scan.next
     }
     return len
+  }
+
+  /**
+   * toString
+   */
+  public toString(first: boolean = false) {
+    return `${this._moveNumber}${this._whiteMove ? '.' : '...'}${this._notationString}`
   }
 }

@@ -16,7 +16,7 @@ describe(`MoveKeeper`, () => {
     })
 
     it(`and no more empty, when added new move`, () => {
-      movekeeper.add(new MoveRecord(1, 'e2-e4'))
+      movekeeper.add(new MoveRecord(1, true, 'e2-e4'))
       expect(movekeeper.hasMoves).to.equal(true)
     })
 
