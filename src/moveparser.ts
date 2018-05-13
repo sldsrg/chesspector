@@ -72,7 +72,7 @@ export class MoveParser {
           if (!firstMove) throw new Error('Move parser failed')
           return firstMove!
         } else if (/S/.test(c)) {
-          throw new Error('PGN file format error')
+          throw new Error(`PGN file format error at ${this.mPos} in "${this.mSrc}"`)
         }
         break
       case ParserState.num:
@@ -86,7 +86,7 @@ export class MoveParser {
           // terminator = number + c.ToString();
           state = ParserState.terminator
         } else {
-          throw new Error('PGN file format error')
+          throw new Error(`PGN file format error at ${this.mPos} in "${this.mSrc}"`)
         }
         break
       case ParserState.period:
@@ -103,11 +103,11 @@ export class MoveParser {
           state = ParserState.none
           whiteToMove = false
         } else {
-          throw new Error('PGN file format error')
+          throw new Error(`PGN file format error at ${this.mPos} in "${this.mSrc}"`)
         }
         break
       case ParserState.move:
-        if (/[PRNBQKabcdefgh12345678-]/.test(c)) {
+        if (/[PRNBQKabcdefgh12345678x#-]/.test(c)) {
           tempNotation += c
         } else if ( c === ' ' || c === ')') {
           if (tempMove) {
@@ -131,7 +131,7 @@ export class MoveParser {
           whiteToMove = !whiteToMove
           state = ParserState.none
         } else {
-          throw new Error('PGN file format error')
+          throw new Error(`PGN file format error at ${this.mPos} in "${this.mSrc}"`)
         }
         break
       case ParserState.nag:
@@ -141,7 +141,7 @@ export class MoveParser {
           // current.NAG = tempNAG;
           state = ParserState.none
         } else {
-          throw new Error('PGN file format error')
+          throw new Error(`PGN file format error at ${this.mPos} in "${this.mSrc}"`)
         }
         break
       case ParserState.comment:

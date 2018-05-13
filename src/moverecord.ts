@@ -27,10 +27,10 @@ export class MoveRecord {
       this._notationType = Notation.LongAlgebraic
     } else if (/^[0o]-[0o](-[0o])?$/i.test(move)) {
       this._notationType = Notation.Castling
-    } else if (/^[rnbqk]?[a-h]?\d?x?[a-h]\d$/i.test(move)) {
+    } else if (/^[rnbqk]?[a-h]?\d?x?[a-h]\d#?$/i.test(move)) {
       this._notationType = Notation.ShortAlgebraic
     } else {
-      throw new Error('Invalid move notation')
+      throw new Error(`Invalid move notation "${move}"`)
     }
   }
 
