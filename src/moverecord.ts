@@ -127,8 +127,18 @@ export class MoveRecord {
     }
   }
 
-  // return number of half-moves from current to the end
-  get length() {
+  /** return true if move has forks */
+  public get hasForks(): boolean {
+    return this._forks && this._forks.length > 0
+  }
+
+  /** return all existing in this half-move forks */
+  public get forks(): MoveRecord[] {
+    return this._forks
+  }
+
+  /** evaluate a number of half-moves from current to last */
+  get length(): number {
     let len = 0
     let scan: MoveRecord = this
     while (scan) {
@@ -138,9 +148,21 @@ export class MoveRecord {
     return len
   }
 
-  /**
-   * toString
-   */
+  public get whiteToMove(): boolean {
+    return this._whiteMove
+  }
+
+  /** motation string for this half-move */
+  public get notation(): string {
+    return this._notationString
+  }
+
+  /** index number of move from start */
+  public get number(): number {
+    return this._moveNumber
+  }
+
+  /** toString */
   public toString(first: boolean = false) {
     return `${this._moveNumber}${this._whiteMove ? '.' : '...'}${this._notationString}`
   }
