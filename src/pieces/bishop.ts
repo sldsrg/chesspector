@@ -4,7 +4,7 @@ import { MoveData, MoveFlags } from '../movedata'
 
 export class Bishop extends Piece {
   constructor( row: number, column: number, isWhite: boolean) {
-    super(row, column, isWhite, isWhite ? 'B' : 'b')
+    super(row, column, isWhite, 'B')
   }
 
   public getPseudoLegalMove(

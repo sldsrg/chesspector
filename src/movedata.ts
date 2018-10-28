@@ -57,7 +57,9 @@ export class MoveData {
       res.push({
         type: ActionType.Delete,
         from: this.capturedPiece!.square,
-        code: this.capturedPiece!.fenCode
+        code: this.capturedPiece!.isWhite ?
+          this.capturedPiece!.fenCode.toUpperCase() :
+          this.capturedPiece!.fenCode.toLowerCase()
       })
     } else if (this.flags === MoveFlags.CastlingShort) {
       res.push({

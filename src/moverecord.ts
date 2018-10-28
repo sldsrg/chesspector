@@ -57,7 +57,7 @@ export class MoveRecord {
       )
       return md
     } else if (this._notationType === Notation.ShortAlgebraic) {
-      const exres = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this._notationString)
+      const exres = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)[#+]?$/i.exec(this._notationString)
       if (!exres) throw new Error(`Invalid move notation ${this._notationString}`)
       const res = exres!
 
@@ -72,7 +72,7 @@ export class MoveRecord {
       if (res[4]) toColumn = res[4]!.charCodeAt(0) - 97
       if (res[5]) toRow = 56 - res[5]!.charCodeAt(0)
 
-      // TODO: must throw expection if target file undefined
+      // TODO: must throw exception if target file undefined
       // TODO: must evaluate missing rank for shortened pawn capture notation
 
       const activePieces = pos.whitesToMove ? pos.whitePieces : pos.blackPieces

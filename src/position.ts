@@ -161,7 +161,7 @@ export class Position {
       const ch = fen[k]
       if (ch === ' ') continue
       if (/\d/.test(ch)) {
-        curCol += Number.parseInt(ch)
+        curCol += Number.parseInt(ch, 10)
       } else if (ch === '/') {
         if (curCol !== 0) {
           console.log(`Invalid FEN at position ${k} (char ${ch}) row ${curRow}, col ${curCol}`)
@@ -179,8 +179,8 @@ export class Position {
             this._whitePieces.push(piece)
           }
         } else {
-          if (piece.fenCode === 'k') {
-            if (this._blackPieces.length > 0 && this._blackPieces[0].fenCode === 'k') {
+          if (piece.fenCode === 'K') {
+            if (this._blackPieces.length > 0 && this._blackPieces[0].fenCode === 'K') {
               this._violations.push(Position.NOTES.TOO_MANY_BLACK_KINGS)
             }
             this._blackPieces.unshift(piece)
@@ -188,7 +188,7 @@ export class Position {
             this._blackPieces.push(piece)
           }
         }
-        if (/p/i.test(piece.fenCode)) {
+        if (/P/i.test(piece.fenCode)) {
           if (curRow === 0) this._violations.push(Position.NOTES.PAWN_ON_LAST_RANK)
           if (curRow === 7) this._violations.push(Position.NOTES.PAWN_ON_FIRST_RANK)
         }
@@ -205,7 +205,7 @@ export class Position {
     if (this._whitePieces.length === 0 || this._whitePieces[0].fenCode !== 'K') {
       this._violations.push(Position.NOTES.MISSING_WHITE_KING)
     }
-    if (this._blackPieces.length === 0 || this._blackPieces[0].fenCode !== 'k') {
+    if (this._blackPieces.length === 0 || this._blackPieces[0].fenCode !== 'K') {
       this._violations.push(Position.NOTES.MISSING_BLACK_KING)
     }
     if (this._whitePieces.length > 16) {
@@ -255,7 +255,7 @@ export class Position {
             res.push(n.toString())
             n = 0
           }
-          res.push(c.fenCode)
+          res.push(c.isWhite ? c.fenCode.toUpperCase() : c.fenCode.toLowerCase())
         }
       }
       if (n > 0) res.push(n.toString())

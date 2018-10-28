@@ -1,18 +1,16 @@
-import { Piece } from './pieces/piece'
 import { MoveData, MoveFlags } from './movedata'
 import { Position } from './position'
-import { IAction, ActionType } from './action'
+import { IAction } from './action'
 
-import { Observable } from 'rxjs/Observable'
-import { Observer} from 'rxjs/Observer'
-import { Subscriber} from 'rxjs/Subscriber'
+import { Subject, Observable } from 'rxjs'
 
 export class Inspector {
   public actions: Observable<IAction>
-  private _actionsObserver: Subscriber<IAction>
+  private _actionsSubject: Subject<IAction>
 
   constructor(private position: Position) {
-    this.actions = new Observable((observer: any) => this._actionsObserver = observer)
+    this._actionsSubject = new Subject<IAction>()
+    this.actions = this._actionsSubject.asObservable()
   }
 
   public get FEN(): string {
@@ -72,7 +70,7 @@ export class Inspector {
     }
 
     for (const action of md.actions) {
-      this._actionsObserver.next(action)
+      this._actionsSubject.next(action)
     }
     this.position.nextTurnToMove()
   }
