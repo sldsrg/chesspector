@@ -61,10 +61,10 @@ export class Inspector {
   }
 
   /**
-   * Do passed move: modify position, change turn to move and send related actions
+   * Make passed move: modify position, change turn to move and send related actions
    * @param md necessary data to make move
    */
-  public doMove(md: MoveData): void {
+  public makeMove(md: MoveData): void {
     if (md.flags === MoveFlags.Quiet || md.flags === MoveFlags.Capture) {
       this.position.movePiece(md.from, md.to)
     }
@@ -73,5 +73,12 @@ export class Inspector {
       this._actionsSubject.next(action)
     }
     this.position.nextTurnToMove()
+  }
+
+  /**
+   * Unmake passed move: modify position, change turn to move and send related actions
+   * @param md necessary data to make move
+   */
+  public unmakeMove(md: MoveData): void {
   }
 }
