@@ -109,6 +109,7 @@ export class MoveRecord {
 
   set next(value: MoveRecord) {
     this._next = value
+    this._next._previous = this
   }
 
   get previous(): MoveRecord {
@@ -117,6 +118,7 @@ export class MoveRecord {
 
   set previous(value: MoveRecord) {
     this._previous = value
+    this._previous._next = this
   }
 
   public fork(rec: MoveRecord) {
