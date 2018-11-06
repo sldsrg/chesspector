@@ -2,8 +2,7 @@ import 'mocha'
 import * as chai from 'chai'
 import * as sinon from 'sinon'
 import * as sinon_chai from 'sinon-chai'
-import { Subscriber } from 'rxjs/Subscriber'
-import { Subscription } from 'rxjs/Subscription'
+import { Subscriber, Subscription } from 'rxjs'
 
 import { Inspector, Position, IAction, ActionType, MoveData, MoveFlags } from '../../src'
 
