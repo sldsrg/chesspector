@@ -8,7 +8,7 @@ export class Inspector {
   public actions: Observable<IAction>
   private _actionsSubject: Subject<IAction>
 
-  constructor(private position: Position) {
+  constructor(public position: Position) {
     this._actionsSubject = new Subject<IAction>()
     this.actions = this._actionsSubject.asObservable()
   }
