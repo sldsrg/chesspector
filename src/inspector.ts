@@ -1,6 +1,6 @@
 import { MoveData, MoveFlags } from './movedata'
 import { Position } from './position'
-import { IAction } from './action'
+import { IAction, ActionType } from './action'
 
 import { Subject, Observable } from 'rxjs'
 
@@ -13,6 +13,11 @@ export class Inspector {
     this.actions = this._actionsSubject.asObservable()
   }
 
+  /**
+   * @readonly
+   * current position
+   * @returns string with FEN represetation
+   */
   public get FEN(): string {
     return this.position.toString()
   }
@@ -80,5 +85,25 @@ export class Inspector {
    * @param md necessary data to make move
    */
   public unmakeMove(md: MoveData): void {
+    if (md.flags === MoveFlags.Quiet || md.flags === MoveFlags.Capture) {
+      this.position.movePiece(md.to, md.from)
+    }
+
+    for (const action of md.actions.reverse()) {
+      switch (action.type) {
+      case ActionType.Insert:
+        break
+      case ActionType.Move:
+        this._actionsSubject.next({
+          type: ActionType.Move,
+          from: action.to,
+          to: action.from
+        })
+        break
+      case ActionType.Delete:
+        break
+      }
+    }
+    this.position.nextTurnToMove()
   }
 }

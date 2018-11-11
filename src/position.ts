@@ -1,5 +1,6 @@
 import { Piece } from './pieces/piece'
 import { newPiece } from './pieces/factory'
+import { square } from './utils'
 
 /** class represent chess pieces with its coordinates and
  *  ability to make special move, i.e castling and capture en-passant
@@ -67,7 +68,7 @@ export class Position {
   public deletePiece(from: {row: number, column: number}) {
     const {row, column} = from
     const piece = this.at[row][column]
-    if (!piece) throw Error(`Piece not found at [${row}, ${column}]`)
+    if (!piece) throw Error(`Piece not found at ${square(from)}`)
     if (piece.isWhite) {
       this._whitePieces = this._whitePieces.filter((p: Piece) => p !== piece)
     } else {
@@ -89,7 +90,7 @@ export class Position {
     to: {row: number, column: number}
   ) {
     const piece = this._rows[from.row][from.column]
-    if (!piece) throw Error(`Piece not found at [${from.row}, ${from.column}]`)
+    if (!piece) throw Error(`Piece not found at ${square(from)}`)
     const target = this._rows[to.row][to.column]
     if (target) {
       if (target.isWhite) {

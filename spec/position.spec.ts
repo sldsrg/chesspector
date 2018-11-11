@@ -104,7 +104,7 @@ describe('Position`s method', () => {
   })
 
   it('deletePiece should throw if no piece at specified row and column', () => {
-    expect(() => pos.deletePiece({row: 0, column: 0})).throw('Piece not found at [0, 0]')
+    expect(() => pos.deletePiece({row: 0, column: 0})).throw('Piece not found at a8')
   })
 
   it('deletePiece should remove spcified white piece', () => {
@@ -123,7 +123,7 @@ describe('Position`s method', () => {
 
   it('movePiece should throw if no piece foun at specified row and column', () => {
     expect(() => pos.movePiece({row: 0, column: 0}, {row: 1, column: 1}))
-    .throw('Piece not found at [0, 0]')
+    .throw('Piece not found at a8')
   })
 
   it('movePiece to empty square should correct update position and moved piece', () => {
