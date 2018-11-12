@@ -101,6 +101,11 @@ export class Inspector {
         })
         break
       case ActionType.Delete:
+        this._actionsSubject.next({
+          type: ActionType.Insert,
+          to: action.from,
+          code: action.code
+        })
         break
       }
     }

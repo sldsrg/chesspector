@@ -4,7 +4,7 @@ import * as sinon from 'sinon'
 import * as sinon_chai from 'sinon-chai'
 import { Subscription } from 'rxjs'
 
-import { Inspector, Position, IAction, ActionType, MoveData, MoveFlags } from '../../src'
+import { Inspector, Position, IAction, ActionType, MoveData, MoveFlags, Piece } from '../../src'
 const expect = chai.expect
 chai.use(sinon_chai)
 
@@ -16,7 +16,7 @@ describe('Inspector class', () => {
   describe('whites to move', () => {
 
     beforeEach(() => {
-      const pos = new Position('r3k3/p2p4/8/8/8/8/4P3/R3K3 w qQ -')
+      const pos = new Position('r3k2r/p2p2P1/8/8/8/8/4P3/R3K3 w qQ -')
       inspector = new Inspector(pos)
       spy = sinon.spy()
       subscription = inspector.actions.subscribe(spy)
@@ -76,9 +76,37 @@ describe('Inspector class', () => {
     it('change position after capture', () => {
       const md = inspector.getMove('a1', 'a7')
       inspector.makeMove(md!)
-      expect(inspector.FEN).to.equal('r3k3/R2p4/8/8/8/8/4P3/4K3 b Qq -')
+      expect(inspector.FEN).to.equal('r3k2r/R2p2P1/8/8/8/8/4P3/4K3 b Qq -')
     })
 
+    it.only('push "move", "delete", "delete" and "insert" actions on promotion with capture', () => {
+      const rook = new Piece(0, 7, false, 'r')
+      const md = new MoveData(
+        {row: 1, column: 6}, {row: 0, column: 7},
+        MoveFlags.PawnPromotion | MoveFlags.Capture, rook, 'B' )
+      inspector.makeMove(md)
+      expect(spy).to.have.callCount(4)
+      expect(spy).to.have.been.calledWith({
+        type: ActionType.Move,
+        from: {row: 1, column: 6},
+        to: {row: 0, column: 7}
+      })
+      expect(spy).to.have.been.calledWith({
+        type: ActionType.Delete,
+        from: {row: 0, column: 7},
+        code: 'r'
+      })
+      expect(spy).to.have.been.calledWith({
+        type: ActionType.Delete,
+        from: {row: 0, column: 7},
+        code: 'P'
+      })
+      expect(spy).to.have.been.calledWith({
+        type: ActionType.Insert,
+        to: {row: 0, column: 7},
+        code: 'B'
+      })
+    })
   })
 
   describe('blacks to move', () => {

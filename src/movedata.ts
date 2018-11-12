@@ -48,7 +48,7 @@ export class MoveData {
       to: {row: this.to.row, column: this.to.column}
     })
     if (this.flags === MoveFlags.Quiet) return res
-    if (this.flags === MoveFlags.Capture || this.flags === MoveFlags.CaptureEnPassant) {
+    if (this.flags & (MoveFlags.Capture | MoveFlags.CaptureEnPassant)) {
       res.push({
         type: ActionType.Delete,
         from: this.capturedPiece!.square,
@@ -68,10 +68,13 @@ export class MoveData {
         from: {row: this.from.row, column: 0},
         to: {row: this.to.row, column: 3}
       })
-    } else if (this.flags === MoveFlags.PawnPromotion) {
+    }
+
+    if (this.flags & MoveFlags.PawnPromotion) {
       res.push({
         type: ActionType.Delete,
-        from: {...this.to}
+        from: {...this.to},
+        code: this.promotedPieceCode === this.promotedPieceCode!.toUpperCase() ? 'P' : 'p'
       })
       res.push({
         type: ActionType.Insert,
