@@ -4,7 +4,7 @@ import * as sinon from 'sinon'
 import * as sinon_chai from 'sinon-chai'
 import { Subscription } from 'rxjs'
 
-import { Inspector, Position, IAction, ActionType, MoveData, MoveFlags, Piece } from '../../src'
+import { Inspector, Position, ActionType, MoveData, MoveFlags, Piece } from '../../src'
 
 const expect = chai.expect
 chai.use(sinon_chai)
@@ -15,7 +15,7 @@ describe('umakeMove method (Inspector class)', () => {
   let spy: sinon.SinonSpyStatic
 
   beforeEach(() => {
-    const pos = new Position('r3k2B/p2p4/7N/8/8/3Q4/4P3/1KR5 b q -')
+    const pos = new Position('r3k2B/p2p4/7N/8/8/3Q4/4P3/2KR4 b q -')
     inspector = new Inspector(pos)
     spy = sinon.spy()
     subscription = inspector.actions.subscribe(spy)
@@ -30,7 +30,7 @@ describe('umakeMove method (Inspector class)', () => {
       {row: 6, column: 3}, {row: 5, column: 3}, MoveFlags.Quiet )
     inspector.unmakeMove(md)
     expect(spy).to.have.been.calledOnce
-    expect(inspector.FEN).to.equal('r3k2B/p2p4/7N/8/8/8/3QP3/1KR5 w q -')
+    expect(inspector.FEN).to.equal('r3k2B/p2p4/7N/8/8/8/3QP3/2KR4 w q -')
   })
 
   it('try to unmake wrong move failed', () => {
@@ -87,7 +87,12 @@ describe('umakeMove method (Inspector class)', () => {
     })
   })
 
-  xit('restore castling ability flag when unmake castle move', () => {
+  it('restore castling ability flag when unmake castle move', () => {
+    const md = new MoveData(
+      {row: 7, column: 4}, {row: 7, column: 2}, MoveFlags.CastlingLong )
+    inspector.unmakeMove(md)
+    expect(spy).to.have.been.calledTwice
+    expect(inspector.FEN).to.equal('r3k2B/p2p4/7N/8/8/3Q4/4P3/R3K3 w Qq -')
   })
 
   xit('restore en-passant file when unmake capture en-passant move', () => {

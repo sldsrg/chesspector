@@ -70,7 +70,31 @@ export class Inspector {
    * @param md necessary data to make move
    */
   public makeMove(md: MoveData): void {
-    if (md.flags === MoveFlags.Quiet || md.flags === MoveFlags.Capture) {
+    if (md.flags & MoveFlags.Castling) {
+      // move King
+      this.position.movePiece(md.from, md.to)
+
+      // move Rook
+      const row = this.position.whitesToMove ? 7 : 0
+      const fromColumn = md.flags === MoveFlags.CastlingShort ? 7 : 0
+      const toColumn = md.flags === MoveFlags.CastlingShort ? 5 : 3
+      this.position.movePiece({row, column: fromColumn}, {row, column: toColumn})
+
+      // clear castling ability flag
+      if (md.flags === MoveFlags.CastlingShort) {
+        if (this.position.whitesToMove) {
+          this.position.whiteCastlingShortEnabled = false
+        } else {
+          this.position.blackCastlingShortEnabled = false
+        }
+      } else {
+        if (this.position.whitesToMove) {
+          this.position.whiteCastlingLongEnabled = false
+        } else {
+          this.position.blackCastlingLongEnabled = false
+        }
+      }
+    } else if (md.flags === MoveFlags.Quiet || md.flags === MoveFlags.Capture) {
       this.position.movePiece(md.from, md.to)
     }
 
@@ -82,9 +106,34 @@ export class Inspector {
 
   /**
    * Unmake passed move: modify position, change turn to move and send related actions
-   * @param md necessary data to make move
+   * @param md data of move to unmake
    */
   public unmakeMove(md: MoveData): void {
+    if (md.flags & MoveFlags.Castling) {
+      // move King
+      this.position.movePiece(md.to, md.from)
+
+      // move Rook
+      const row = this.position.whitesToMove ? 0 : 7
+      const toColumn = md.flags === MoveFlags.CastlingShort ? 7 : 0
+      const fromColumn = md.flags === MoveFlags.CastlingShort ? 5 : 3
+      this.position.movePiece({row, column: fromColumn}, {row, column: toColumn})
+
+      // restore castling ability flag
+      if (md.flags === MoveFlags.CastlingShort) {
+        if (this.position.whitesToMove) {
+          this.position.blackCastlingShortEnabled = true
+        } else {
+          this.position.whiteCastlingShortEnabled = true
+        }
+      } else {
+        if (this.position.whitesToMove) {
+          this.position.blackCastlingLongEnabled = true
+        } else {
+          this.position.whiteCastlingLongEnabled = true
+        }
+      }
+    }
     if (md.flags === MoveFlags.Quiet || md.flags === MoveFlags.Capture) {
       this.position.movePiece(md.to, md.from)
     }

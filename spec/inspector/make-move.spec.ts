@@ -79,7 +79,7 @@ describe('Inspector class', () => {
       expect(inspector.FEN).to.equal('r3k2r/R2p2P1/8/8/8/8/4P3/4K3 b Qq -')
     })
 
-    it.only('push "move", "delete", "delete" and "insert" actions on promotion with capture', () => {
+    it('push "move", "delete", "delete" and "insert" actions on promotion with capture', () => {
       const rook = new Piece(0, 7, false, 'r')
       const md = new MoveData(
         {row: 1, column: 6}, {row: 0, column: 7},
@@ -134,6 +134,12 @@ describe('Inspector class', () => {
         to: {row: 3, column: 3},
         type: ActionType.Move
       })
+    })
+
+    it('should change position after long castling move', () => {
+      const md = inspector.getMove('e8', 'c8')
+      inspector.makeMove(md!)
+      expect(inspector.FEN).to.equal('2kr4/3p4/8/8/8/8/4P3/R3K3 w Q -')
     })
 
     it('push two "move" actions for long castling move', () => {

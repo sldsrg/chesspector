@@ -100,7 +100,8 @@ describe('MoveData actions getter', () => {
     })
     expect(res[1]).to.deep.equal({
       type: ActionType.Delete,
-      from: { row: 7, column: 2}
+      from: { row: 7, column: 2},
+      code: 'P'
     })
     expect(res[2]).to.deep.equal({
       type: ActionType.Insert,

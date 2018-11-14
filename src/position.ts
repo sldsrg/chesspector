@@ -26,10 +26,6 @@ export class Position {
   private _blackPieces: Piece[] = [] // Black King first
 
   private _whitesToMove: boolean
-  private _whiteCastlingLongEnabled: boolean
-  private _whiteCastlingShortEnabled: boolean
-  private _blackCastlingLongEnabled: boolean
-  private _blackCastlingShortEnabled: boolean
   private _captureEnpassantTarget: number
 
   private _violations: string[]
@@ -104,21 +100,37 @@ export class Position {
     delete this._rows[from.row][from.column]
   }
 
-  get whiteCastlingLongEnabled(): boolean {
+  public get whiteCastlingLongEnabled(): boolean {
     return this._whiteCastlingLongEnabled
   }
+  public set whiteCastlingLongEnabled(value: boolean) {
+    this._whiteCastlingLongEnabled = value
+  }
+  private _whiteCastlingLongEnabled: boolean
 
-  get whiteCastlingShortEnabled(): boolean {
+  public get whiteCastlingShortEnabled(): boolean {
     return this._whiteCastlingShortEnabled
   }
+  public set whiteCastlingShortEnabled(value: boolean) {
+    this._whiteCastlingShortEnabled = value
+  }
+  private _whiteCastlingShortEnabled: boolean
 
-  get blackCastlingLongEnabled(): boolean {
+  public get blackCastlingLongEnabled(): boolean {
     return this._blackCastlingLongEnabled
   }
+  public set blackCastlingLongEnabled(value: boolean) {
+    this._blackCastlingLongEnabled = value
+  }
+  private _blackCastlingLongEnabled: boolean
 
-  get blackCastlingShortEnabled(): boolean {
+  public get blackCastlingShortEnabled(): boolean {
     return this._blackCastlingShortEnabled
   }
+  public set blackCastlingShortEnabled(value: boolean) {
+    this._blackCastlingShortEnabled = value
+  }
+  private _blackCastlingShortEnabled: boolean
 
   get captureEnpassantTarget(): number {
     return this._captureEnpassantTarget

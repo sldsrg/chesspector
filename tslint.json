@@ -9,6 +9,7 @@
   "rules": {
 		"curly": [true, "ignore-same-line"],
 		"class-name": true,
+		"member-ordering": false,
 		"no-bitwise": false,
 		"no-console": false,
 		"no-duplicate-variable": true,
