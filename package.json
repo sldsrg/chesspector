@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "tsc",
     "postcompile": "typedoc",
-    "prepack": "tsc",
+    "prepare": "tsc",
     "test": "mocha -r ts-node/register --watch-extensions ts spec/**/*.spec.ts"
   },
   "devDependencies": {
