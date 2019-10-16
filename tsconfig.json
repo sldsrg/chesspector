@@ -7,20 +7,16 @@
     "strictNullChecks": true,
     "target": "es2015",
     "module": "commonjs",
-    "outDir": "./dist/lib",
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "outDir": "./lib",
+    "typeRoots": ["./node_modules/@types"]
   },
   "typedocOptions": {
     "mode": "file",
-    "out": "dist/docs",
+    "out": "docs",
     "excludePrivate": true,
     "excludeProtected": true,
     "excludeNotExported": true,
     "target": "ES2015"
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

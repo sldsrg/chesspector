@@ -3,16 +3,14 @@ import { MoveData, MoveFlags } from './movedata'
 import { Position } from './position'
 import { IAction, ActionType } from './action'
 
-import { Observable } from 'rxjs/Observable'
-import { Observer} from 'rxjs/Observer'
-import { Subscriber} from 'rxjs/Subscriber'
+import { Observable, Subscriber } from 'rxjs'
 
 export class Inspector {
   public actions: Observable<IAction>
   private _actionsObserver: Subscriber<IAction>
 
   constructor(private position: Position) {
-    this.actions = new Observable((observer: any) => this._actionsObserver = observer)
+    this.actions = new Observable((observer: any) => (this._actionsObserver = observer))
   }
 
   public get FEN(): string {
@@ -20,27 +18,21 @@ export class Inspector {
   }
 
   /**
-   * Check if square not ocuped by any piece.
+   * Check if square not occupied by any piece.
    * @param row zero-based index from top
    * @param column zero-based index from left
    */
-  public isSquareBare(
-    row: number,
-    column: number
-  ): boolean {
+  public isSquareBare(row: number, column: number): boolean {
     return this.position.at[row][column] === undefined
   }
 
   /**
-   * Check if square ocuped by piece with color to move.
+   * Check if square occupied by piece with color to move.
    * Pinned state not considered.
    * @param row zero-based index from top
    * @param column zero-based index from left
    */
-  public canMoveFrom(
-    row: number,
-    column: number
-  ): boolean {
+  public canMoveFrom(row: number, column: number): boolean {
     return this.position.at[row][column].isWhite === this.position.whitesToMove
   }
 

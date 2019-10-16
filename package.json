@@ -1,27 +1,32 @@
 {
   "name": "chesspector",
-  "version": "0.0.1",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "0.0.2",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "compile": "tsc",
     "postcompile": "typedoc",
     "prepare": "tsc",
     "test": "mocha -r ts-node/register --watch-extensions ts spec/**/*.spec.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sldsrg/chesspector.git"
+  },
   "devDependencies": {
-    "@types/chai": "^4.1.3",
-    "@types/mocha": "^5.2.0",
-    "@types/sinon": "^4.3.1",
-    "@types/sinon-chai": "^2.7.29",
-    "chai": "^4.1.2",
-    "mocha": "^5.1.1",
-    "sinon": "^5.0.7",
-    "sinon-chai": "^3.0.0",
-    "ts-node": "^6.0.3",
-    "typescript": "^2.8.3"
+    "@types/chai": "^4.2.3",
+    "@types/mocha": "^5.2.7",
+    "@types/sinon": "^7.5.0",
+    "@types/sinon-chai": "^3.2.3",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.1",
+    "sinon": "^7.5.0",
+    "sinon-chai": "^3.3.0",
+    "ts-node": "^8.4.1",
+    "typedoc": "^0.15.0",
+    "typescript": "^3.4.0"
   },
   "dependencies": {
-    "rxjs": "^5.5.10"
+    "rxjs": "^6.5.3"
   }
 }
