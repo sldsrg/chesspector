@@ -43,7 +43,7 @@ export class MoveParser {
       switch (state) {
       case ParserState.none:
         if (/\d/.test(c)) {
-          tempNum = Number.parseInt(c)
+          tempNum = Number.parseInt(c, 10)
           state = ParserState.num
         } else if (c === '.') {
           state = ParserState.period
@@ -77,7 +77,7 @@ export class MoveParser {
         break
       case ParserState.num:
         if (/\d/.test(c)) {
-            tempNum = tempNum * 10 + Number.parseInt(c)
+            tempNum = tempNum * 10 + Number.parseInt(c, 10)
         } else if (c === '.') {
           state = ParserState.period
         } else if (/\w/.test(c)) {
@@ -136,7 +136,7 @@ export class MoveParser {
         break
       case ParserState.nag:
         if (/\d/.test(c)) {
-          tempNAG = tempNAG * 10 + Number.parseInt(c)
+          tempNAG = tempNAG * 10 + Number.parseInt(c, 10)
         } else if (/\w/.test(c)) {
           // current.NAG = tempNAG;
           state = ParserState.none

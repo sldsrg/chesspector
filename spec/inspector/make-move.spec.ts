@@ -2,11 +2,9 @@ import 'mocha'
 import * as chai from 'chai'
 import * as sinon from 'sinon'
 import * as sinon_chai from 'sinon-chai'
-import { Subscriber } from 'rxjs/Subscriber'
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription } from 'rxjs'
 
-import { Inspector, Position, IAction, ActionType, MoveData, MoveFlags } from '../src'
-
+import { Inspector, Position, IAction, ActionType, MoveData, MoveFlags, Piece } from '../../src'
 const expect = chai.expect
 chai.use(sinon_chai)
 
@@ -18,7 +16,7 @@ describe('Inspector class', () => {
   describe('whites to move', () => {
 
     beforeEach(() => {
-      const pos = new Position('r3k3/p2p4/8/8/8/8/4P3/R3K3 w qQ -')
+      const pos = new Position('r3k2r/p2p2P1/8/8/8/8/4P3/R3K3 w qQ -')
       inspector = new Inspector(pos)
       spy = sinon.spy()
       subscription = inspector.actions.subscribe(spy)
@@ -34,7 +32,7 @@ describe('Inspector class', () => {
 
     it('push single "move" action for quiet move (no castling)', () => {
       const md = inspector.getMove('e2', 'e4')
-      inspector.doMove(md!)
+      inspector.makeMove(md!)
       expect(spy).to.have.been.calledOnce
       expect(spy).to.have.been.calledWith({
         from: {row: 6, column: 4},
@@ -45,7 +43,7 @@ describe('Inspector class', () => {
 
     it('push two "move" actions for long castling move', () => {
       const md = inspector.getMove('e1', 'c1')
-      inspector.doMove(md!)
+      inspector.makeMove(md!)
       expect(spy).to.have.been.calledTwice
       expect(spy).to.have.been.calledWith({
         type: ActionType.Move,
@@ -61,7 +59,7 @@ describe('Inspector class', () => {
 
     it('push "move" and "delete" actions for capture', () => {
       const md = inspector.getMove('a1', 'a7')
-      inspector.doMove(md!)
+      inspector.makeMove(md!)
       expect(spy).to.have.been.calledTwice
       expect(spy).to.have.been.calledWith({
         type: ActionType.Move,
@@ -77,10 +75,38 @@ describe('Inspector class', () => {
 
     it('change position after capture', () => {
       const md = inspector.getMove('a1', 'a7')
-      inspector.doMove(md!)
-      expect(inspector.FEN).to.equal('r3k3/R2p4/8/8/8/8/4P3/4K3 b Qq -')
+      inspector.makeMove(md!)
+      expect(inspector.FEN).to.equal('r3k2r/R2p2P1/8/8/8/8/4P3/4K3 b Qq -')
     })
 
+    it('push "move", "delete", "delete" and "insert" actions on promotion with capture', () => {
+      const rook = new Piece(0, 7, false, 'r')
+      const md = new MoveData(
+        {row: 1, column: 6}, {row: 0, column: 7},
+        MoveFlags.PawnPromotion | MoveFlags.Capture, rook, 'B' )
+      inspector.makeMove(md)
+      expect(spy).to.have.callCount(4)
+      expect(spy).to.have.been.calledWith({
+        type: ActionType.Move,
+        from: {row: 1, column: 6},
+        to: {row: 0, column: 7}
+      })
+      expect(spy).to.have.been.calledWith({
+        type: ActionType.Delete,
+        from: {row: 0, column: 7},
+        code: 'r'
+      })
+      expect(spy).to.have.been.calledWith({
+        type: ActionType.Delete,
+        from: {row: 0, column: 7},
+        code: 'P'
+      })
+      expect(spy).to.have.been.calledWith({
+        type: ActionType.Insert,
+        to: {row: 0, column: 7},
+        code: 'B'
+      })
+    })
   })
 
   describe('blacks to move', () => {
@@ -101,7 +127,7 @@ describe('Inspector class', () => {
 
     it('push single "move" action for quiet move (no castling)', () => {
       const md = inspector.getMove('d7', 'd5')
-      inspector.doMove(md!)
+      inspector.makeMove(md!)
       expect(spy).to.have.been.calledOnce
       expect(spy).to.have.been.calledWith({
         from: {row: 1, column: 3},
@@ -110,9 +136,15 @@ describe('Inspector class', () => {
       })
     })
 
+    it('should change position after long castling move', () => {
+      const md = inspector.getMove('e8', 'c8')
+      inspector.makeMove(md!)
+      expect(inspector.FEN).to.equal('2kr4/3p4/8/8/8/8/4P3/R3K3 w Q -')
+    })
+
     it('push two "move" actions for long castling move', () => {
       const md = inspector.getMove('e8', 'c8')
-      inspector.doMove(md!)
+      inspector.makeMove(md!)
       expect(spy).to.have.been.calledTwice
       expect(spy).to.have.been.calledWith({
         type: ActionType.Move,
@@ -128,7 +160,7 @@ describe('Inspector class', () => {
 
     it('push "move" and "delete" actions for capture', () => {
       const md = inspector.getMove('a8', 'a1')
-      inspector.doMove(md!)
+      inspector.makeMove(md!)
       expect(spy).to.have.been.calledTwice
       expect(spy).to.have.been.calledWith({
         type: ActionType.Move,

@@ -30,8 +30,14 @@ describe(`MoveParser`, () => {
       expect(first).not.to.equal(null)
     })
 
-    it(`number of nodes from first evaluates to correct value`, () => {
+    it('number of nodes from first evaluates to correct value', () => {
       expect(first.length).to.equal(5)
+    })
+
+    it('fill correct value for "previous" field', () => {
+      const second = first.next
+      expect(second.previous).to.equal(first)
+      expect(first.previous).to.be.undefined
     })
   })
 

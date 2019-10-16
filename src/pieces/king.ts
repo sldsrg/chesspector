@@ -4,7 +4,7 @@ import { MoveData, MoveFlags } from '../movedata'
 
 export class King extends Piece {
   constructor( row: number, column: number, isWhite: boolean) {
-    super(row, column, isWhite, isWhite ? 'K' : 'k')
+    super(row, column, isWhite, 'K')
   }
 
   public getPseudoLegalMove(

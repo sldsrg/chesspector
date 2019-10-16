@@ -57,7 +57,7 @@ export class MoveRecord {
       )
       return md
     } else if (this._notationType === Notation.ShortAlgebraic) {
-      const exres = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)$/i.exec(this._notationString)
+      const exres = /^([rnbqk]?)([a-h])?(\d)?x?([a-h])(\d)[#+]?$/i.exec(this._notationString)
       if (!exres) throw new Error(`Invalid move notation ${this._notationString}`)
       const res = exres!
 
@@ -72,7 +72,7 @@ export class MoveRecord {
       if (res[4]) toColumn = res[4]!.charCodeAt(0) - 97
       if (res[5]) toRow = 56 - res[5]!.charCodeAt(0)
 
-      // TODO: must throw expection if target file undefined
+      // TODO: must throw exception if target file undefined
       // TODO: must evaluate missing rank for shortened pawn capture notation
 
       const activePieces = pos.whitesToMove ? pos.whitePieces : pos.blackPieces
@@ -109,6 +109,7 @@ export class MoveRecord {
 
   set next(value: MoveRecord) {
     this._next = value
+    this._next._previous = this
   }
 
   get previous(): MoveRecord {
@@ -117,6 +118,7 @@ export class MoveRecord {
 
   set previous(value: MoveRecord) {
     this._previous = value
+    this._previous._next = this
   }
 
   public fork(rec: MoveRecord) {
@@ -127,8 +129,18 @@ export class MoveRecord {
     }
   }
 
-  // return number of half-moves from current to the end
-  get length() {
+  /** return true if move has forks */
+  public get hasForks(): boolean {
+    return this._forks && this._forks.length > 0
+  }
+
+  /** return all existing in this half-move forks */
+  public get forks(): MoveRecord[] {
+    return this._forks
+  }
+
+  /** evaluate a number of half-moves from current to last */
+  get length(): number {
     let len = 0
     let scan: MoveRecord = this
     while (scan) {
@@ -138,9 +150,21 @@ export class MoveRecord {
     return len
   }
 
-  /**
-   * toString
-   */
+  public get whiteToMove(): boolean {
+    return this._whiteMove
+  }
+
+  /** motation string for this half-move */
+  public get notation(): string {
+    return this._notationString
+  }
+
+  /** index number of move from start */
+  public get number(): number {
+    return this._moveNumber
+  }
+
+  /** toString */
   public toString(first: boolean = false) {
     return `${this._moveNumber}${this._whiteMove ? '.' : '...'}${this._notationString}`
   }

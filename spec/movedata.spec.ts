@@ -1,7 +1,7 @@
 import 'mocha'
 import { expect } from 'chai'
 
-import { MoveData, MoveFlags, Position, Inspector } from '../src'
+import { MoveFlags, Position, Inspector } from '../src'
 
 describe('The pawn has five legal moves:', () => {
 
@@ -61,7 +61,7 @@ describe('The pawn has five legal moves:', () => {
       it('Inspector return valid data.', () => {
         let moveData = whitesInspector.getMove('f3', 'g4')
         expect(moveData!.flags).to.equal(MoveFlags.Capture)
-        expect(moveData!.capturedPiece!.fenCode).to.equal('p')
+        expect(moveData!.capturedPiece!.fenCode).to.equal('P')
 
         moveData = blacksInspector.getMove('d7', 'e6')
         expect(moveData!.flags).to.equal(MoveFlags.Capture)
@@ -88,7 +88,7 @@ describe('The pawn has five legal moves:', () => {
       it('Inspector return valid data.', () => {
         let moveData = whitesInspector.getMove('e5', 'f6')
         expect(moveData!.flags).to.equal(MoveFlags.CaptureEnPassant)
-        expect(moveData!.capturedPiece!.fenCode).to.equal('p')
+        expect(moveData!.capturedPiece!.fenCode).to.equal('P')
 
         moveData = blacksInspector.getMove('g4', 'f3')
         expect(moveData!.flags).to.equal(MoveFlags.CaptureEnPassant)
@@ -122,7 +122,7 @@ describe(`The king can move in two different ways, by:`, () => {
     it('Inspector return valid data for valid move.', () => {
       const moveData = inspector.getMove('e1', 'e2')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
-      expect(moveData!.capturedPiece!.fenCode).to.equal('n')
+      expect(moveData!.capturedPiece!.fenCode).to.equal('N')
     })
 
     it('Invalid move fail.', () => {
@@ -189,7 +189,7 @@ describe(`The queen moves to any square along the file, the rank
 
       moveData = inspector.getMove('d3', 'f5')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
-      expect(moveData!.capturedPiece!.fenCode).to.equal('b')
+      expect(moveData!.capturedPiece!.fenCode).to.equal('B')
     })
 
     it('Move not diagonal, vertical or horizontal fail.', () => {
@@ -221,7 +221,7 @@ describe(`The rook moves to any square along the file or the rank
 
       moveData = inspector.getMove('a1', 'a2')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
-      expect(moveData!.capturedPiece!.fenCode).to.equal('p')
+      expect(moveData!.capturedPiece!.fenCode).to.equal('P')
     })
 
     it('Move not vertical or horizontal fail.', () => {
@@ -252,7 +252,7 @@ describe(`The bishop moves to any square along a diagonal on which it stands.
 
       moveData = inspector.getMove('d3', 'f5')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
-      expect(moveData!.capturedPiece!.fenCode).to.equal('b')
+      expect(moveData!.capturedPiece!.fenCode).to.equal('B')
     })
 
     it('Move not diagonal fail.', () => {
@@ -283,7 +283,7 @@ describe(`The knight moves to one of the squares nearest to that on
 
       moveData = inspector.getMove('d2', 'e4')
       expect(moveData!.flags).to.equal(MoveFlags.Capture)
-      expect(moveData!.capturedPiece!.fenCode).to.equal('p')
+      expect(moveData!.capturedPiece!.fenCode).to.equal('P')
     })
 
     it('Incorrect move fail.', () => {

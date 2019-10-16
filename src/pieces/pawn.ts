@@ -4,7 +4,7 @@ import { MoveData, MoveFlags } from '../movedata'
 
 export class Pawn extends Piece {
   constructor( row: number, column: number, isWhite: boolean) {
-    super(row, column, isWhite, isWhite ? 'P' : 'p')
+    super(row, column, isWhite, 'P')
   }
 
   public getPseudoLegalMove(

@@ -1,5 +1,6 @@
 import { Piece } from './pieces/piece'
 import { newPiece } from './pieces/factory'
+import { square } from './utils'
 
 /** class represent chess pieces with its coordinates and
  *  ability to make special move, i.e castling and capture en-passant
@@ -25,10 +26,6 @@ export class Position {
   private _blackPieces: Piece[] = [] // Black King first
 
   private _whitesToMove: boolean
-  private _whiteCastlingLongEnabled: boolean
-  private _whiteCastlingShortEnabled: boolean
-  private _blackCastlingLongEnabled: boolean
-  private _blackCastlingShortEnabled: boolean
   private _captureEnpassantTarget: number
 
   private _violations: string[]
@@ -67,7 +64,7 @@ export class Position {
   public deletePiece(from: {row: number, column: number}) {
     const {row, column} = from
     const piece = this.at[row][column]
-    if (!piece) throw Error(`Piece not found at [${row}, ${column}]`)
+    if (!piece) throw Error(`Piece not found at ${square(from)}`)
     if (piece.isWhite) {
       this._whitePieces = this._whitePieces.filter((p: Piece) => p !== piece)
     } else {
@@ -89,7 +86,7 @@ export class Position {
     to: {row: number, column: number}
   ) {
     const piece = this._rows[from.row][from.column]
-    if (!piece) throw Error(`Piece not found at [${from.row}, ${from.column}]`)
+    if (!piece) throw Error(`Piece not found at ${square(from)}`)
     const target = this._rows[to.row][to.column]
     if (target) {
       if (target.isWhite) {
@@ -103,21 +100,37 @@ export class Position {
     delete this._rows[from.row][from.column]
   }
 
-  get whiteCastlingLongEnabled(): boolean {
+  public get whiteCastlingLongEnabled(): boolean {
     return this._whiteCastlingLongEnabled
   }
+  public set whiteCastlingLongEnabled(value: boolean) {
+    this._whiteCastlingLongEnabled = value
+  }
+  private _whiteCastlingLongEnabled: boolean
 
-  get whiteCastlingShortEnabled(): boolean {
+  public get whiteCastlingShortEnabled(): boolean {
     return this._whiteCastlingShortEnabled
   }
+  public set whiteCastlingShortEnabled(value: boolean) {
+    this._whiteCastlingShortEnabled = value
+  }
+  private _whiteCastlingShortEnabled: boolean
 
-  get blackCastlingLongEnabled(): boolean {
+  public get blackCastlingLongEnabled(): boolean {
     return this._blackCastlingLongEnabled
   }
+  public set blackCastlingLongEnabled(value: boolean) {
+    this._blackCastlingLongEnabled = value
+  }
+  private _blackCastlingLongEnabled: boolean
 
-  get blackCastlingShortEnabled(): boolean {
+  public get blackCastlingShortEnabled(): boolean {
     return this._blackCastlingShortEnabled
   }
+  public set blackCastlingShortEnabled(value: boolean) {
+    this._blackCastlingShortEnabled = value
+  }
+  private _blackCastlingShortEnabled: boolean
 
   get captureEnpassantTarget(): number {
     return this._captureEnpassantTarget
@@ -161,7 +174,7 @@ export class Position {
       const ch = fen[k]
       if (ch === ' ') continue
       if (/\d/.test(ch)) {
-        curCol += Number.parseInt(ch)
+        curCol += Number.parseInt(ch, 10)
       } else if (ch === '/') {
         if (curCol !== 0) {
           console.log(`Invalid FEN at position ${k} (char ${ch}) row ${curRow}, col ${curCol}`)
@@ -179,8 +192,8 @@ export class Position {
             this._whitePieces.push(piece)
           }
         } else {
-          if (piece.fenCode === 'k') {
-            if (this._blackPieces.length > 0 && this._blackPieces[0].fenCode === 'k') {
+          if (piece.fenCode === 'K') {
+            if (this._blackPieces.length > 0 && this._blackPieces[0].fenCode === 'K') {
               this._violations.push(Position.NOTES.TOO_MANY_BLACK_KINGS)
             }
             this._blackPieces.unshift(piece)
@@ -188,7 +201,7 @@ export class Position {
             this._blackPieces.push(piece)
           }
         }
-        if (/p/i.test(piece.fenCode)) {
+        if (/P/i.test(piece.fenCode)) {
           if (curRow === 0) this._violations.push(Position.NOTES.PAWN_ON_LAST_RANK)
           if (curRow === 7) this._violations.push(Position.NOTES.PAWN_ON_FIRST_RANK)
         }
@@ -205,7 +218,7 @@ export class Position {
     if (this._whitePieces.length === 0 || this._whitePieces[0].fenCode !== 'K') {
       this._violations.push(Position.NOTES.MISSING_WHITE_KING)
     }
-    if (this._blackPieces.length === 0 || this._blackPieces[0].fenCode !== 'k') {
+    if (this._blackPieces.length === 0 || this._blackPieces[0].fenCode !== 'K') {
       this._violations.push(Position.NOTES.MISSING_BLACK_KING)
     }
     if (this._whitePieces.length > 16) {
@@ -255,7 +268,7 @@ export class Position {
             res.push(n.toString())
             n = 0
           }
-          res.push(c.fenCode)
+          res.push(c.isWhite ? c.fenCode.toUpperCase() : c.fenCode.toLowerCase())
         }
       }
       if (n > 0) res.push(n.toString())
